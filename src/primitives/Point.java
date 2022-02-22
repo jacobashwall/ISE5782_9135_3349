@@ -21,7 +21,7 @@ public class Point {
      * @return the vector that starts at the given point and ends at this point
      */
     public Vector subtract(Point other){
-        Double3 answer= other.xyz.subtract(this.xyz);
+        Double3 answer= this.xyz.subtract(other.xyz);
         return new Vector(answer.d1,answer.d2, answer.d3);
     }
 

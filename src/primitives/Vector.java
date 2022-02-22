@@ -74,8 +74,9 @@ public class Vector extends Point{
      * Calculate the length of this vector squared
      * @return the length of this vector squared
      */
-    public double lengthSquared()
-    {
+    public double lengthSquared() {
+        //the length squared is the distance between the point that is the head of the vector
+        //to the point (0,0,0) that is the tail of the vector.
         return this.distanceSquared(new Point(0,0,0));
     }
     /**

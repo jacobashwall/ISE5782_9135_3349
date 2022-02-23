@@ -14,6 +14,14 @@ public class Ray {
         this.dir = dir.normalize();
     }
 
+    public Point getP0() {
+        return p0;
+    }
+
+    public Vector getDir() {
+        return dir;
+    }
+
     @Override
     public String toString() {
         return "starting point " + p0 +

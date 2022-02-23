@@ -14,10 +14,18 @@ public class Ray {
         this.dir = dir.normalize();
     }
 
+    /**
+     * Return the starting point of the ray
+     * @return the starting point of the ray
+     */
     public Point getP0() {
         return p0;
     }
 
+    /**
+     * Return the direction of the Ray
+     * @return the direction of the Ray
+     */
     public Vector getDir() {
         return dir;
     }

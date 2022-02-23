@@ -14,6 +14,15 @@ public class Vector extends Point{
         if(this.xyz.equals(Double3.ZERO))
             throw new IllegalArgumentException("Cannot implement zero vector");
     }
+    /**
+     * Create a new Vector
+     * @param xyz the coordinate of the Vector
+     */
+    public Vector(Double3 xyz) {
+        super(xyz);
+        if(this.xyz.equals(Double3.ZERO))
+            throw new IllegalArgumentException("Cannot implement zero vector");
+    }
 
     /**
      * Adds two vectors
@@ -51,8 +60,8 @@ public class Vector extends Point{
      * @return the dot product
      */
     public double dotProduct(Vector other){
-        //A dot B = Ax*Bx+y*By+Az*Bz
-        return (this.xyz.d1*other.xyz.d1)+(this.xyz.d2*other.xyz.d2)+(this.xyz.d3*other.xyz.d3);
+        Double3 answer= this.xyz.product(other.xyz);
+        return answer.d1+answer.d2+answer.d3;
     }
     /**
      * Calculates the cross product of this vector and a given vector

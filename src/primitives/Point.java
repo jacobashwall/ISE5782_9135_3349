@@ -3,7 +3,7 @@ package primitives;
 import static java.lang.Math.sqrt;
 
 public class Point {
-    final protected Double3 xyz;
+    protected Double3 xyz;
 
     /**
      * Create a new Point
@@ -13,6 +13,14 @@ public class Point {
      */
     public Point(double x, double y, double z) {
         this.xyz=new Double3(x,y,z);
+    }
+
+    /**
+     * Create a new point
+     * @param xyz the coordinate of the point
+     */
+    public Point(Double3 xyz) {
+        this.xyz=xyz;
     }
 
     /**

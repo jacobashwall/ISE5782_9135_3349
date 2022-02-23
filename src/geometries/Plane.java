@@ -15,6 +15,14 @@ public class Plane implements Geometry {
         this.normal = normal;
     }
 
+    @Override
+    public String toString() {
+        return "Plane{" +
+                "q0=" + q0 +
+                ", normal=" + normal +
+                '}';
+    }
+
     public Point getQ0() {
         return q0;
     }

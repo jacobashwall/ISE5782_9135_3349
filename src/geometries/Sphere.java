@@ -24,6 +24,14 @@ public class Sphere implements Geometry{
     }
 
     @Override
+    public String toString() {
+        return "Sphere{" +
+                "center=" + center +
+                ", radius=" + radius +
+                '}';
+    }
+
+    @Override
     public Vector getNormal(Point pnt) {
         return null;
     }

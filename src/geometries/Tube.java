@@ -25,6 +25,14 @@ public class Tube implements Geometry{
     }
 
     @Override
+    public String toString() {
+        return "Tube{" +
+                "axisRay=" + axisRay +
+                ", radius=" + radius +
+                '}';
+    }
+
+    @Override
     public Vector getNormal(Point pnt) {
         return null;
     }

@@ -17,6 +17,15 @@ public class Cylinder extends Tube{
     }
 
     @Override
+    public String toString() {
+        return "Cylinder{" +
+                "height=" + height +
+                ", axisRay=" + axisRay +
+                ", radius=" + radius +
+                '}';
+    }
+
+    @Override
     public Vector getNormal(Point pnt) {
         return null;
     }

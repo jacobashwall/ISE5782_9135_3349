@@ -94,7 +94,7 @@ public class Vector extends Point{
      * Calculate the length of this vector
      * @return the length of this vector
      */
-    public double distance(){
+    public double length(){
         return sqrt(this.lengthSquared());
     }
 
@@ -104,7 +104,7 @@ public class Vector extends Point{
      */
     public Vector normalize(){
         //You can get a unit vector from any vector (except the zero vector) by dividing the original vector by its length.
-        double factor= this.distance();
+        double factor= this.length();
         Vector ans=new Vector(this.xyz.d1,this.xyz.d2,this.xyz.d3);
         return ans.scale(1/factor);
     }

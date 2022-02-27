@@ -1,6 +1,11 @@
 import primitives.*;
 import static java.lang.System.out;
 import static primitives.Util.*;
+/**
+ * Students:
+ * Jacob Shalev 209783349 yakovash70@gmail.com
+ * Jonathan Dahary 324249135 yonatan.dahary@gmail.com
+ */
 
 /**
  * Test program for the 1st stage

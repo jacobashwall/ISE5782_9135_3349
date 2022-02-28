@@ -75,10 +75,6 @@ public class Vector extends Point{
         //Cx=AyBz-AzBx
         //Cy=AzBx-AxBz
         //Cz=AxBy-AyBx
-        if(this.normalize().equals(other.normalize()))
-            throw new IllegalArgumentException("Cross of 2 equal vectors is zero vector");
-        if(this.normalize().equals(other.scale(-1).normalize()))
-            throw new IllegalArgumentException("Cross of 2 opposite vectors is zero vector");
         double x= (this.xyz.d2*other.xyz.d3)-(this.xyz.d3*other.xyz.d2);
         double y= (this.xyz.d3*other.xyz.d1)-(this.xyz.d1*other.xyz.d3);
         double z= (this.xyz.d1*other.xyz.d2)-(this.xyz.d2*other.xyz.d1);

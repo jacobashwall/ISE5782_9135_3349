@@ -54,10 +54,12 @@ public class Vector extends Point{
         return new Vector(answer.d1, answer.d2, answer.d3);
     }
 
+
     /**
-     * Calculates the dot product of this vector and a given vector
-     * @param other the other vector that we calculate the dot product with
-     * @return the dot product
+     * Given two vectors, this function returns the dot product of the two vectors
+     *
+     * @param other the vector to be added to this vector.
+     * @return The dot product of the two vectors.
      */
     public double dotProduct(Vector other){
         Double3 answer= this.xyz.product(other.xyz);
@@ -73,8 +75,6 @@ public class Vector extends Point{
         //Cx=AyBz-AzBx
         //Cy=AzBx-AxBz
         //Cz=AxBy-AyBx
-        if(this.equals(other))
-            throw new IllegalArgumentException("Cross of 2 equal vectors is zero vector");
         double x= (this.xyz.d2*other.xyz.d3)-(this.xyz.d3*other.xyz.d2);
         double y= (this.xyz.d3*other.xyz.d1)-(this.xyz.d1*other.xyz.d3);
         double z= (this.xyz.d1*other.xyz.d2)-(this.xyz.d2*other.xyz.d1);

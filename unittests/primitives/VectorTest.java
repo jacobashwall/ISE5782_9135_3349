@@ -22,6 +22,10 @@ class VectorTest {
         Vector vec2 = new Vector(2, 3, 4);
         //TC: Test that vector addition is proper. We should get a new vector from the two vectors.
         assertEquals(vec1.add(vec2), new Vector(3, 5, 7), "There is a problem with vector addition");
+
+        //============ Boundary Partitions Tests ==============//
+        //TC: Test that addition of a vector by its opposite throws an error
+        assertThrows(IllegalArgumentException.class, () -> vec1.add(vec1.scale(-1)),"Add fails to throw an exception for opposite vectors");
     }
 
     /**
@@ -34,6 +38,11 @@ class VectorTest {
         Vector vec2 = new Vector(2, 3, 4);
         //TC: Test that vector subtraction is proper. We should get a new vector from the two vectors.
         assertEquals(vec2.subtract(vec1), new Vector(1, 1, 1), "There is a problem with vector subtraction");
+
+        //============ Boundary Partitions Tests ==============//
+        //TC: Test that subtraction of a vector by itself throws an error
+        assertThrows(IllegalArgumentException.class, () -> vec1.subtract(vec1),"Subtract fails to throw an exception for equal vectors");
+
     }
 
     /**
@@ -45,6 +54,11 @@ class VectorTest {
         Vector vec = new Vector(1, 2, 3);
         //TC: Test that vector scalar multiplication is proper. We should get a new vector multiplied by the double parameter.
         assertEquals(vec.scale(2.5),new Vector(2.5,5,7.5),"There is a problem with scale method");
+
+        //============ Boundary Tests ==============//
+        //TC: Test that checks that scalar multiplication by zero throws an error
+        assertThrows(IllegalArgumentException.class, () -> vec.scale(0),"Scale fails to throw an exception for multiplying by 0");
+
     }
 
     /**
@@ -53,9 +67,16 @@ class VectorTest {
     @Test
     void dotProduct() {
         //============ Equivalence Partitions Tests ==============//
-        Vector vec = new Vector(1, 2, 3);
-        //TC: Test that vector dotProduct is proper. We should get a new vector.
-        assertEquals(vec.scale(2.5),new Vector(2.5,5,7.5),"There is a problem with dotProduct method");
+        //acute angle
+        Vector vec1 = new Vector(1, 2, 3);
+        Vector vec2 = new Vector(2, 3, 4);
+        //TC: Test that vector dotProduct is proper. We should get a positive number.
+        assertEquals(vec1.dotProduct(vec2),20,"There is a problem with dotProduct method - acute angle");
+        //obtuse angle
+        Vector vec3 = new Vector(-1, -2, -5);
+        //TC: Test that vector dotProduct is proper. We should get a positive number.
+        assertEquals(vec1.dotProduct(vec3),-20,"There is a problem with dotProduct method - obtuse angle");
+
     }
 
     /**
@@ -72,7 +93,7 @@ class VectorTest {
         //TC:Test that the crossProduct produces an orthogonal vector.
         assertTrue(vec1.dotProduct(vec3) == 0 &&vec2.dotProduct(vec3) == 0,"Cross product failed to give orthogonal vector.");
 
-        //============ Boundary Partitions Tests ==============//
+        //============ Boundary Tests ==============//
         //TC: Test that exception is thrown for cross product of parallel vectors.
         Vector vec4 = new Vector(2,4,6);
         assertThrows(IllegalArgumentException.class, () -> vec1.crossProduct(vec4),"Cross Product for parallel vectors does not throw an exception");
@@ -97,10 +118,17 @@ class VectorTest {
         //============ Equivalence Partitions Tests ==============//
         Vector vec1 = new Vector(-1, 2, -3);
         //TC: Test that checks the calculation
-        assertTrue(Util.isZero(vec1.lengthSquared()-sqrt(14)),"lengthSquared doesn't work properly");
+        assertTrue(Util.isZero(vec1.lengthSquared()-14),"lengthSquared doesn't work properly");
     }
 
+    /**
+     * Test method for{@link Vector#normalize()}
+     */
     @Test
     void normalize() {
+        //============ Equivalence Partitions Tests ==============//
+        Vector vec = new Vector(1, 1, 1);
+        //TC: Test that checks the calculation
+        assertEquals(vec.normalize(),vec.scale(1/sqrt(3)),"normalize doesn't work properly");
     }
 }

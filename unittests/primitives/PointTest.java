@@ -25,7 +25,7 @@ class PointTest {
         assertEquals(pnt1.subtract(pnt2),vec,"The subtraction is wrong");
 
         //============ Boundary Partitions Tests ==============//'
-        assertThrows(IllegalArgumentException.class, () -> pnt1.subtract(pnt1),"Subtract fails to throw an exception for equal vectors");
+        assertThrows(IllegalArgumentException.class, () -> pnt1.subtract(pnt1),"Subtract fails to throw an exception for equal points");
 
     }
     /**

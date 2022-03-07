@@ -28,7 +28,12 @@ public class Plane implements Geometry {
      */
     public Plane(Point x, Point y, Point z){
         q0 = x;
-        normal = null;
+        //v1 = P2 - P1
+        //v2 = P3 - P1
+        //normal = normalize( v1 x v2 )
+        Vector v1 =y.subtract(x);
+        Vector v2 =z.subtract(x);
+        normal = (v1.crossProduct(v2)).normalize();
     }
 
 

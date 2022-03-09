@@ -38,7 +38,10 @@ public class Tube implements Geometry{
         //O=p0+t*v
         //n = normalize(P - O)
         double t= axisRay.getDir().dotProduct(pnt.subtract(axisRay.getP0()));
-        Point o=axisRay.getP0().add(axisRay.getDir().scale(t));
+        Point o = axisRay.getP0();
+        if (t!=0){
+            o=o.add(axisRay.getDir().scale(t));
+        }
         return (pnt.subtract(o)).normalize();
     }
 }

@@ -27,7 +27,7 @@ class TubeTest {
         //TC: Testing the boundary case where the point creates an orthogonal vector to the ray direction vector.
 
         //BVA: First base
-        assertEquals(new Vector(-1,0,0),tube.getNormal(new Point(0,0,0)),"getNormal is not working - BVA");
+        assertEquals(new Vector(0,0,-1),tube.getNormal(new Point(0,0,0)),"getNormal is not working - BVA");
 
     }
 }

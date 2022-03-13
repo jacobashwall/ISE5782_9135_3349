@@ -23,7 +23,7 @@ class CylinderTest {
         assertEquals(new Vector(0,0,-1),cyln.getNormal(new Point(1,0,0)),"getNormal is not working - EP1:casing");
 
         //EP2: First base
-        assertEquals(new Vector(-1,0,0),cyln.getNormal(new Point(0,0.5,1)),"getNormal is not working - EP2: First base");
+        assertEquals(new Vector(1,0,0),cyln.getNormal(new Point(0,0.5,1)),"getNormal is not working - EP2: First base");
 
         //EP3: Second base
         assertEquals(new Vector(1,0,0),cyln.getNormal(new Point(10,0.5,1)),"getNormal is not working - EP3: Second base");

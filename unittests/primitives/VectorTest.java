@@ -97,6 +97,11 @@ class VectorTest {
         //TC: Test that exception is thrown for cross product of parallel vectors.
         Vector vec4 = new Vector(2,4,6);
         assertThrows(IllegalArgumentException.class, () -> vec1.crossProduct(vec4),"Cross Product for parallel vectors does not throw an exception");
+
+        //TC: Test that exception is thrown for cross product of opposite vectors.
+        Vector vec5 = new Vector(-2,-4,-6);
+        assertThrows(IllegalArgumentException.class, () -> vec1.crossProduct(vec4),"Cross Product for opposite vectors does not throw an exception");
+
     }
 
     /**

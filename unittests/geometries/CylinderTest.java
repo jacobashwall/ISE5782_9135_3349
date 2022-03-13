@@ -32,10 +32,10 @@ class CylinderTest {
         //TC: Testing the boundary case where the point is on the perimeter of on of the bases. The normal should be calculated as the other base points.
 
         //BVA1: First base
-        assertEquals(new Vector(-1,0,0),cyln.getNormal(new Point(0,0,1)),"getNormal is not working - BVA1: First base");
+        assertTrue((new Vector(1,0,0).equals(cyln.getNormal(new Point(0,0,1)))||new Vector(-1,0,0).equals(cyln.getNormal(new Point(0,0,1)))),"getNormal is not working - BVA1: First base");
 
         //BVA2: Second base
-        assertEquals(new Vector(1,0,0),cyln.getNormal(new Point(10,0,1)),"getNormal is not working - BVA2: Second base");
+        assertTrue((new Vector(1,0,0).equals(cyln.getNormal(new Point(10,0,1)))||new Vector(-1,0,0).equals(cyln.getNormal(new Point(10,0,1)))),"getNormal is not working - BVA2: Second base");
 
     }
 

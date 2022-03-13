@@ -43,6 +43,12 @@ public class Cylinder extends Tube{
         //the points to represent each base center point
         Point base1Point=axisRay.getP0();
         Point base2Point=axisRay.getP0().add(axisRay.getDir().scale(height));
+        //Before we subtract we will check if the given point is on either center point,
+        //That way we won't create any Zero vector.
+        if(base1Point.equals(pnt) || base2Point.equals(pnt)) {
+            //if so, the normal is the normal of the base, or just the axis direction
+            return axisRay.getDir();
+        }
         //the vectors from each base points to the given point
         Vector base1Vector=pnt.subtract(base1Point);
         Vector base2Vector=pnt.subtract(base2Point);
@@ -57,7 +63,7 @@ public class Cylinder extends Tube{
         //and even though it's on the same plane, maybe it's not on the circle,
         //therefore we will check if the distance to each base's center point is less or equals to the radius.
         if((dotPro1==0 || dotPro2==0) && (distance1<=radius||distance2<=radius) ) {
-            //if so, the normal is the normal of the base, ore just the axis direction
+            //if so, the normal is the normal of the base, or just the axis direction
             return axisRay.getDir();
         }
         else{ //if not, then the point is on the sides of the cylinder, and has the same calculations as a Tube

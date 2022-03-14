@@ -15,6 +15,8 @@ class PlaneTest {
         //============ Equivalence Partitions Tests ==============//
         //TC: Testing that the three point ctor creates the correct plane
 
+        assertEquals(new Plane(pnt1,pnt2,pnt3), new Plane(pnt1, new Vector(0,0,-1)),"Error");
+
         //============ Boundary Tests ==============//
         //TC: Testing that the three point ctor creates the correct plane
         assertThrows(IllegalArgumentException.class, () -> new Plane(pnt1,pnt1,pnt2),"Plane 3 points ctor fails to throw an exception for equal points");

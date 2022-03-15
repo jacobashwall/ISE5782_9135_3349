@@ -55,5 +55,5 @@ public class Sphere implements Geometry{
     }
 
     @Override
-    public List<Point> findIntsersections(Ray ray){return null;}
+    public List<Point> findIntersections(Ray ray){return null;}
 }

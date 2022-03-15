@@ -6,7 +6,8 @@ import primitives.Vector;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class PlaneTest {
+class
+PlaneTest {
 
     void Plane() {
         Point pnt1 = new Point(0,0,0);

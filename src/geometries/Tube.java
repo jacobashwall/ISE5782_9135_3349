@@ -4,6 +4,8 @@ import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 
+import java.util.List;
+
 /**
  * class that represents a tube and implements the interface Geometry
  */
@@ -44,4 +46,7 @@ public class Tube implements Geometry{
         }
         return (pnt.subtract(o)).normalize();
     }
+
+    @Override
+    public List<Point> findIntsersections(Ray ray){return null;}
 }

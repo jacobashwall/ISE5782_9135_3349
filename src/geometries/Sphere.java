@@ -1,7 +1,10 @@
 package geometries;
 
 import primitives.Point;
+import primitives.Ray;
 import primitives.Vector;
+
+import java.util.List;
 
 /**
  * class that represents a sphere and implements the interface Geometry
@@ -50,4 +53,7 @@ public class Sphere implements Geometry{
         //n = normalize(P - O)
         return (pnt.subtract(center)).normalize();
     }
+
+    @Override
+    public List<Point> findIntsersections(Ray ray){return null;}
 }

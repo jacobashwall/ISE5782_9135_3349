@@ -78,14 +78,28 @@ public class Point {
         return xyz.toString();
     }
 
+    /**
+     * X getter.
+     * @return the x cardinal of the given point .
+     */
     public double getX()
     {
         return this.xyz.d1;
     }
+
+    /**
+     * Y getter.
+     * @return the y cardinal of the given point .
+     */
     public double getY()
     {
         return this.xyz.d2;
     }
+
+    /**
+     * Z getter.
+     * @return the z cardinal of the given point .
+     */
     public double getZ()
     {
         return this.xyz.d3;

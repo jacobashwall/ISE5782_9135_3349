@@ -71,7 +71,7 @@ public class Plane implements Geometry {
     }
 
     @Override
-    public List<Point> findIntersections(Ray ray) {//note! what if ray is orthogonal to the plane?
+    public List<Point> findIntersections(Ray ray) {
         if(ray.getP0().equals(this.q0)) { // the ray starts at the plane's reference point
             return null;
         }

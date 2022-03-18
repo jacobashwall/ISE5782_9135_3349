@@ -71,5 +71,26 @@ public class Plane implements Geometry {
     }
 
     @Override
-    public List<Point> findIntsersections(Ray ray){return null;}
+    public List<Point> findIntersections(Ray ray) {
+        if(ray.getP0().equals(this.q0)) { // the ray starts at the plane's reference point
+            return null;
+        }
+        double numerator = this.normal.dotProduct(q0.subtract(ray.getP0()));
+        if (isZero(numerator)) {// p0 is on the plane
+            return null;
+        }
+        double denominator = this.normal.dotProduct(ray.getDir());
+        if(isZero(denominator)){ // ray parallel to the plane- the ray direction orthogonal to the normal
+            return null;
+        }
+        double t = alignZero(numerator / denominator);
+        if (t > 0) {
+            //P=P0+t*V, t>0
+            Point p = ray.getP0().add(ray.getDir().scale(t));
+            return List.of(p);
+        }
+        else {// if the Ray is after the plane (do not intersect)
+            return null;
+        }
+    }
 }

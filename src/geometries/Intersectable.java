@@ -10,9 +10,9 @@ import java.util.List;
  */
 public interface Intersectable {
     /**
-     * Find all intersection points of a ray and a geometric entity.
+     * Finds all intersection points of a ray and a geometric entity.
      * @param ray the ray that intersect with the geometric entity.
      * @return list of intersection points.
      */
-    public List<Point> findIntsersections(Ray ray);
+    public List<Point> findIntersections(Ray ray);
 }

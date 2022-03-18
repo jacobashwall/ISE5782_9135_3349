@@ -24,10 +24,10 @@ class TriangleTest {
     }
 
     /**
-     * Test method for{@link geometries.Polygon#findIntersections(Ray)}
+     * Test method for{@link geometries.Triangle#findIntersections(Ray)}
      */
     @Test
-    void findIntsersections(){//should we also check the same checks as the one in plane?
+    void findIntsersections(){
 
         Triangle trn = new Triangle(new Point(-1, 1, 0), new Point(1 , 0, 0), new Point(-1, -1, 0));
         //============ Equivalence Partitions Tests ==============//
@@ -53,7 +53,7 @@ class TriangleTest {
         assertNull(trn.findIntersections(ray5), "The ray failed to intersect with the triangle's plane on the triangle's vertex");
 
         //TC: The ray intersect with the triangle's plane outside the triangle on one of the triangle's rib's vector
-        Ray ray6=new Ray(new Point(0,0,1), new Vector(2,0,-1));
+        Ray ray6=new Ray(new Point(0,0,1), new Vector(-1,-2,-1));
         assertNull(trn.findIntersections(ray6), "The ray failed to intersect with the triangle's plane on one of the triangle's rib's vector");
     }
 

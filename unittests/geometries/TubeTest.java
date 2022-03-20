@@ -30,4 +30,15 @@ class TubeTest {
         assertEquals(new Vector(0,0,-1),tube.getNormal(new Point(0,0,0)),"getNormal is not working - BVA");
 
     }
+    /**
+     * Test method for{@link geometries.Tube#findIntersections(Ray)}
+     */
+    @Test
+    void findIntersections(){
+        Ray ray = new Ray(new Point(0,0,2),new Vector(1,0,0));
+        Tube tube = new Tube(ray,1);
+        //============ Equivalence Partitions Tests ==============//
+        //EP1:
+
+    }
 }

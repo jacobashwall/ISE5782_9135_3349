@@ -58,17 +58,50 @@ public class Sphere implements Geometry{
     }
 
     @Override
-    public List<Point> findIntsersections(Ray ray) {
+    public List<Point> findIntersections(Ray ray) {
 
         //Head of the ray and center of the circle coincide
         if (ray.getP0().equals(this.getCenter())) {
             return List.of(ray.getP0().add(ray.getDir().scale(this.getRadius())));
         }
 
+        //Head of the ray is inside or on the sphere and goes through the center
+        boolean b1 = ray.getP0().subtract(this.getCenter()).length() < this.getRadius() && ray.getDir().equals(this.getCenter().subtract(ray.getP0()).normalize());
+        boolean b2 = ray.getP0().subtract(this.getCenter()).length() < this.getRadius() && ray.getDir().equals(this.getCenter().subtract(ray.getP0()).normalize().scale(-1));
+        if (b1 || b2) {
+            if (b1) {
+                return List.of(ray.getP0().add(ray.getDir().scale(getCenter().subtract(ray.getP0()).length() + this.getRadius())));
+            } else {
+                return List.of(ray.getP0().add(ray.getDir().scale(-getCenter().subtract(ray.getP0()).length() + this.getRadius())));
+            }
+
+        }
+
+
+
+        //Head of the ray is outside the sphere and goes through the center
+        boolean b3 = ray.getP0().subtract(this.getCenter()).length() > this.getRadius() && ray.getDir().equals(this.getCenter().subtract(ray.getP0()).normalize());
+        boolean b4 = ray.getP0().subtract(this.getCenter()).length() > this.getRadius() && ray.getDir().equals(this.getCenter().subtract(ray.getP0()).normalize().scale(-1));
+
+        if (b3 || b4) {
+            if (b3) {
+                return List.of(ray.getP0().add(ray.getDir().scale(getCenter().subtract(ray.getP0()).length() - this.getRadius())),ray.getP0().add(ray.getDir().scale(getCenter().subtract(ray.getP0()).length() + this.getRadius())));
+            } else {
+                return null;
+            }
+
+        }
+
+        //Head of the ray is outside the sphere and goes through the center
+        boolean b5 = Util.isZero(ray.getP0().subtract(this.getCenter()).length() - this.getRadius()) && ray.getDir().equals(this.getCenter().subtract(ray.getP0()).normalize());
+        if(b5){
+            return List.of(ray.getP0().add(ray.getDir().scale(2*this.getRadius())));
+        }
+
         //Head of the ray is outside the sphere and the ray doesn't intersect the sphere
         if (ray.getP0().subtract(this.getCenter()).length() > this.getRadius()) {
             double projection = ray.getDir().dotProduct(this.getCenter().subtract(ray.getP0()));
-            Point shortest = ray.getP0().add(ray.getDir().scale(projection));
+            Point shortest = ray.getP0().add(ray.getDir().scale(abs(projection)));
             //The ray is tangent to the sphere
             if (Util.isZero(shortest.subtract(this.getCenter()).length() - this.getRadius())) {
                 return null;
@@ -96,30 +129,23 @@ public class Sphere implements Geometry{
             }
         }
 
-        //Head of thr ray is inside the sphere and goes through the center
-        boolean b1 = ray.getP0().subtract(this.getCenter()).length() < this.getRadius() && ray.getDir().equals(this.getCenter().subtract(ray.getP0()).normalize());
-        boolean b2 = ray.getP0().subtract(this.getCenter()).length() < this.getRadius() && ray.getDir().equals(this.getCenter().subtract(ray.getP0()).normalize().scale(-1));
-        if (b1 || b2) {
-            if (b1) {
-                return List.of(ray.getP0().add(ray.getDir().scale(getCenter().subtract(ray.getP0()).length() + this.getRadius())));
-            } else {
-                return List.of(ray.getP0().add(ray.getDir().scale(-getCenter().subtract(ray.getP0()).length() + this.getRadius())));
-            }
 
-        }
 
-        //Head of the ray is inside the sphere
+        //Head of the ray is inside the sphere and doesn't go through the center
         if (ray.getP0().subtract(this.getCenter()).length() < this.getRadius()) {
             Vector inSphereVec = this.getCenter().subtract(ray.getP0());
             double x = inSphereVec.dotProduct(ray.getDir());
             double y = inSphereVec.length();
             double z = sqrt(y * y - x * x);
             double d = sqrt(this.getRadius() * this.getRadius() - z * z);
-            if (ray.getDir().dotProduct(inSphereVec) < 0) {
-                return List.of(ray.getP0().add(ray.getDir().scale(x + d)));
+            if(Util.isZero(ray.getDir().dotProduct(inSphereVec))){
+                return List.of(ray.getP0().add(ray.getDir().scale(d)));
             }
-            if (ray.getDir().dotProduct(inSphereVec) > 0) {
-                return List.of(ray.getP0().add(ray.getDir().scale(d - x)));
+            else if (ray.getDir().dotProduct(inSphereVec) < 0) {
+                return List.of(ray.getP0().add(ray.getDir().scale(d-abs(x))));
+            }
+            else if (ray.getDir().dotProduct(inSphereVec) > 0) {
+                return List.of(ray.getP0().add(ray.getDir().scale(d + abs(x))));
             }
 
         }

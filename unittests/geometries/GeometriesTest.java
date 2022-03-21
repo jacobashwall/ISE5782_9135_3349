@@ -19,30 +19,30 @@ class GeometriesTest {
 
         // ============ Equivalence Partitions Tests ==============
 
-        // TC01: Some of the Geometries are intersected
+        // TC01: Some Geometries are intersected (while others don't).
         Ray ray = new Ray(new Point(-1, 0, 0), new Vector(1, 1, 1));
         assertEquals(3, collection.findIntersections(ray).size()
-                ,"Wrong number of intersection points"); // Intersects only plane and sphere
+                ,"Wrong number of intersection points."); // Intersects only plane and sphere
 
         // =============== Boundary Values Tests ==================
 
-        // TC11: All the Geometries are intersected
+        // TC11: All the Geometries are intersected.
         ray = new Ray(new Point(2, 2, 2.5), new Vector(-1, -1, -1));
         assertEquals(4, collection.findIntersections(ray).size()
-                ,"Wrong number of intersection points");
+                ,"Wrong number of intersection points.");
 
-        // TC12: No Geometries are intersected
+        // TC12: No Geometries are intersected.
         ray = new Ray(new Point(-1, 0, 0), new Vector(-1, -1, -1));
-        assertNull(collection.findIntersections(ray),"No intersection points");
+        assertNull(collection.findIntersections(ray),"No intersection points.");
 
-        // TC13: Only one Geometry shape is intersected
+        // TC13: Only one Geometry shape is intersected.
         ray = new Ray(new Point(2, 0, 2), new Vector(-1, -1, -1));
         assertEquals(1, collection.findIntersections(ray).size()
-                ,"Wrong number of intersection points");  // Intersects only plane
+                ,"Wrong number of intersection points.");  // Intersects only plane
 
-        // TC14: Empty Geometries collection
+        // TC14: Empty Geometries collection.
         collection = new Geometries();
         assertNull(collection.findIntersections(new Ray(new Point(-1, 0, 0),new Vector(1, 1, 0)))
-                ,"No geometry shapes in the collection");
+                ,"No geometry shapes in the collection.");
     }
 }

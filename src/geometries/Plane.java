@@ -85,8 +85,7 @@ public class Plane implements Geometry {
         }
         double t = alignZero(numerator / denominator);
         if (t > 0) {
-            //P=P0+t*V, t>0
-            Point p = ray.getP0().add(ray.getDir().scale(t));
+            Point p = ray.getPoint(t);
             return List.of(p);
         }
         else {// if the Ray is after the plane (do not intersect)

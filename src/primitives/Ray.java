@@ -44,4 +44,8 @@ public class Ray {
         Ray other = (Ray)obj;
         return this.p0.equals(other.p0) && this.dir.equals(other.dir);
     }
+
+    public Point getPoint(double t){
+        return p0.add(dir.scale(t));
+    }
 }

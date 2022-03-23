@@ -6,6 +6,8 @@ import primitives.Vector;
 
 import java.util.List;
 
+import static primitives.Util.isZero;
+
 /**
  * class that represents a tube and implements the interface Geometry
  */
@@ -39,11 +41,11 @@ public class Tube implements Geometry{
         //t=v*(p-p0)
         //O=p0+t*v
         //n = normalize(P - O)
-        double t= axisRay.getDir().dotProduct(pnt.subtract(axisRay.getP0()));
-        Point o = axisRay.getP0();
-        if (t!=0){
-            o=o.add(axisRay.getDir().scale(t));
-        }
+        Point p0 = axisRay.getP0();
+        Vector dir = axisRay.getDir();
+
+        double t= dir.dotProduct(pnt.subtract(p0));
+        Point o = isZero(t) ? p0 : p0.add(dir.scale(t));
         return (pnt.subtract(o)).normalize();
     }
 

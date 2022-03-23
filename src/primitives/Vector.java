@@ -2,23 +2,24 @@ package primitives;
 
 import static java.lang.Math.sqrt;
 
+/**
+ * Vector in our cartesian coordinate system
+ */
 public class Vector extends Point{
     /**
      * Creates a new vector
-     * @param x the x component of xyz
-     * @param y the y component of xyz
-     * @param z the z component of xyz
+     * @param x coordinate value
+     * @param y coordinate value
+     * @param z coordinate value
      */
     public Vector(double x, double y, double z) {
-        super(x,y,z);
-        if(this.xyz.equals(Double3.ZERO))
-            throw new IllegalArgumentException("Cannot implement zero vector");
+        this(new Double3(x, y, z));
     }
     /**
      * Create a new Vector
      * @param xyz the coordinate of the Vector
      */
-    public Vector(Double3 xyz) {
+    Vector(Double3 xyz) {
         super(xyz);
         if(this.xyz.equals(Double3.ZERO))
             throw new IllegalArgumentException("Cannot implement zero vector");
@@ -30,8 +31,7 @@ public class Vector extends Point{
      * @return a new combined vector
      */
     public Vector add(Vector vec) {
-     Double3 answer=this.xyz.add(vec.xyz);
-     return new Vector(answer.d1, answer.d2, answer.d3);
+     return new Vector(this.xyz.add(vec.xyz));
     }
 
     /**
@@ -40,8 +40,7 @@ public class Vector extends Point{
      * @return a new subtracted vector
      */
     public Vector subtract(Vector vec) {
-        Double3 answer=this.xyz.subtract(vec.xyz);
-        return new Vector(answer.d1, answer.d2, answer.d3);
+        return new Vector(this.xyz.subtract(vec.xyz));
     }
 
     /**
@@ -50,8 +49,7 @@ public class Vector extends Point{
      * @return a new scaled vector
      */
     public Vector scale(double factor) {
-        Double3 answer=this.xyz.scale(factor);
-        return new Vector(answer.d1, answer.d2, answer.d3);
+        return new Vector(this.xyz.scale(factor));
     }
 
 
@@ -62,8 +60,7 @@ public class Vector extends Point{
      * @return The dot product of the two vectors.
      */
     public double dotProduct(Vector other){
-        Double3 answer= this.xyz.product(other.xyz);
-        return answer.d1+answer.d2+answer.d3;
+        return (this.xyz.d1*other.xyz.d1)+(this.xyz.d2*other.xyz.d2)+(this.xyz.d3*other.xyz.d3);
     }
     /**
      * Calculates the cross product of this vector and a given vector
@@ -86,9 +83,7 @@ public class Vector extends Point{
      * @return the length of this vector squared
      */
     public double lengthSquared() {
-        //the length squared is the distance between the point that is the head of the vector
-        //to the point (0,0,0) that is the tail of the vector.
-        return this.distanceSquared(new Point(0,0,0));
+        return this.dotProduct(this);
     }
     /**
      * Calculate the length of this vector
@@ -104,9 +99,7 @@ public class Vector extends Point{
      */
     public Vector normalize(){
         //You can get a unit vector from any vector (except the zero vector) by dividing the original vector by its length.
-        double factor= this.length();
-        Vector ans=new Vector(this.xyz.d1,this.xyz.d2,this.xyz.d3);
-        return ans.scale(1/factor);
+        return this.scale(1 / this.length());
     }
     @Override
     public boolean equals(Object obj) {

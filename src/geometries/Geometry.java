@@ -7,9 +7,10 @@ import primitives.Vector;
  */
 public interface Geometry extends Intersectable{
     /**
-     * returns the normal to a point in the geometric object
-     * @param pnt point in the geometric object
-     * @return normal to the point
+     * returns the normal to the geometric body surface at a point on the geometric object's surface
+     *
+     * @param pnt point on the geometric object surface
+     * @return normal at the point
      */
     public Vector getNormal(Point pnt);
 }

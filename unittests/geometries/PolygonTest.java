@@ -4,6 +4,7 @@
 package geometries;
 
 import static org.junit.jupiter.api.Assertions.*;
+
 import org.junit.jupiter.api.Test;
 
 import geometries.*;
@@ -85,33 +86,33 @@ public class PolygonTest {
      * Test method for{@link geometries.Polygon#findIntersections(Ray)}
      */
     @Test
-    void findIntsersections(){
+    void findIntsersections() {
 
-        Polygon plg = new Polygon(new Point(-1, 1, 0), new Point(1 , 0, 0),new Point(2, -1, 0), new Point(-1, -1, 0));
+        Polygon plg = new Polygon(new Point(-1, 1, 0), new Point(1, 0, 0), new Point(2, -1, 0), new Point(-1, -1, 0));
         //============ Equivalence Partitions Tests ==============//
         //TC: The ray intersect with the Polygon's plane inside the Polygon
-        Ray ray1=new Ray(new Point(0,0,1), new Vector(-0.5,0,-1));
-        assertEquals(List.of(new Point(-0.5,0,0)), plg.findIntersections(ray1), "The ray failed to intersect with the Polygon's plane inside the triangle ");
+        Ray ray1 = new Ray(new Point(0, 0, 1), new Vector(-0.5, 0, -1));
+        assertEquals(List.of(new Point(-0.5, 0, 0)), plg.findIntersections(ray1), "The ray failed to intersect with the Polygon's plane inside the triangle ");
 
         //TC: The ray intersect with the Polygon's plane outside the Polygon in front of the Polygon's rib
-        Ray ray2=new Ray(new Point(0,0,1), new Vector(0,1,-1));
+        Ray ray2 = new Ray(new Point(0, 0, 1), new Vector(0, 1, -1));
         assertNull(plg.findIntersections(ray2), "The ray failed to intersect with the Polygon's plane outside the Polygon in front of the Polygon's rib");
 
         //TC: The ray intersect with the Polygon's plane outside the Polygon in front of the Polygon's vertex
-        Ray ray3=new Ray(new Point(0,0,1), new Vector(-2,2,-1));
+        Ray ray3 = new Ray(new Point(0, 0, 1), new Vector(-2, 2, -1));
         assertNull(plg.findIntersections(ray3), "The ray failed to intersect with the Polygon's plane outside the Polygon in front of the Polygon's vertex");
 
         //============ Boundary Tests ==============//
         //TC: The ray intersect with the Polygon's plane on the Polygon's rib
-        Ray ray4=new Ray(new Point(0,0,1), new Vector(-1,0,-1));
+        Ray ray4 = new Ray(new Point(0, 0, 1), new Vector(-1, 0, -1));
         assertNull(plg.findIntersections(ray4), "The ray failed to intersect with the Polygon's plane on the Polygon's rib");
 
         //TC: The ray intersect with the Polygon's plane on the Polygon's vertex
-        Ray ray5=new Ray(new Point(0,0,1), new Vector(1,0,-1));
+        Ray ray5 = new Ray(new Point(0, 0, 1), new Vector(1, 0, -1));
         assertNull(plg.findIntersections(ray5), "The ray failed to intersect with the Polygon's plane on the Polygon's vertex");
 
         //TC: The ray intersect with the Polygon's plane outside the Polygon on one of the Polygon's rib's vector
-        Ray ray6=new Ray(new Point(0,0,1), new Vector(-1,-2,-1));
+        Ray ray6 = new Ray(new Point(0, 0, 1), new Vector(-1, -2, -1));
         assertNull(plg.findIntersections(ray6), "The ray failed to intersect with the Polygon's plane on one of the Polygon's rib's vector");
     }
 }

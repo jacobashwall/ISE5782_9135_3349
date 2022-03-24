@@ -71,20 +71,22 @@ public class Point {
 
     /**
      * Calculates the distance between another point and this point
+     *
      * @param other the other point to calculate the distance with
      * @return the distance between the points
      */
-    public double distance(Point other){
+    public double distance(Point other) {
         return sqrt(distanceSquared(other));
     }
-        @Override
-        public boolean equals(Object obj) {
-            if (this == obj) return true;
-            if (obj == null) return false;
-            if (!(obj instanceof Point)) return false;
-            Point other = (Point)obj;
-            return this.xyz.equals(other.xyz);
-        }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (!(obj instanceof Point)) return false;
+        Point other = (Point) obj;
+        return this.xyz.equals(other.xyz);
+    }
 
     @Override
     public String toString() {
@@ -93,28 +95,28 @@ public class Point {
 
     /**
      * X getter.
+     *
      * @return the x cardinal of the given point .
      */
-    public double getX()
-    {
+    public double getX() {
         return this.xyz.d1;
     }
 
     /**
      * Y getter.
+     *
      * @return the y cardinal of the given point .
      */
-    public double getY()
-    {
+    public double getY() {
         return this.xyz.d2;
     }
 
     /**
      * Z getter.
+     *
      * @return the z cardinal of the given point .
      */
-    public double getZ()
-    {
+    public double getZ() {
         return this.xyz.d3;
     }
 }

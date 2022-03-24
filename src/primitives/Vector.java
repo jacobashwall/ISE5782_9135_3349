@@ -5,9 +5,10 @@ import static java.lang.Math.sqrt;
 /**
  * Vector in our cartesian coordinate system
  */
-public class Vector extends Point{
+public class Vector extends Point {
     /**
      * Creates a new vector
+     *
      * @param x coordinate value
      * @param y coordinate value
      * @param z coordinate value
@@ -15,27 +16,31 @@ public class Vector extends Point{
     public Vector(double x, double y, double z) {
         this(new Double3(x, y, z));
     }
+
     /**
      * Create a new Vector
+     *
      * @param xyz the coordinate of the Vector
      */
     Vector(Double3 xyz) {
         super(xyz);
-        if(this.xyz.equals(Double3.ZERO))
+        if (this.xyz.equals(Double3.ZERO))
             throw new IllegalArgumentException("Cannot implement zero vector");
     }
 
     /**
      * Adds two vectors
+     *
      * @param vec the vector that's been added
      * @return a new combined vector
      */
     public Vector add(Vector vec) {
-     return new Vector(this.xyz.add(vec.xyz));
+        return new Vector(this.xyz.add(vec.xyz));
     }
 
     /**
      * subtracts two vectors
+     *
      * @param vec vec the vector that's we subtract with
      * @return a new subtracted vector
      */
@@ -45,6 +50,7 @@ public class Vector extends Point{
 
     /**
      * Multiply a vector by a number
+     *
      * @param factor the number that we multiply with
      * @return a new scaled vector
      */
@@ -59,54 +65,61 @@ public class Vector extends Point{
      * @param other the vector to be added to this vector.
      * @return The dot product of the two vectors.
      */
-    public double dotProduct(Vector other){
-        return (this.xyz.d1*other.xyz.d1)+(this.xyz.d2*other.xyz.d2)+(this.xyz.d3*other.xyz.d3);
+    public double dotProduct(Vector other) {
+        return (this.xyz.d1 * other.xyz.d1) + (this.xyz.d2 * other.xyz.d2) + (this.xyz.d3 * other.xyz.d3);
     }
+
     /**
      * Calculates the cross product of this vector and a given vector
+     *
      * @param other the other vector that we calculate the cross product with
      * @return the cross product
      */
-    public Vector crossProduct (Vector other) {
+    public Vector crossProduct(Vector other) {
         //AXB=C
         //Cx=AyBz-AzBx
         //Cy=AzBx-AxBz
         //Cz=AxBy-AyBx
-        double x= (this.xyz.d2*other.xyz.d3)-(this.xyz.d3*other.xyz.d2);
-        double y= (this.xyz.d3*other.xyz.d1)-(this.xyz.d1*other.xyz.d3);
-        double z= (this.xyz.d1*other.xyz.d2)-(this.xyz.d2*other.xyz.d1);
-        return new Vector(x,y,z);
+        double x = (this.xyz.d2 * other.xyz.d3) - (this.xyz.d3 * other.xyz.d2);
+        double y = (this.xyz.d3 * other.xyz.d1) - (this.xyz.d1 * other.xyz.d3);
+        double z = (this.xyz.d1 * other.xyz.d2) - (this.xyz.d2 * other.xyz.d1);
+        return new Vector(x, y, z);
     }
 
     /**
      * Calculate the length of this vector squared
+     *
      * @return the length of this vector squared
      */
     public double lengthSquared() {
         return this.dotProduct(this);
     }
+
     /**
      * Calculate the length of this vector
+     *
      * @return the length of this vector
      */
-    public double length(){
+    public double length() {
         return sqrt(this.lengthSquared());
     }
 
     /**
      * Calculates a normalized vector of this vector
+     *
      * @return a new normalized vector
      */
-    public Vector normalize(){
+    public Vector normalize() {
         //You can get a unit vector from any vector (except the zero vector) by dividing the original vector by its length.
         return this.scale(1 / this.length());
     }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj == null) return false;
         if (!(obj instanceof Vector)) return false;
-        Vector other = (Vector)obj;
+        Vector other = (Vector) obj;
         return super.equals(other);
     }
 

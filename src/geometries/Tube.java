@@ -11,15 +11,16 @@ import static primitives.Util.isZero;
 /**
  * Class that represents a tube and implements the interface Geometry
  */
-public class Tube implements Geometry{
+public class Tube implements Geometry {
     //Fields
     protected final Ray axisRay;
     protected final double radius;
 
     /**
      * Ctor that gets a vector for the axis ray of the tube and double for the radius
+     *
      * @param axisRay Direction of the tube
-     * @param radius Radius of the tube
+     * @param radius  Radius of the tube
      */
     public Tube(Ray axisRay, double radius) {
         this.axisRay = axisRay;
@@ -28,6 +29,7 @@ public class Tube implements Geometry{
 
     /**
      * axisRay getter
+     *
      * @return axisRay of the tube
      */
     public Ray getAxisRay() {
@@ -36,6 +38,7 @@ public class Tube implements Geometry{
 
     /**
      * radius getter
+     *
      * @return radius of the tube
      */
     public double getRadius() {
@@ -58,13 +61,14 @@ public class Tube implements Geometry{
         Point p0 = axisRay.getP0();
         Vector dir = axisRay.getDir();
 
-        double t= dir.dotProduct(pnt.subtract(p0));
+        double t = dir.dotProduct(pnt.subtract(p0));
         Point o = isZero(t) ? p0 : axisRay.getPoint(t);
         return (pnt.subtract(o)).normalize();
     }
 
     @Override
-    public List<Point> findIntersections(Ray ray){
+    public List<Point> findIntersections(Ray ray) {
 
-        return null;}
+        return null;
+    }
 }

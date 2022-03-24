@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import primitives.*;
+
 import static primitives.Util.*;
 
 /**
@@ -53,7 +54,7 @@ public class Polygon implements Geometry {
         // The plane holds the invariant normal (orthogonal unit) vector to the polygon
         plane = new Plane(vertices[0], vertices[1], vertices[2]);
         if (vertices.length == 3) {
-            size=3;//note! change done by me or else implementation of a triangle as a polygon is flawed
+            size = 3;//note! change done by me or else implementation of a triangle as a polygon is flawed
             return; // no need for more tests for a Triangle
         }
 
@@ -95,41 +96,41 @@ public class Polygon implements Geometry {
     @Override
     public List<Point> findIntersections(Ray ray) {
 
-        if(this.plane.findIntersections(ray) == null)//checks if there is an intersection with the plane of the polygon
+        if (this.plane.findIntersections(ray) == null)//checks if there is an intersection with the plane of the polygon
             return null;
         //we will check if the point is inside or outside the polygon
-        Point p0=ray.getP0();
-        Vector v=ray.getDir();
+        Point p0 = ray.getP0();
+        Vector v = ray.getDir();
         //V(i)= vertices[i]-p0
         List<Vector> listVi = new ArrayList<>(size);
-        for(int i=0;i<size;i++) {
+        for (int i = 0; i < size; i++) {
             listVi.add(this.vertices.get(i).subtract(p0));
         }
         //N(i)= Normalize(V(i)*V(i+1))
         List<Vector> listNi = new ArrayList<>(size);
-        int i=0;
-        for(;i<size-1;i++) {
-            listNi.add(listVi.get(i).crossProduct(listVi.get(i+1).normalize()));
+        int i = 0;
+        for (; i < size - 1; i++) {
+            listNi.add(listVi.get(i).crossProduct(listVi.get(i + 1).normalize()));
         }
         listNi.add((listVi.get(i).crossProduct(listVi.get(0))).normalize());//cross product the last and the first vectors
         //Sign(i)= v*N(i)
-        double sign=v.dotProduct(listNi.get(0));
-        int counter=1;
-        while (sign>0)//all signs must be positive from now on in order the point to be inside the polygon
+        double sign = v.dotProduct(listNi.get(0));
+        int counter = 1;
+        while (sign > 0)//all signs must be positive from now on in order the point to be inside the polygon
         {
-            if (counter==size)//all signs are positive
+            if (counter == size)//all signs are positive
                 return this.plane.findIntersections(ray);
-            sign=v.dotProduct(listNi.get(counter));
-            if (!(sign>0))//if the sign is not positive
+            sign = v.dotProduct(listNi.get(counter));
+            if (!(sign > 0))//if the sign is not positive
                 return null;//not all signs are positive therefore no intersection
             counter++;
         }
-        while (sign<0)//all signs must be negative from now on in order the point to be inside the polygon
+        while (sign < 0)//all signs must be negative from now on in order the point to be inside the polygon
         {
-            if (counter==size)//all signs are negative
+            if (counter == size)//all signs are negative
                 return this.plane.findIntersections(ray);
-            sign=v.dotProduct(listNi.get(counter));
-            if (!(sign<0))//if the sign is not negative
+            sign = v.dotProduct(listNi.get(counter));
+            if (!(sign < 0))//if the sign is not negative
                 return null;//not all signs are negative therefore no intersection
             counter++;
         }

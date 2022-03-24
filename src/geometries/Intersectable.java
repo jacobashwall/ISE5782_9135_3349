@@ -11,6 +11,7 @@ import java.util.List;
 public interface Intersectable {
     /**
      * Finds all intersection points of a ray and a geometric entity.
+     *
      * @param ray the ray that intersect with the geometric entity.
      * @return list of intersection points.
      */

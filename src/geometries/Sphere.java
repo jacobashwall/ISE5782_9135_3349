@@ -64,7 +64,7 @@ public class Sphere implements Geometry {
     public List<Point> findIntersections(Ray ray) {
 
         // In case the center coincide with the head of the ray
-        if(ray.getP0().equals(this.center)){
+        if (ray.getP0().equals(this.center)) {
             return List.of(ray.getPoint(this.radius));
         }
 
@@ -75,36 +75,36 @@ public class Sphere implements Geometry {
         // so all we have to do is to add and subtract the distance to the intersection points
         Vector vec = this.getCenter().subtract(ray.getP0());
         double tm = Util.alignZero(vec.dotProduct(ray.getDir()));
-        double d = sqrt(vec.lengthSquared()-tm*tm);
-        double th = sqrt(this.radius*this.radius-d*d);
-        double t1 = Util.alignZero(tm-th);
-        double t2 = Util.alignZero(tm+th);
+        double d = sqrt(vec.lengthSquared() - tm * tm);
+        double th = sqrt(this.radius * this.radius - d * d);
+        double t1 = Util.alignZero(tm - th);
+        double t2 = Util.alignZero(tm + th);
 
 
         // If the ray is tangent to the sphere return null
-        if(Util.isZero(d-this.radius)){
+        if (Util.isZero(d - this.radius)) {
             return null;
         }
         // The ray doesn't intersect the sphere at all
-        else{
-            if(d>this.radius){
+        else {
+            if (d > this.radius) {
                 return null;
             }
         }
 
 
         // If both t1 and t2 are bigger than 0 then there are two intersections
-        if(t1 > 0 && t2 >0){
-            return List.of(ray.getPoint(t1),ray.getPoint(t2));
+        if (t1 > 0 && t2 > 0) {
+            return List.of(ray.getPoint(t1), ray.getPoint(t2));
         }
 
         // If only one is greater than 0 then the ray intersects the sphere only once
 
-        if(t1 <= 0 && t2 >0){
+        if (t1 <= 0 && t2 > 0) {
             return List.of(ray.getPoint(t2));
         }
 
-        if(t1 > 0 && t2 <= 0){
+        if (t1 > 0 && t2 <= 0) {
             return List.of(ray.getPoint(t1));
         }
 

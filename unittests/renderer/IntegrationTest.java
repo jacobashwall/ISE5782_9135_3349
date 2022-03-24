@@ -47,7 +47,7 @@ class IntegrationTest {
                 count += ((intersections == null) ? 0 : intersections.size());
             }
         }
-        assertEquals(expected, count, "Wrong amount of intersections with "+geo.getClass()+": "+ test);
+        assertEquals(expected, count, "Wrong amount of intersections with " + geo.getClass() + ": " + test);
     }
 
     @Test

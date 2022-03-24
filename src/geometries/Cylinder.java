@@ -5,11 +5,11 @@ import primitives.*;
 import static primitives.Util.isZero;
 
 /**
- * a class that extends tube and represents a cylinder
+ * Class that extends tube and represents a cylinder
  */
 public class Cylinder extends Tube {
     //height of cylinder
-    private double height;
+    private final double height;
 
     /**
      * ctor of parameters

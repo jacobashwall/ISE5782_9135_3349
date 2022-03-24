@@ -70,12 +70,12 @@ class VectorTest {
         //acute angle
         Vector vec1 = new Vector(1, 2, 3);
         Vector vec2 = new Vector(2, 3, 4);
-        //TC: Test that vector dotProduct is proper. We should get a positive number.
-        assertEquals(vec1.dotProduct(vec2),20,"There is a problem with dotProduct method - acute angle");
+        //TC1: Test that vector dotProduct is proper. We should get a positive number.
+        assertEquals(vec1.dotProduct(vec2),20,"TC1: There is a problem with dotProduct method - acute angle");
         //obtuse angle
         Vector vec3 = new Vector(-1, -2, -5);
         //TC: Test that vector dotProduct is proper. We should get a positive number.
-        assertEquals(vec1.dotProduct(vec3),-20,"There is a problem with dotProduct method - obtuse angle");
+        assertEquals(vec1.dotProduct(vec3),-20,"TC2: There is a problem with dotProduct method - obtuse angle");
 
     }
 
@@ -88,19 +88,19 @@ class VectorTest {
         Vector vec1 = new Vector(1, 2, 3);
         Vector vec2 = new Vector(2, 3, 4);
         Vector vec3 = new Vector(-1,2,-1);
-        //TC: Test that vector crossProduct is proper. We should get a new vector multiplied by the double parameter.
-        assertEquals(vec1.crossProduct(vec2),vec3,"There is a problem with crossProduct method");
-        //TC:Test that the crossProduct produces an orthogonal vector.
-        assertTrue(vec1.dotProduct(vec3) == 0 &&vec2.dotProduct(vec3) == 0,"Cross product failed to give orthogonal vector.");
+        //TC1: Test that vector crossProduct is proper. We should get a new vector multiplied by the double parameter.
+        assertEquals(vec1.crossProduct(vec2),vec3,"TC1: There is a problem with crossProduct method");
+        //TC2:Test that the crossProduct produces an orthogonal vector.
+        assertTrue(vec1.dotProduct(vec3) == 0 &&vec2.dotProduct(vec3) == 0,"TC2: Cross product failed to give orthogonal vector.");
 
         //============ Boundary Tests ==============//
         //TC: Test that exception is thrown for cross product of parallel vectors.
         Vector vec4 = new Vector(2,4,6);
-        assertThrows(IllegalArgumentException.class, () -> vec1.crossProduct(vec4),"Cross Product for parallel vectors does not throw an exception");
+        assertThrows(IllegalArgumentException.class, () -> vec1.crossProduct(vec4),"TC4: Cross Product for parallel vectors does not throw an exception");
 
         //TC: Test that exception is thrown for cross product of opposite vectors.
         Vector vec5 = new Vector(-2,-4,-6);
-        assertThrows(IllegalArgumentException.class, () -> vec1.crossProduct(vec4),"Cross Product for opposite vectors does not throw an exception");
+        assertThrows(IllegalArgumentException.class, () -> vec1.crossProduct(vec4),"TC5: Cross Product for opposite vectors does not throw an exception");
 
     }
 
@@ -111,8 +111,8 @@ class VectorTest {
     void lengthSquared() {
         //============ Equivalence Partitions Tests ==============//
         Vector vec1 = new Vector(-1, 2, -3);
-        //TC: Test that checks the calculation
-        assertTrue(Util.isZero(vec1.lengthSquared()-14),"lengthSquared doesn't work properly");
+        //TC1: Test that checks the calculation
+        assertEquals(vec1.lengthSquared(),14,0.000001,"TC1: lengthSquared doesn't work properly");
     }
 
     /**
@@ -122,8 +122,8 @@ class VectorTest {
     void length() {
         //============ Equivalence Partitions Tests ==============//
         Vector vec1 = new Vector(-1, 2, -3);
-        //TC: Test that checks the calculation
-        assertTrue(Util.isZero(vec1.lengthSquared()-14),"lengthSquared doesn't work properly");
+        //TC1: Test that checks the calculation
+        assertEquals(vec1.length(),sqrt(14),0.000001,"TC1: length doesn't work properly");
     }
 
     /**
@@ -133,7 +133,7 @@ class VectorTest {
     void normalize() {
         //============ Equivalence Partitions Tests ==============//
         Vector vec = new Vector(1, 1, 1);
-        //TC: Test that checks the calculation
-        assertEquals(vec.normalize(),vec.scale(1/sqrt(3)),"normalize doesn't work properly");
+        //TC1: Test that checks the calculation
+        assertEquals(vec.normalize(),vec.scale(1/sqrt(3)),"TC1: normalize doesn't work properly");
     }
 }

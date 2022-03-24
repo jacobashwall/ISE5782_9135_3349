@@ -3,7 +3,7 @@ import primitives.Point;
 import primitives.Vector;
 
 /**
- * interface which all the geometries implement
+ * Interface which all the geometries implement
  */
 public interface Geometry extends Intersectable{
     /**

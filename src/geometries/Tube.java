@@ -9,21 +9,35 @@ import java.util.List;
 import static primitives.Util.isZero;
 
 /**
- * class that represents a tube and implements the interface Geometry
+ * Class that represents a tube and implements the interface Geometry
  */
 public class Tube implements Geometry{
-    protected Ray axisRay;
-    protected double radius;
+    //Fields
+    protected final Ray axisRay;
+    protected final double radius;
 
+    /**
+     * Ctor that gets a vector for the axis ray of the tube and double for the radius
+     * @param axisRay Direction of the tube
+     * @param radius Radius of the tube
+     */
     public Tube(Ray axisRay, double radius) {
         this.axisRay = axisRay;
         this.radius = radius;
     }
 
+    /**
+     * axisRay getter
+     * @return axisRay of the tube
+     */
     public Ray getAxisRay() {
-        return new Ray(axisRay.getP0(),axisRay.getDir());
+        return axisRay;
     }
 
+    /**
+     * radius getter
+     * @return radius of the tube
+     */
     public double getRadius() {
         return radius;
     }
@@ -50,5 +64,7 @@ public class Tube implements Geometry{
     }
 
     @Override
-    public List<Point> findIntersections(Ray ray){return null;}
+    public List<Point> findIntersections(Ray ray){
+
+        return null;}
 }

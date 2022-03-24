@@ -1,22 +1,25 @@
 package geometries;
+
 import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
+
 import java.util.List;
 
 import static primitives.Util.*;
 
 /**
- * class that represents a plane and implements the interface Geometry
+ * Class that represents a plane and implements the interface Geometry
  */
 public class Plane implements Geometry {
     //private fields
-    private Point q0;
-    private Vector normal;
+    private final Point q0;
+    private final Vector normal;
 
     /**
      * ctor of parameters
-     * @param q0 representing point of the plane
+     *
+     * @param q0     representing point of the plane
      * @param normal normal to the plane
      */
     public Plane(Point q0, Vector normal) {
@@ -26,17 +29,18 @@ public class Plane implements Geometry {
 
     /**
      * ctor that build a plane out of three points
+     *
      * @param x point x
      * @param y point u
      * @param z point z
      */
-    public Plane(Point x, Point y, Point z){
+    public Plane(Point x, Point y, Point z) {
         q0 = x;
         //v1 = P2 - P1
         //v2 = P3 - P1
         //normal = normalize( v1 x v2 )
-        Vector v1 =y.subtract(x);
-        Vector v2 =z.subtract(x);
+        Vector v1 = y.subtract(x);
+        Vector v2 = z.subtract(x);
         normal = (v1.crossProduct(v2)).normalize();
     }
 
@@ -51,6 +55,7 @@ public class Plane implements Geometry {
 
     /**
      * q0 getter
+     *
      * @return private field q0
      */
     public Point getQ0() {
@@ -59,6 +64,7 @@ public class Plane implements Geometry {
 
     /**
      * normal field getter
+     *
      * @return private field normal
      */
     public Vector getNormal() {
@@ -72,7 +78,7 @@ public class Plane implements Geometry {
 
     @Override
     public List<Point> findIntersections(Ray ray) {
-        if(ray.getP0().equals(this.q0)) { // the ray starts at the plane's reference point
+        if (ray.getP0().equals(this.q0)) { // the ray starts at the plane's reference point
             return null;
         }
         double numerator = this.normal.dotProduct(q0.subtract(ray.getP0()));
@@ -80,15 +86,14 @@ public class Plane implements Geometry {
             return null;
         }
         double denominator = this.normal.dotProduct(ray.getDir());
-        if(isZero(denominator)){ // ray parallel to the plane- the ray direction orthogonal to the normal
+        if (isZero(denominator)) { // ray parallel to the plane- the ray direction orthogonal to the normal
             return null;
         }
         double t = alignZero(numerator / denominator);
         if (t > 0) {
             Point p = ray.getPoint(t);
             return List.of(p);
-        }
-        else {// if the Ray is after the plane (do not intersect)
+        } else {// if the Ray is after the plane (do not intersect)
             return null;
         }
     }

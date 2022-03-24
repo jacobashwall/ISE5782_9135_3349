@@ -37,6 +37,13 @@ class CylinderTest {
         //BVA2: Second base
         assertTrue((new Vector(1,0,0).equals(cyln.getNormal(new Point(10,0,1)))||new Vector(-1,0,0).equals(cyln.getNormal(new Point(10,0,1)))),"getNormal is not working - BVA2: Second base");
 
+        //BVA3: First base
+        assertTrue((new Vector(1,0,0).equals(cyln.getNormal(new Point(0,0,2)))||new Vector(-1,0,0).equals(cyln.getNormal(new Point(0,0,2)))),"getNormal is not working - BVA3: First base");
+
+        //BVA4: Second base
+        assertTrue((new Vector(1,0,0).equals(cyln.getNormal(new Point(10,0,2)))||new Vector(-1,0,0).equals(cyln.getNormal(new Point(10,0,2)))),"getNormal is not working - BVA4: Second base");
+
+
     }
 
 }

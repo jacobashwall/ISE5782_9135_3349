@@ -6,6 +6,9 @@ import primitives.Vector;
 
 import java.util.List;
 
+/**
+ * Class that represents a triangle and extends the class polygon
+ */
 public class Triangle extends Polygon{
     public Triangle(Point... vertices) {
         super(vertices);

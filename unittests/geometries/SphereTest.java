@@ -45,7 +45,6 @@ class SphereTest {
         assertEquals(List.of(pnt1), sphere.findIntersections(new Ray(new Point(1.5, 0.5, 0), new Vector(-1, 0, 0))), "EP3: Wrong intersection");
 
         //EP4: Ray starts after the sphere
-
         assertNull(sphere.findIntersections(new Ray(new Point(3, 0.5, 0), new Vector(1, 0, 0))),"EP4: Ray starts after the sphere");
 
         //============ Boundary Tests ==============//
@@ -95,6 +94,8 @@ class SphereTest {
 
         //BVA13: Ray's line is outside, ray is orthogonal to ray start to sphere's center line
         assertNull(sphere.findIntersections(new Ray(new Point(0,1,0), new Vector(0, 1, 0))),"BVA13: Ray's line is outside, ray is orthogonal to ray start to sphere's center line");
+
+
 
     }
 }

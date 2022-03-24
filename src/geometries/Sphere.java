@@ -14,11 +14,11 @@ import static java.lang.Math.*;
  */
 public class Sphere implements Geometry {
     //private fields
-    private Point center;
-    private double radius;
+    private final Point center;
+    private final double radius;
 
     /**
-     * parameter ctor
+     * Ctor that get a point for the center of the sphere and double for the radius
      *
      * @param center center of the circle
      * @param radius radius of the circle
@@ -63,105 +63,53 @@ public class Sphere implements Geometry {
     @Override
     public List<Point> findIntersections(Ray ray) {
 
-        //Head of the ray and center of the circle coincide
-        if (ray.getP0().equals(this.getCenter())) {
-            return List.of(ray.getPoint(this.getRadius()));
+        // In case the center coincide with the head of the ray
+        if(ray.getP0().equals(this.center)){
+            return List.of(ray.getPoint(this.radius));
         }
 
-        //Head of the ray is inside or on the sphere and goes through the center
-        boolean b1 = ray.getP0().subtract(this.getCenter()).length() < this.getRadius() && ray.getDir().equals(this.getCenter().subtract(ray.getP0()).normalize());
-        boolean b2 = ray.getP0().subtract(this.getCenter()).length() < this.getRadius() && ray.getDir().equals(this.getCenter().subtract(ray.getP0()).normalize().scale(-1));
-        if (b1 || b2) {
-            double t = getCenter().subtract(ray.getP0()).length();
-            if (b1) {
-                return List.of(ray.getPoint(t + this.getRadius()));
-            } else {
-                return List.of(ray.getPoint(-t + this.getRadius()));
-            }
+        // Here we calculate the projection of the vector formed by the center of the
+        // circle and the head of the ray. Then we calculate the distance between then center
+        // and the projection and the distance between the projection to the intersections points.
+        //The idea is that the projection is the middle of the two intersection points
+        // so all we have to do is to add and subtract the distance to the intersection points
+        Vector vec = this.getCenter().subtract(ray.getP0());
+        double tm = Util.alignZero(vec.dotProduct(ray.getDir()));
+        double d = sqrt(vec.lengthSquared()-tm*tm);
+        double th = sqrt(this.radius*this.radius-d*d);
+        double t1 = Util.alignZero(tm-th);
+        double t2 = Util.alignZero(tm+th);
 
+
+        // If the ray is tangent to the sphere return null
+        if(Util.isZero(d-this.radius)){
+            return null;
         }
-
-
-        //Head of the ray is outside the sphere and goes through the center
-        boolean b3 = ray.getP0().subtract(this.getCenter()).length() > this.getRadius() && ray.getDir().equals(this.getCenter().subtract(ray.getP0()).normalize());
-        boolean b4 = ray.getP0().subtract(this.getCenter()).length() > this.getRadius() && ray.getDir().equals(this.getCenter().subtract(ray.getP0()).normalize().scale(-1));
-        double t = getCenter().subtract(ray.getP0()).length();
-        if (b3 || b4) {
-            if (b3) {
-                return List.of(ray.getPoint(t - this.getRadius()), ray.getPoint(t + this.getRadius()));
-            } else {
-                return null;
-            }
-
-        }
-
-        //Head of the ray is outside the sphere and goes through the center
-        boolean b5 = Util.isZero(ray.getP0().subtract(this.getCenter()).length() - this.getRadius()) && ray.getDir().equals(this.getCenter().subtract(ray.getP0()).normalize());
-        if (b5) {
-            return List.of(ray.getPoint(2 * this.getRadius()));
-        }
-
-        //Head of the ray is outside the sphere and the ray doesn't intersect the sphere
-        if (ray.getP0().subtract(this.getCenter()).length() > this.getRadius()) {
-            double projection = ray.getDir().dotProduct(this.getCenter().subtract(ray.getP0()));
-            Point shortest = ray.getPoint(abs(projection));
-            //The ray is tangent to the sphere
-            if (Util.isZero(shortest.subtract(this.getCenter()).length() - this.getRadius())) {
-                return null;
-            }
-            //All the ray is outside the sphere
-            else if (shortest.subtract(this.getCenter()).length() > this.getRadius()) {
+        // The ray doesn't intersect the sphere at all
+        else{
+            if(d>this.radius){
                 return null;
             }
         }
 
-        //Head of the ray is on the sphere
-        if (Util.isZero(ray.getP0().subtract(this.getCenter()).length() - this.getRadius())) {
-            Vector onSphereVec = this.getCenter().subtract(ray.getP0());
-            //Ray is tangent to the sphere
-            if (Util.isZero(ray.getDir().dotProduct(onSphereVec))) {
-                return null;
-            }
-            //Ray goes outside the sphere
-            else if (ray.getDir().dotProduct(onSphereVec) < 0) {
-                return null;
-            }
-            //Ray goes inside the sphere
-            else if (ray.getDir().dotProduct(onSphereVec) > 0) {
-                return List.of(ray.getP0().add(ray.getDir().scale(2 * onSphereVec.dotProduct(ray.getDir()))));
-            }
+
+        // If both t1 and t2 are bigger than 0 then there are two intersections
+        if(t1 > 0 && t2 >0){
+            return List.of(ray.getPoint(t1),ray.getPoint(t2));
         }
 
+        // If only one is greater than 0 then the ray intersects the sphere only once
 
-        //Head of the ray is inside the sphere and doesn't go through the center
-        if (ray.getP0().subtract(this.getCenter()).length() < this.getRadius()) {
-            Vector inSphereVec = this.getCenter().subtract(ray.getP0());
-            double x = inSphereVec.dotProduct(ray.getDir());
-            double y = inSphereVec.length();
-            double z = sqrt(y * y - x * x);
-            double d = sqrt(this.getRadius() * this.getRadius() - z * z);
-            if (Util.isZero(ray.getDir().dotProduct(inSphereVec))) {
-                return List.of(ray.getPoint(d));
-            } else if (ray.getDir().dotProduct(inSphereVec) < 0) {
-                return List.of(ray.getPoint(d - abs(x)));
-            } else if (ray.getDir().dotProduct(inSphereVec) > 0) {
-                return List.of(ray.getPoint(d + abs(x)));
-            }
-
+        if(t1 <= 0 && t2 >0){
+            return List.of(ray.getPoint(t2));
         }
 
-        //Head of the ray is outside the sphere and the ray goes inside the sphere
-        if (ray.getP0().subtract(this.getCenter()).length() > this.getRadius()) {
-            Vector outTheSphere = this.getCenter().subtract(ray.getP0());
-            double projection = ray.getDir().dotProduct(outTheSphere);
-            double dtemp = sqrt(outTheSphere.lengthSquared() - (projection * projection));
-            double d2 = sqrt((this.getRadius() * this.getRadius()) - (dtemp * dtemp));
-            if (Util.isZero(dtemp - this.getRadius())) {
-                return null;
-            } else {
-                return List.of(ray.getPoint(projection - d2), ray.getPoint(projection + d2));
-            }
+        if(t1 > 0 && t2 <= 0){
+            return List.of(ray.getPoint(t1));
         }
+
+        //return null for all the other cases
         return null;
+
     }
 }

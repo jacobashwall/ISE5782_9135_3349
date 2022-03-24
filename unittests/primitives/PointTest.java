@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Unit tests for primitives.Point class
- * @author Yonatan Dahary
+ *
  */
 class PointTest {
 

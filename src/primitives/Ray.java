@@ -1,8 +1,11 @@
 package primitives;
 
+/**
+ * A ray in the cartesian system
+ */
 public class Ray {
-   private Point p0;
-   private Vector dir;
+   private final Point p0;
+   private final Vector dir;
 
     /**
      * Creates a new Ray
@@ -19,7 +22,7 @@ public class Ray {
      * @return the starting point of the ray
      */
     public Point getP0() {
-        return new Point(p0.getX(),p0.getY(), p0.getZ());
+        return this.p0;
     }
 
     /**
@@ -27,7 +30,7 @@ public class Ray {
      * @return the direction of the Ray
      */
     public Vector getDir() {
-        return new Vector(dir.getX(),dir.getY(), dir.getZ());
+        return this.dir;
     }
 
     @Override

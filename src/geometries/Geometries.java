@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Class the represents a group of geometric entities
+ */
 public class Geometries implements Intersectable{
     private List<Intersectable> objects;
 

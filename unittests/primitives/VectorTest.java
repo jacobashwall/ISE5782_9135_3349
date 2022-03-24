@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Unit tests for primitives.Vector class
  *
- * @author Yonatan Dahary
+ *
  */
 class VectorTest {
     /**

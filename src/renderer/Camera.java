@@ -23,7 +23,7 @@ public class Camera {
      * @param vUp camera upward vector
      * @param vTo camera front vector
      */
-    public Camera(Point p0, Vector vUp, Vector vTo) {
+    public Camera(Point p0, Vector vTo, Vector vUp) {
         this.p0 = p0;
         //check if vUp and Vto are orthogonal.
         if (vUp.dotProduct(vTo) != 0) //if not, throw.
@@ -127,10 +127,20 @@ public class Camera {
      * @param nY
      * @param j
      * @param i
-     * @return
+     * @return Ray that goes through the requested pixel in the view plane
      */
     public Ray constructRay(int nX, int nY, int j, int i) {
-        return null;
+        Point pIJ = p0.add(vTo.scale(distance));
+        double Ry = height/nY;
+        double Rx = width/nX;
+        double yI = -(i-((double)(nY-1))/2)*Ry;
+        double xJ = -(j-((double)(nX-1))/2)*Rx;
+
+        if(xJ!=0) {pIJ = pIJ.add(vRight.scale(xJ));}
+        if(yI!=0) {pIJ = pIJ.add(vUp.scale(yI));}
+
+        return new Ray(p0,pIJ.subtract(p0).normalize());
+
     }
 
     ;

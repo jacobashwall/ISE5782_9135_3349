@@ -11,7 +11,7 @@ class GeometriesTest {
      * Test method for {@link geometries.Geometries#findIntersections(Ray)}
      */
     @Test
-    public void TestFindIntsersections() {
+    public void TestFindIntersections() {
         Sphere sph = new Sphere(new Point(1, 1, 1), 1);
         Plane plane = new Plane(new Point(1, 0, 0), new Point(0, 1, 0), new Point(0, 0, 2));
         Triangle tr = new Triangle(new Point(1, 0, 0), new Point(0, 1, 0), new Point(0, 0, 1));

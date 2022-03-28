@@ -2,6 +2,7 @@ package renderer;
 
 import geometries.Intersectable;
 import geometries.Plane;
+import geometries.Sphere;
 import geometries.Triangle;
 import org.junit.jupiter.api.Test;
 import primitives.Point;
@@ -53,7 +54,7 @@ class IntegrationTest {
     @Test
     public void cameraRayTriangleIntegration() {
         // most of the values are taken from the slides
-        Camera cam = new Camera(Point.ZERO, new Vector(0, 0, -1), new Vector(0, -1, 0));
+        Camera cam = new Camera(Point.ZERO, new Vector(0, 0, -1), new Vector(0, 1, 0));
 
         // TC01: Small triangle in front of the view plane, 1 point of intersection.
         assertCountIntersections(cam, new Triangle(new Point(1, 1, -2), new Point(-1, 1, -2), new Point(0, -1, -2)), 1, "TC01");
@@ -65,7 +66,7 @@ class IntegrationTest {
     @Test
     public void cameraRayPlaneIntegration() {
         // most of the values are taken from the slides
-        Camera cam = new Camera(Point.ZERO, new Vector(0, 0, -1), new Vector(0, -1, 0));
+        Camera cam = new Camera(Point.ZERO, new Vector(0, 0, -1), new Vector(0, 1, 0));
 
         // TC01: Plane against the camera, parallel to the view plane, 9 points of intersection.
         assertCountIntersections(cam, new Plane(new Point(0, 0, -5), new Vector(0, 0, 1)), 9, "TC01");
@@ -79,5 +80,30 @@ class IntegrationTest {
         // TC04: Plane beyond the view plane, 0 points of intersection.
         assertCountIntersections(cam, new Plane(new Point(0, 0, -5), new Vector(0, 1, 1)), 6, "TC04");
     }
+
+    @Test
+    public void cameraRaySphereIntegration() {
+        // most of the values are taken from the slides
+        Camera cam = new Camera(Point.ZERO, new Vector(0, 0, -1), new Vector(0, 1, 0));
+        Camera cam2 = new Camera(new Point(0,0,0.5), new Vector(0, 0, -1), new Vector(0, 1, 0));
+
+        // TC01: Sphere in front of the camera.
+        assertCountIntersections(cam, new Sphere(new Point(0, 0, -3), 1), 2, "TC01");
+
+        // TC02: Sphere intersects the view plane before the camera
+        assertCountIntersections(cam2, new Sphere(new Point(0, 0, -2.5), 2.5), 18, "TC02");
+
+        // TC03: Sphere intersects the view plane before the camera.
+        assertCountIntersections(cam2, new Sphere(new Point(0, 0, -2),2), 10, "TC03");
+
+        // TC04: Sphere contains the view plane and the camera
+        assertCountIntersections(cam, new Sphere(new Point(0,0,-1),2), 9, "TC04");
+
+        // TC05: Sphere behind the camera
+        assertCountIntersections(cam, new Sphere(new Point(0, 0, 1), 0.5), 0, "TC05");
+
+    }
+
+
 
 }

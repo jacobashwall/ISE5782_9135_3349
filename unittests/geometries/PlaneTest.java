@@ -14,6 +14,9 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class PlaneTest {
 
+    /**
+     * test for the constructor
+     */
     void Plane() {
         Point pnt1 = new Point(0, 0, 0);
         Point pnt2 = new Point(1, 0, 0);

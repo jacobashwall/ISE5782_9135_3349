@@ -9,8 +9,10 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class
-PlaneTest {
+/**
+ * Testing planes
+ */
+class PlaneTest {
 
     void Plane() {
         Point pnt1 = new Point(0, 0, 0);

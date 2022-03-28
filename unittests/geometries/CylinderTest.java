@@ -5,6 +5,9 @@ import primitives.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Testing cylinders
+ */
 class CylinderTest {
 
     /**

@@ -133,7 +133,7 @@ public class Vector extends Point {
      *
      * @param axis The axis of rotation.
      * @param theta the angle of rotation in degrees
-     * @return A new vector.
+     * @return A rotated new vector.
      */
     public Vector rotateVector(Vector axis, double theta) {
         double x = getX();

@@ -127,4 +127,29 @@ public class Vector extends Point {
     public String toString() {
         return super.toString();
     }
+
+    /**
+     * Given a vector and an angle, rotate the vector about the given axis by the given angle
+     *
+     * @param axis The axis of rotation.
+     * @param theta the angle of rotation in degrees
+     * @return A new vector.
+     */
+    public Vector rotateVector(Vector axis, double theta) {
+        double x = getX();
+        double y = getY();
+        double z = getZ();
+        double u = axis.getX();
+        double v = axis.getY();
+        double w = axis.getZ();
+        double v1 = u * x + v * y + w * z;
+        double thetaRad = Math.toRadians(theta);
+        double thetaCos = Math.cos(thetaRad);
+        double thetaSin = Math.sin(thetaRad);
+        double xPrime = u * v1 * (1d - thetaCos) + x * thetaCos + (-w * y + v * z) * thetaSin;
+        double yPrime = v * v1 * (1d - thetaCos) + y * thetaCos + (w * x - u * z) * thetaSin;
+        double zPrime = w * v1 * (1d - thetaCos) + z * thetaCos + (-v * x + u * y) * thetaSin;
+
+        return new Vector(xPrime, yPrime, zPrime);
+    }
 }

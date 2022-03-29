@@ -131,17 +131,52 @@ public class Camera {
      */
     public Ray constructRay(int nX, int nY, int j, int i) {
         Point pIJ = p0.add(vTo.scale(distance));
-        double Ry = height/nY;
-        double Rx = width/nX;
-        double yI = -(i-((double)(nY-1))/2)*Ry;
-        double xJ = -(j-((double)(nX-1))/2)*Rx;
+        double Ry = height / nY;
+        double Rx = width / nX;
+        double yI = -(i - ((double) (nY - 1)) / 2) * Ry;
+        double xJ = -(j - ((double) (nX - 1)) / 2) * Rx;
 
-        if(xJ!=0) {pIJ = pIJ.add(vRight.scale(xJ));}
-        if(yI!=0) {pIJ = pIJ.add(vUp.scale(yI));}
+        if (xJ != 0) {
+            pIJ = pIJ.add(vRight.scale(xJ));
+        }
+        if (yI != 0) {
+            pIJ = pIJ.add(vUp.scale(yI));
+        }
 
-        return new Ray(p0,pIJ.subtract(p0).normalize());
+        return new Ray(p0, pIJ.subtract(p0).normalize());
 
     }
 
-    ;
+
+    /**
+     * Given a vector axis and a double theta, rotate the camera's up, right, and to vectors by theta radians about axis
+     *
+     * @param axis the axis about which the camera will be rotated
+     * @param theta the angle of rotation in radians
+     * @return the rotated camera.
+     */
+    public Camera turnCamera(Vector axis, double theta) {
+        if (theta == 0) return this; //there is nothing to turn
+        this.vUp = this.vUp.rotateVector(axis, theta);
+        this.vRight = this.vRight.rotateVector(axis, theta);
+        this.vTo = this.vTo.rotateVector(axis, theta);
+        return this;
+    }
+
+
+    /**
+     * Move the camera by the given amounts
+     *
+     * @param up the distance to move the camera up
+     * @param right the distance to move right
+     * @param to the distance to move the camera in the direction of the to vector
+     * @return the moved camera.
+     */
+    public Camera moveCamera(double up, double right, double to) {
+        if (up == 0 && right == 0 && to == 0) return this; //there is nothing to move
+        if (up != 0) this.p0.add(this.vUp.scale(up));
+        if (right != 0) this.p0.add(this.vRight.scale(right));
+        if (to != 0) this.p0.add(this.vTo.scale(to));
+        return this;
+    }
 }

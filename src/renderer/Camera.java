@@ -121,21 +121,29 @@ public class Camera {
     }
 
     /**
-     * java doc here
+     * A method that generates a ray, starting at the point and going through
+     * specific pixel in the view plane. Gets the resolution of the view plane and
+     * the coordinates of the requested pixel as parameters.
      *
-     * @param nX
-     * @param nY
-     * @param j
-     * @param i
+     * @param nX Horizontal component of the resolution. Number of partitions for the horizontal axis in the view plane.
+     * @param nY Vertical component of the resolution. Number of partitions for the vertical axis in the view plane.
+     * @param j The horizontal index of the pixel
+     * @param i The vertical index of the pixel
      * @return Ray that goes through the requested pixel in the view plane
      */
     public Ray constructRay(int nX, int nY, int j, int i) {
+        //Center of the view plane
         Point pIJ = p0.add(vTo.scale(distance));
+        //height of each pixel
         double Ry = height / nY;
+        //width of each pixel
         double Rx = width / nX;
+        //vertical distance of the required pixel from the center of the view plane
         double yI = -(i - ((double) (nY - 1)) / 2) * Ry;
+        //horizontal distance of the required pixel from the center of the view plane
         double xJ = -(j - ((double) (nX - 1)) / 2) * Rx;
 
+        //changing the position of the center point so that the ray will intersect the view plane in the right place
         if (xJ != 0) {
             pIJ = pIJ.add(vRight.scale(xJ));
         }
@@ -143,6 +151,7 @@ public class Camera {
             pIJ = pIJ.add(vUp.scale(yI));
         }
 
+        //return the ray
         return new Ray(p0, pIJ.subtract(p0).normalize());
 
     }

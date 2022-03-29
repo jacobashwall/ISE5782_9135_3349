@@ -19,7 +19,7 @@ public class Plane implements Geometry {
     /**
      * ctor of parameters
      *
-     * @param q0     representing point of the plane
+     * @param q0 representing point of the plane
      * @param normal normal to the plane
      */
     public Plane(Point q0, Vector normal) {
@@ -28,11 +28,11 @@ public class Plane implements Geometry {
     }
 
     /**
-     * ctor that build a plane out of three points
+     * Constructor for creating a plane from 3 points: x,y and z
      *
-     * @param x point x
-     * @param y point u
-     * @param z point z
+     * @param x first point
+     * @param y second point
+     * @param z third point
      */
     public Plane(Point x, Point y, Point z) {
         q0 = x;

@@ -81,17 +81,10 @@ public class Sphere implements Geometry {
         double t2 = Util.alignZero(tm + th);
 
 
-        // If the ray is tangent to the sphere return null
-        if (Util.isZero(d - this.radius)) {
+        // If the ray is tangent to the sphere or doesn't intersect the sphere at all return null
+        if (Util.alignZero(d - this.radius)>=0) {
             return null;
         }
-        // The ray doesn't intersect the sphere at all
-        else {
-            if (d > this.radius) {
-                return null;
-            }
-        }
-
 
         // If both t1 and t2 are bigger than 0 then there are two intersections
         if (t1 > 0 && t2 > 0) {

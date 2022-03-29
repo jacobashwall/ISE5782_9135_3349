@@ -13,7 +13,6 @@ import static org.junit.jupiter.api.Assertions.*;
  * Testing planes
  */
 class PlaneTest {
-
     /**
      * test for the constructor
      */

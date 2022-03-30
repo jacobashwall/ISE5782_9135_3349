@@ -1,6 +1,9 @@
 package renderer;
 
+import primitives.Color;
+import primitives.Point;
 import primitives.Ray;
+import scene.Scene;
 
 /**
  * A class that inherits from RayTracerBase to trace rays in a scene
@@ -8,10 +11,10 @@ import primitives.Ray;
 public class RayTracerBasic extends  RayTracerBase{
     /**
      * RayTracerBasic Constructor.
-     * @param Scene the scene we trace rays in.
+     * @param scene the scene we trace rays in.
      */
-    public RayTracerBasic(scene Scene){
-        super(Scene);
+    public RayTracerBasic(Scene scene){
+        super(scene);
     }
 
     /**
@@ -21,6 +24,19 @@ public class RayTracerBasic extends  RayTracerBase{
      */
     @Override
     public Color traceRay(Ray ray) {
-        return null;
+        Point point= ray.findClosestPoint(scene.geometries.findIntersections(ray));//all intersection points wit the ray
+        if (point==null)//if no intersection return background color
+            return scene.background;
+        return calcColor(point);
+    }
+
+    /**
+     * calculates the color of given point
+     * @param point the point to calculate the color of it
+     * @return the color that was calculated
+     */
+    private Color calcColor(Point point)
+    {
+        return scene.ambientLight.getIntensity();
     }
 }

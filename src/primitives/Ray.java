@@ -56,6 +56,7 @@ public class Ray {
 
     /**
      * Returns the point on the end of th ray scaled by given parameter
+     *
      * @param t Scale factor
      * @return Point at the end of the scaled ray
      */
@@ -65,12 +66,13 @@ public class Ray {
 
     /**
      * Method for finding the closest point to the head of the ray in a given list of points
+     *
      * @param lst List of points
      * @return Closest point to the head of the ray
      */
     public Point findClosestPoint(List<Point> lst) {
         //In case of empty list return null
-        if(lst.isEmpty()){
+        if (lst == null) {
             return null;
         }
 

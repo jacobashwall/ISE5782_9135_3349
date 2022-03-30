@@ -1,8 +1,9 @@
 package renderer;
 
+import elements.AmbientLight;
 import org.junit.jupiter.api.Test;
 
-import lighting.AmbientLight;
+
 import geometries.*;
 import primitives.*;
 import renderer.*;
@@ -26,7 +27,7 @@ public class RenderTests {
                         new Double3(1,1,1))) //
                 .setBackground(new Color(75, 127, 90));
 
-        scene.geometries.add(new Sphere(50, new Point(0, 0, -100)),
+        scene.geometries.add(new Sphere( new Point(0, 0, -100),50),
                 new Triangle(new Point(-100, 0, -100), new Point(0, 100, -100), new Point(-100, 100, -100)), // up
                 // left
                 new Triangle(new Point(-100, 0, -100), new Point(0, -100, -100), new Point(-100, -100, -100)), // down
@@ -46,7 +47,7 @@ public class RenderTests {
 
     /**
      * Test for XML based scene - for bonus
-     */
+
     @Test
     public void basicRenderXml() {
         Scene scene = new Scene("XML Test scene");
@@ -62,5 +63,6 @@ public class RenderTests {
         camera.printGrid(100, new Color(java.awt.Color.YELLOW));
         camera.writeToImage();
     }
+  */
 }
 

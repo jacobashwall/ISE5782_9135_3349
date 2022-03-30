@@ -1,5 +1,6 @@
 package renderer;
 
+import primitives.Color;
 import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
@@ -52,10 +53,10 @@ public class Camera {
     /**
      * RayTracerBase setter
      *
-     * @param RayTracerBase a Ray Tracer Base
+     * @param rayTracerBase a Ray Tracer Base
      * @return the camera with modified Ray Tracer Base
      */
-    public Camera setRayTracerBase(RayTracerBase rayTracerBase) {
+    public Camera setRayTracer(RayTracerBasic rayTracerBase) {
         this.rayTracerBase = rayTracerBase;
         return this;
     }
@@ -238,27 +239,46 @@ public class Camera {
             throw new MissingResourceException("One of the camera's attributes are missing", "imageWriter", "7");
         if (rayTracerBase == null)
             throw new MissingResourceException("One of the camera's attributes are missing", "rayTracerBase", "8");
-        throw new UnsupportedOperationException();
+        //move over the coordinates of the grid
+        for (int i = 0; i < imageWriter.getNx(); i++) {
+            for (int j = 0; j < imageWriter.getNy(); j++) {
+                //get the ray through the pixel
+                Ray ray = this.constructRay(imageWriter.getNx(), imageWriter.getNy(), j, i);
+                imageWriter.writePixel(i, j, rayTracerBase.traceRay(ray));
+            }
+        }
+    }
+
+
+
+    /**
+     * Prints a grid
+     *
+     * @param interval the interval of the distance between ech grid line
+     * @param color    the color of the grid
+     */
+    public void printGrid(int interval, Color color) {
+        if (imageWriter == null)
+            throw new MissingResourceException("One of the camera's attributes are missing", "imageWriter", "7");
+        //move over the coordinates of the grid
+        for (int i = 0; i < imageWriter.getNx(); i++) {
+            for (int j = 0; j < imageWriter.getNy(); j++) {
+                //Coordinates of the net
+                if ((i + 1) % interval == 0 || (j + 1) % interval == 0) {
+                    //print in Red
+                    imageWriter.writePixel(i, j, color);
+                }
+            }
+        }
     }
 
     /**
-     *
-     * @param interval
-     * @param color
+     * uses the writeToImage function by delegation of imageWriter
      */
-    public void printGrid(int interval, Color color){
+    public void writeToImage() {
         if (imageWriter == null)
             throw new MissingResourceException("One of the camera's attributes are missing", "imageWriter", "7");
-        //wait for yonatan
-    }
-
-    /**
-     *
-     */
-    public void writeToImage(){
-        if (imageWriter == null)
-            throw new MissingResourceException("One of the camera's attributes are missing", "imageWriter", "7");
-        //wait for yonatan
+        imageWriter.writeToImage();
     }
 
 }

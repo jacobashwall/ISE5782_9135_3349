@@ -1,19 +1,21 @@
 package renderer;
 
+import primitives.Color;
 import primitives.Ray;
+import scene.Scene;
 
 /**
  * an abstract class to be the base to RayTracerBasic
  */
 public abstract class RayTracerBase {
-    protected scene Scene;
+    protected Scene scene;
 
     /**
-     *  RayTracerBase constructor
-     * @param Scene the given scene to trace the rays in
+     * RayTracerBase constructor
+     * @param scene the given scene to trace the rays in
      */
-    public RayTracerBase(scene Scene){
-        this.Scene=Scene;
+    public RayTracerBase(Scene scene){
+        this.scene=scene;
     }
 
     /**

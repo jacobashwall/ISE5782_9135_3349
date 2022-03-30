@@ -30,17 +30,17 @@ public class Plane implements Geometry {
     /**
      * Constructor for creating a plane from 3 points: x,y and z
      *
-     * @param x first point
-     * @param y second point
-     * @param z third point
+     * @param p1 first point
+     * @param p2 second point
+     * @param p3 third point
      */
-    public Plane(Point x, Point y, Point z) {
-        q0 = x;
+    public Plane(Point p1, Point p2, Point p3) {
+        q0 = p1;
         //v1 = P2 - P1
         //v2 = P3 - P1
         //normal = normalize( v1 x v2 )
-        Vector v1 = y.subtract(x);
-        Vector v2 = z.subtract(x);
+        Vector v1 = p2.subtract(p1);
+        Vector v2 = p3.subtract(p1);
         normal = (v1.crossProduct(v2)).normalize();
     }
 

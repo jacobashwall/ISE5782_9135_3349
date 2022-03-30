@@ -41,14 +41,14 @@ class PlaneTest {
         //============ Equivalence Partitions Tests ==============//
         //TC: Testing that getNormal returns the correct vector
         Plane pln = new Plane(new Point(-1, -1, 0), new Point(0, 1, 0), new Point(1, 0, 0));
-        assertTrue(new Vector(0, 0, 1).equals(pln.getNormal(new Point(0, 0, 0))) || new Vector(0, 0, -1).equals(pln.getNormal(new Point(0, 0, 0))), "Wrong normal to the plane");
+        assertEquals(new Vector(0, 0, -1),pln.getNormal(new Point(0, 0, 0)), "Wrong normal to the plane");
     }
 
     /**
      * Test method for{@link geometries.Plane#findIntersections(Ray)}
      */
     @Test
-    void findIntsersections() {
+    void findIntersections() {
         //============ Equivalence Partitions Tests ==============//
 
         //TC:  Neither orthogonal nor parallel ray intersects the plane

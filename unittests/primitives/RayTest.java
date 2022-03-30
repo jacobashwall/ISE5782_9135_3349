@@ -30,10 +30,8 @@ class RayTest {
         assertEquals(pnt1,ray.findClosestPoint(List.of(pnt2,pnt3,pnt1)),"BVA2: Wrong point!");
         //BVA3: Empty list
         assertNull(ray.findClosestPoint(Collections.EMPTY_LIST),"BVA3: Fails to return null!");
-
-
-
-
+        //BVA4: Null list
+        assertNull(ray.findClosestPoint(null),"BVA4: Fails to return null!");
 
     }
 }

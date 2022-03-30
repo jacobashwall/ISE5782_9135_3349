@@ -72,8 +72,13 @@ class VectorTest {
         assertEquals(vec1.dotProduct(vec2), 20, "TC1: There is a problem with dotProduct method - acute angle");
         //obtuse angle
         Vector vec3 = new Vector(-1, -2, -5);
-        //TC: Test that vector dotProduct is proper. We should get a positive number.
+        //TC2: Test that vector dotProduct is proper. We should get a positive number.
         assertEquals(vec1.dotProduct(vec3), -20, "TC2: There is a problem with dotProduct method - obtuse angle");
+
+
+        //============ Boundary Tests ==============//
+        //TC3: Orthogonal vectors dot product
+        assertEquals(vec1.dotProduct(new Vector(1,-2,1)), 0, "TC3: Dot product of orthogonal vectors doesn't return 0");
 
     }
 

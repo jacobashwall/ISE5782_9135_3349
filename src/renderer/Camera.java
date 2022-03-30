@@ -4,6 +4,8 @@ import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 
+import java.util.MissingResourceException;
+
 /**
  * Camera to take the picture
  */
@@ -14,6 +16,9 @@ public class Camera {
     private Vector vUp, vRight, vTo;
     //view plane attributes
     double width, height, distance;
+
+    private ImageWriter imageWriter;
+    private RayTracerBase rayTracerBase;
 
 
     /**
@@ -31,6 +36,28 @@ public class Camera {
         this.vUp = vUp.normalize();
         this.vTo = vTo.normalize();
         this.vRight = (vUp.crossProduct(vTo)).normalize();
+    }
+
+    /**
+     * imageWriter setter
+     *
+     * @param imageWriter an image Writer
+     * @return the camera with modified image Writer
+     */
+    public Camera setImageWriter(ImageWriter imageWriter) {
+        this.imageWriter = imageWriter;
+        return this;
+    }
+
+    /**
+     * RayTracerBase setter
+     *
+     * @param RayTracerBase a Ray Tracer Base
+     * @return the camera with modified Ray Tracer Base
+     */
+    public Camera setRayTracerBase(RayTracerBase rayTracerBase) {
+        this.rayTracerBase = rayTracerBase;
+        return this;
     }
 
     /**
@@ -127,8 +154,8 @@ public class Camera {
      *
      * @param nX Horizontal component of the resolution. Number of partitions for the horizontal axis in the view plane.
      * @param nY Vertical component of the resolution. Number of partitions for the vertical axis in the view plane.
-     * @param j The horizontal index of the pixel
-     * @param i The vertical index of the pixel
+     * @param j  The horizontal index of the pixel
+     * @param i  The vertical index of the pixel
      * @return Ray that goes through the requested pixel in the view plane
      */
     public Ray constructRay(int nX, int nY, int j, int i) {
@@ -160,7 +187,7 @@ public class Camera {
     /**
      * Given a vector axis and a double theta, rotate the camera's up, right, and to vectors by theta radians about axis
      *
-     * @param axis the axis about which the camera will be rotated
+     * @param axis  the axis about which the camera will be rotated
      * @param theta the angle of rotation in radians
      * @return the rotated camera.
      */
@@ -176,9 +203,9 @@ public class Camera {
     /**
      * Move the camera by the given amounts
      *
-     * @param up the distance to move the camera up
+     * @param up    the distance to move the camera up
      * @param right the distance to move right
-     * @param to the distance to move the camera in the direction of the to vector
+     * @param to    the distance to move the camera in the direction of the to vector
      * @return the moved camera.
      */
     public Camera moveCamera(double up, double right, double to) {
@@ -188,4 +215,50 @@ public class Camera {
         if (to != 0) this.p0.add(this.vTo.scale(to));
         return this;
     }
+
+    /**
+     * Checks if there are any empty camera fields
+     */
+    public void renderImage() {
+        if (p0 == null)
+            throw new MissingResourceException("One of the camera's attributes are missing", "p0", "0");
+        if (vUp == null)
+            throw new MissingResourceException("One of the camera's attributes are missing", "vUp", "1");
+        if (vRight == null)
+            throw new MissingResourceException("One of the camera's attributes are missing", "vRight", "2");
+        if (vTo == null)
+            throw new MissingResourceException("One of the camera's attributes are missing", "vTo", "3");
+        if (width == 0)
+            throw new MissingResourceException("One of the camera's attributes are missing", "width", "4");
+        if (height == 0)
+            throw new MissingResourceException("One of the camera's attributes are missing", "height", "5");
+        if (distance == 0)
+            throw new MissingResourceException("One of the camera's attributes are missing", "distance", "6");
+        if (imageWriter == null)
+            throw new MissingResourceException("One of the camera's attributes are missing", "imageWriter", "7");
+        if (rayTracerBase == null)
+            throw new MissingResourceException("One of the camera's attributes are missing", "rayTracerBase", "8");
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     *
+     * @param interval
+     * @param color
+     */
+    public void printGrid(int interval, Color color){
+        if (imageWriter == null)
+            throw new MissingResourceException("One of the camera's attributes are missing", "imageWriter", "7");
+        //wait for yonatan
+    }
+
+    /**
+     *
+     */
+    public void writeToImage(){
+        if (imageWriter == null)
+            throw new MissingResourceException("One of the camera's attributes are missing", "imageWriter", "7");
+        //wait for yonatan
+    }
+
 }

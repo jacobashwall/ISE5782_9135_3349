@@ -48,10 +48,11 @@ public class Cylinder extends Tube {
         Point base1Point = axisRay.getP0();
         Vector dir = axisRay.getDir();
         double t;
-        if (pnt.equals(base1Point))
-            t = 0;
-        else
+        try {
             t = pnt.subtract(base1Point).dotProduct(dir);
+        } catch (IllegalArgumentException ignore) {
+            t = 0;
+        }
         if (isZero(t) || isZero(t - height)) return dir;
 
         return super.getNormal(pnt);

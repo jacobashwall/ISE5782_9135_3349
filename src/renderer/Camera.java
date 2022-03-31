@@ -218,14 +218,6 @@ public class Camera {
      * Checks if there are any empty camera fields
      */
     public void renderImage() {
-        if (p0 == null)
-            throw new MissingResourceException("One of the camera's attributes are missing", "p0", "0");
-        if (vUp == null)
-            throw new MissingResourceException("One of the camera's attributes are missing", "vUp", "1");
-        if (vRight == null)
-            throw new MissingResourceException("One of the camera's attributes are missing", "vRight", "2");
-        if (vTo == null)
-            throw new MissingResourceException("One of the camera's attributes are missing", "vTo", "3");
         if (width == 0)
             throw new MissingResourceException("One of the camera's attributes are missing", "width", "4");
         if (height == 0)
@@ -237,15 +229,16 @@ public class Camera {
         if (rayTracerBase == null)
             throw new MissingResourceException("One of the camera's attributes are missing", "rayTracerBase", "8");
         //move over the coordinates of the grid
-        for (int i = 0; i < imageWriter.getNx(); i++) {
-            for (int j = 0; j < imageWriter.getNy(); j++) {
+        int nX = imageWriter.getNx();
+        int nY = imageWriter.getNy();
+        for (int i = 0; i < nX; i++) {
+            for (int j = 0; j < nY; j++) {
                 //get the ray through the pixel
-                Ray ray = this.constructRay(imageWriter.getNx(), imageWriter.getNy(), j, i);
+                Ray ray = this.constructRay(nX, nY, j, i);
                 imageWriter.writePixel(j, i, rayTracerBase.traceRay(ray));
             }
         }
     }
-
 
 
     /**
@@ -261,7 +254,7 @@ public class Camera {
         for (int i = 0; i < imageWriter.getNx(); i++) {
             for (int j = 0; j < imageWriter.getNy(); j++) {
                 //Coordinates of the net
-                if ((i + 1) % interval == 0 || (j + 1) % interval == 0) {
+                if (i % interval == 0 || j % interval == 0) {
                     //print in Red
                     imageWriter.writePixel(i, j, color);
                 }

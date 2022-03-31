@@ -96,7 +96,7 @@ public class Point {
     /**
      * X getter.
      *
-     * @return the x cardinal of the given point .
+     * @return the x coordinate of the given point .
      */
     public double getX() {
         return this.xyz.d1;
@@ -105,7 +105,7 @@ public class Point {
     /**
      * Y getter.
      *
-     * @return the y cardinal of the given point .
+     * @return the y coordinate of the given point .
      */
     public double getY() {
         return this.xyz.d2;
@@ -114,7 +114,7 @@ public class Point {
     /**
      * Z getter.
      *
-     * @return the z cardinal of the given point .
+     * @return the z coordinate of the given point .
      */
     public double getZ() {
         return this.xyz.d3;

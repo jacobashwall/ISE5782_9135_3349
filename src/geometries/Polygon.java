@@ -1,6 +1,7 @@
 package geometries;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import primitives.*;
@@ -94,8 +95,8 @@ public class Polygon implements Geometry {
 
     @Override
     public List<Point> findIntersections(Ray ray) {
-
-        if (this.plane.findIntersections(ray) == null)//checks if there is an intersection with the plane of the polygon
+        List<Point> intersection =this.plane.findIntersections(ray);
+        if (intersection == null)//checks if there is an intersection with the plane of the polygon
             return null;
         //we will check if the point is inside or outside the polygon
         Point p0 = ray.getP0();
@@ -103,7 +104,9 @@ public class Polygon implements Geometry {
         //V(i)= vertices[i]-p0
         List<Vector> listVi = vertices.stream().map(p -> p.subtract(p0)).toList();
         //N(i)= Normalize(V(i)*V(i+1))
-        List<Vector> listNi = new ArrayList<>(size);
+        List<Vector> listNi = new LinkedList<>();
+        //can't use map since I need to reach the i and i+1 (don't know how to do it)
+        //also can't use for each for the same reason
         int i = 0;
         for (; i < size - 1; i++) {
             listNi.add(listVi.get(i).crossProduct(listVi.get(i + 1).normalize()));
@@ -115,7 +118,7 @@ public class Polygon implements Geometry {
         while (sign > 0)//all signs must be positive from now on in order the point to be inside the polygon
         {
             if (counter == size)//all signs are positive
-                return this.plane.findIntersections(ray);
+                return intersection;
             sign = v.dotProduct(listNi.get(counter));
             if (!(sign > 0))//if the sign is not positive
                 return null;//not all signs are positive therefore no intersection
@@ -124,7 +127,7 @@ public class Polygon implements Geometry {
         while (sign < 0)//all signs must be negative from now on in order the point to be inside the polygon
         {
             if (counter == size)//all signs are negative
-                return this.plane.findIntersections(ray);
+                return intersection;
             sign = v.dotProduct(listNi.get(counter));
             if (!(sign < 0))//if the sign is not negative
                 return null;//not all signs are negative therefore no intersection

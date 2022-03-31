@@ -5,6 +5,9 @@ import primitives.Color;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * test Image writer
+ */
 class ImageWriterTest {
 
     /**

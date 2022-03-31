@@ -5,6 +5,7 @@ import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 
+import javax.swing.*;
 import java.util.MissingResourceException;
 
 /**
@@ -184,33 +185,37 @@ public class Camera {
 
 
     /**
-     * Given a vector axis and a double theta, rotate the camera's up, right, and to vectors by theta radians about axis
+     * Given double theta, rotate the camera's up and right vectors by theta radians
      *
-     * @param axis  the axis about which the camera will be rotated
      * @param theta the angle of rotation in radians
      * @return the rotated camera.
      */
-    public Camera turnCamera(Vector axis, double theta) {
+    public Camera turnCamera(double theta) {
         if (theta == 0) return this; //there is nothing to turn
-        this.vUp = this.vUp.rotateVector(axis, theta);
-        this.vRight = this.vRight.rotateVector(axis, theta);
-        this.vTo = this.vTo.rotateVector(axis, theta);
+        this.vUp = this.vUp.rotateVector(this.vUp, theta);
+        this.vRight = this.vRight.rotateVector(this.vRight, theta);
         return this;
     }
 
     /**
-     * Move the camera by the given amounts
+     * Moves the camera to a certain location to point to a single point
      *
-     * @param up    the distance to move the camera up
-     * @param right the distance to move right
-     * @param to    the distance to move the camera in the direction of the to vector
-     * @return the moved camera.
+     * @param from the camera's new location
+     * @param to   the point the camera points to
+     * @return the moved camera
      */
-    public Camera moveCamera(double up, double right, double to) {
-        if (up == 0 && right == 0 && to == 0) return this; //there is nothing to move
-        if (up != 0) this.p0.add(this.vUp.scale(up));
-        if (right != 0) this.p0.add(this.vRight.scale(right));
-        if (to != 0) this.p0.add(this.vTo.scale(to));
+    public Camera moveCamera(Point from, Point to) {
+        Vector vec;
+        try {
+            vec = to.subtract(from);
+        } catch (IllegalArgumentException ignore) {
+            throw new IllegalArgumentException("The camera cannot point at its location");
+        }
+        this.p0 = from;
+        this.vTo = vec.normalize();
+        //the up vector would be 90 degrees to the Vto
+        this.vUp = vec.rotateVector(new Vector(0, 1, 0), Math.toRadians(90)).normalize();
+        this.vRight = (vUp.crossProduct(vTo)).normalize();
         return this;
     }
 

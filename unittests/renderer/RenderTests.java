@@ -1,12 +1,11 @@
 package renderer;
 
-import elements.AmbientLight;
+import lighting.AmbientLight;
 import org.junit.jupiter.api.Test;
 
 
 import geometries.*;
 import primitives.*;
-import renderer.*;
 import scene.Scene;
 
 /**

@@ -1,6 +1,6 @@
 package primitives;
 
-import static java.lang.Math.sqrt;
+import static java.lang.Math.*;
 
 /**
  * Vector in our cartesian coordinate system
@@ -143,9 +143,9 @@ public class Vector extends Point {
         double v = axis.getY();
         double w = axis.getZ();
         double v1 = u * x + v * y + w * z;
-        double thetaRad = Math.toRadians(theta);
-        double thetaCos = Math.cos(thetaRad);
-        double thetaSin = Math.sin(thetaRad);
+        double thetaRad = toRadians(theta);
+        double thetaCos = cos(thetaRad);
+        double thetaSin = sin(thetaRad);
         double xPrime = u * v1 * (1d - thetaCos) + x * thetaCos + (-w * y + v * z) * thetaSin;
         double yPrime = v * v1 * (1d - thetaCos) + y * thetaCos + (w * x - u * z) * thetaSin;
         double zPrime = w * v1 * (1d - thetaCos) + z * thetaCos + (-v * x + u * y) * thetaSin;

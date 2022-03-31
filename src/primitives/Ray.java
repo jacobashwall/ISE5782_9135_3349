@@ -1,7 +1,8 @@
 package primitives;
 
-import java.util.Collections;
 import java.util.List;
+
+import static primitives.Util.isZero;
 
 /**
  * A ray in the cartesian system
@@ -61,7 +62,7 @@ public class Ray {
      * @return Point at the end of the scaled ray
      */
     public Point getPoint(double t) {
-        return p0.add(dir.scale(t));
+        return isZero(t) ? p0 : p0.add(dir.scale(t));
     }
 
     /**
@@ -76,8 +77,8 @@ public class Ray {
             return null;
         }
 
-        Point p = lst.get(0);
-        double d = lst.get(0).distance(this.getP0());
+        Point p = null;
+        double d = Double.POSITIVE_INFINITY;
         //Iterating through the list. Once we find smaller distance
         //than we have we replace the values.
         //This goes on until the end of the list.

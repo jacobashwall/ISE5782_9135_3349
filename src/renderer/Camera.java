@@ -21,7 +21,6 @@ public class Camera {
     private ImageWriter imageWriter;
     private RayTracerBase rayTracerBase;
 
-
     /**
      * Constructor to camera
      *
@@ -181,7 +180,6 @@ public class Camera {
 
         //return the ray
         return new Ray(p0, pIJ.subtract(p0).normalize());
-
     }
 
 
@@ -199,7 +197,6 @@ public class Camera {
         this.vTo = this.vTo.rotateVector(axis, theta);
         return this;
     }
-
 
     /**
      * Move the camera by the given amounts
@@ -244,7 +241,7 @@ public class Camera {
             for (int j = 0; j < imageWriter.getNy(); j++) {
                 //get the ray through the pixel
                 Ray ray = this.constructRay(imageWriter.getNx(), imageWriter.getNy(), j, i);
-                imageWriter.writePixel(i, j, rayTracerBase.traceRay(ray));
+                imageWriter.writePixel(j, i, rayTracerBase.traceRay(ray));
             }
         }
     }

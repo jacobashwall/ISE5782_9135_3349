@@ -101,10 +101,7 @@ public class Polygon implements Geometry {
         Point p0 = ray.getP0();
         Vector v = ray.getDir();
         //V(i)= vertices[i]-p0
-        List<Vector> listVi = new ArrayList<>(size);
-        for (int i = 0; i < size; i++) {
-            listVi.add(this.vertices.get(i).subtract(p0));
-        }
+        List<Vector> listVi = vertices.stream().map(p -> p.subtract(p0)).toList();
         //N(i)= Normalize(V(i)*V(i+1))
         List<Vector> listNi = new ArrayList<>(size);
         int i = 0;

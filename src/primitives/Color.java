@@ -95,9 +95,9 @@ public class Color {
 	}
 
 	/**
-	 * Scale the color by a scalar
+	 * Scale the color by a scalar triad
 	 *
-	 * @param k scale factor
+	 * @param k triple scale factor
 	 * @return new Color object which is the result of the operation
 	 */
 	public Color scale(Double3 k) {
@@ -107,9 +107,21 @@ public class Color {
 	}
 
 	/**
-	 * Scale the color by (1 / reduction factor)
+	 * Scale the color by a scalar
+	 *
+	 * @param k scale factor
+	 * @return new Color object which is the result of the operation
+	 */
+	public Color scale(double k) {
+		if (k < 0.0)
+			throw new IllegalArgumentException("Can't scale a color by a negative number");
+		return new Color(rgb.scale(k));
+	}
+
+	/**
+	 * Scale the color by (1 / triple reduction factor)
 	 * 
-	 * @param k reduction factor
+	 * @param k triple reduction factor
 	 * @return new Color object which is the result of the operation
 	 */
 	public Color reduce(Double3 k) {
@@ -118,4 +130,15 @@ public class Color {
 		return new Color(rgb.d1 / k.d1, rgb.d2 / k.d2, rgb.d3 / k.d3);
 	}
 
+	/**
+	 * Scale the color by (1 / reduction factor)
+	 *
+	 * @param k reduction factor
+	 * @return new Color object which is the result of the operation
+	 */
+	public Color reduce(double k) {
+		if (k < 1.0)
+			throw new IllegalArgumentException("Can't scale a color by a by a number lower than 1");
+		return new Color(rgb.reduce(k));
+	}
 }

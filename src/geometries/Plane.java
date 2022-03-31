@@ -19,7 +19,7 @@ public class Plane implements Geometry {
     /**
      * ctor of parameters
      *
-     * @param q0 representing point of the plane
+     * @param q0     representing point of the plane
      * @param normal normal to the plane
      */
     public Plane(Point q0, Vector normal) {
@@ -78,23 +78,19 @@ public class Plane implements Geometry {
 
     @Override
     public List<Point> findIntersections(Ray ray) {
-        if (ray.getP0().equals(this.q0)) { // the ray starts at the plane's reference point
-            return null;
-        }
-        double numerator = this.normal.dotProduct(q0.subtract(ray.getP0()));
-        if (isZero(numerator)) {// p0 is on the plane
-            return null;
-        }
         double denominator = this.normal.dotProduct(ray.getDir());
-        if (isZero(denominator)) { // ray parallel to the plane- the ray direction orthogonal to the normal
+        if (isZero(denominator))
+            return null; // ray parallel to the plane- the ray direction orthogonal to the normal
+
+        Vector u;
+        try {
+            u = q0.subtract(ray.getP0());
+        } catch (IllegalArgumentException ignore) {
+            // the ray starts at the plane's reference point
             return null;
         }
-        double t = alignZero(numerator / denominator);
-        if (t > 0) {
-            Point p = ray.getPoint(t);
-            return List.of(p);
-        } else {// if the Ray is after the plane (do not intersect)
-            return null;
-        }
+
+        double t = alignZero(this.normal.dotProduct(u) / denominator);
+        return t <= 0 ? null : List.of(ray.getPoint(t));
     }
 }

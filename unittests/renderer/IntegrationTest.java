@@ -18,7 +18,6 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class IntegrationTest {
 
-
     /**
      * Determine how many intersection points suppose to have with a geometric entity.
      *

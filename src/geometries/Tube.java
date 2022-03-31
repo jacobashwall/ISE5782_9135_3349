@@ -58,12 +58,8 @@ public class Tube implements Geometry {
         //t=v*(p-p0)
         //O=p0+t*v
         //n = normalize(P - O)
-        Point p0 = axisRay.getP0();
-        Vector dir = axisRay.getDir();
-
-        double t = dir.dotProduct(pnt.subtract(p0));
-        Point o = isZero(t) ? p0 : axisRay.getPoint(t);
-        return (pnt.subtract(o)).normalize();
+        double t = axisRay.getDir().dotProduct(pnt.subtract(axisRay.getP0()));
+        return pnt.subtract(axisRay.getPoint(t)).normalize();
     }
 
     @Override

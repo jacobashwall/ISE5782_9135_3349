@@ -185,15 +185,15 @@ public class Camera {
 
 
     /**
-     * Given double theta, rotate the camera's up and right vectors by theta radians
+     * Given double theta, rotate the camera's up and right vectors by theta degrees
      *
-     * @param theta the angle of rotation in radians
+     * @param theta the angle of rotation in degrees clockwise
      * @return the rotated camera.
      */
     public Camera turnCamera(double theta) {
         if (theta == 0) return this; //there is nothing to turn
-        this.vUp = this.vUp.rotateVector(this.vRight, theta);
-        this.vRight = this.vRight.rotateVector(this.vUp, -theta);
+        this.vUp = this.vUp.rotateVector(this.vTo, theta);
+        this.vRight = this.vRight.rotateVector(this.vTo, theta);
         return this;
     }
 
@@ -209,12 +209,12 @@ public class Camera {
         try {
             vec = to.subtract(from);
         } catch (IllegalArgumentException ignore) {
-            throw new IllegalArgumentException("The camera cannot point at its location");
+            throw new IllegalArgumentException("The camera cannot point at its starting location");
         }
         this.p0 = from;
         this.vTo = vec.normalize();
-        //the up vector would be 90 degrees to the Vto
-        this.vUp = vec.rotateVector(new Vector(0, 1, 0), Math.toRadians(90)).normalize();
+        //the up vector would be 90 degrees to the Vto (z axis is to the right)
+        this.vUp = vec.rotateVector(new Vector(0, 0, 1),90).normalize();
         this.vRight = (vUp.crossProduct(vTo)).normalize();
         return this;
     }

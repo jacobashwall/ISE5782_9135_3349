@@ -9,6 +9,7 @@ import primitives.Color;
  * its purpose is to bind the different components that
  * usually make up a scene. It has no functionality of itself.
  */
+
 public class Scene {
     //public fields
 

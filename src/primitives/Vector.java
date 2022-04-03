@@ -1,6 +1,7 @@
 package primitives;
 
 import static java.lang.Math.*;
+import static primitives.Util.alignZero;
 
 /**
  * Vector in our cartesian coordinate system
@@ -151,6 +152,6 @@ public class Vector extends Point {
         double yPrime = v * v1 * diff + y * thetaCos + (w * x - u * z) * thetaSin;
         double zPrime = w * v1 * diff + z * thetaCos + (-v * x + u * y) * thetaSin;
 
-        return new Vector(xPrime, yPrime, zPrime);
+        return new Vector(alignZero(xPrime), alignZero(yPrime), alignZero(zPrime));
     }
 }

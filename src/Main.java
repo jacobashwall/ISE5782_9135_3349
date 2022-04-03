@@ -25,11 +25,8 @@ public final class Main {
      * @param args irrelevant here
      */
     public static void main(String[] args) {
-        Polygon trn = new Polygon(new Point(-1, 1, 0), new Point(1, 0, 0), new Point(-1, -1, 0));
-        //============ Equivalence Partitions Tests ==============//
-        //TC: The ray intersect with the Polygon's plane inside the Polygon
-        Ray ray1 = new Ray(new Point(0, 0, 1), new Vector(-0.5, 0, -1));
-         trn.findIntersections(ray1);
+        Vector v1=new Vector(1,0,0);
+        System.out.println(v1.rotateVector(new Vector(0,1,0),90));
     }
 }
 

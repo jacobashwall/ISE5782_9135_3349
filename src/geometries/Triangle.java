@@ -6,6 +6,7 @@ import primitives.Vector;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import static primitives.Util.alignZero;
 
@@ -16,6 +17,61 @@ public class Triangle extends Polygon {
     public Triangle(Point... vertices) {
         super(vertices);
     }
+    public static Triangle ReadXmlTriangle(Map<String, String> triangleAttributes) {
+
+        String[] P0coordinates = triangleAttributes
+                .get("p0").split("\\s+");
+
+        Point p0 = new Point(Double.valueOf(P0coordinates[0]),
+                Double.valueOf(P0coordinates[1]),
+                Double.valueOf(P0coordinates[2]));
+
+        String[] P1coordinates = triangleAttributes
+                .get("p1").split("\\s+");
+
+        Point p1 = new Point(Double.valueOf(P1coordinates[0]),
+                Double.valueOf(P1coordinates[1]),
+                Double.valueOf(P1coordinates[2]));
+
+        String[] P2coordinates = triangleAttributes
+                .get("p2").split("\\s+");
+
+        Point p2 = new Point(Double.valueOf(P2coordinates[0]),
+                Double.valueOf(P2coordinates[1]),
+                Double.valueOf(P2coordinates[2]));
+       return new Triangle(p0,p1,p2);
+    }
+
+    /*private Point readP0(Map<String, String> triangleAttributes) {
+
+        String[] coordinates = triangleAttributes
+                .get("P0").split("\\s+");
+
+       return new Point(Double.valueOf(coordinates[0]),
+                Double.valueOf(coordinates[1]),
+                Double.valueOf(coordinates[2]));
+
+    }
+    private Point readP1(Map<String, String> triangleAttributes) {
+
+        String[] coordinates = triangleAttributes
+                .get("P1").split("\\s+");
+
+        return new Point(Double.valueOf(coordinates[0]),
+                Double.valueOf(coordinates[1]),
+                Double.valueOf(coordinates[2]));
+
+    }
+    private Point readP2(Map<String, String> triangleAttributes) {
+
+        String[] coordinates = triangleAttributes
+                .get("P0").split("\\s+");
+
+        return new Point(Double.valueOf(coordinates[0]),
+                Double.valueOf(coordinates[1]),
+                Double.valueOf(coordinates[2]));
+
+    }*/
 
     @Override
     public String toString() {

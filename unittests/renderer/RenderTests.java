@@ -7,6 +7,8 @@ import geometries.*;
 import primitives.*;
 import renderer.*;
 import scene.Scene;
+import scene.SceneBuilder;
+
 import static java.awt.Color.*;
 
 /**
@@ -46,6 +48,7 @@ public class RenderTests {
     }
 
     // For stage 6 - please disregard in stage 5
+
     /**
      * Produce a scene with basic 3D model - including individual lights of the
      * bodies and render it into a png image with a grid
@@ -84,9 +87,7 @@ public class RenderTests {
     @Test
     public void basicRenderXml() {
         Scene scene = new Scene("XML Test scene");
-        // enter XML file name and parse from XML file into scene object
-        // ...
-
+        scene = new SceneBuilder("basicRenderTestTwoColors.xml", scene).getScene();
         Camera camera = new Camera(Point.ZERO, new Vector(0, 0, -1), new Vector(0, 1, 0)) //
                 .setVPDistance(100) //
                 .setVPSize(500, 500).setImageWriter(new ImageWriter("xml render test", 1000, 1000))

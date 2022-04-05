@@ -5,6 +5,7 @@ import primitives.Ray;
 import primitives.Vector;
 
 import java.util.List;
+import java.util.Map;
 
 import static primitives.Util.*;
 
@@ -44,6 +45,34 @@ public class Plane extends Geometry {
         normal = (v1.crossProduct(v2)).normalize();
     }
 
+    public static Plane ReadXMLPlane(Map<String, String> planeAttributes) {
+
+        String[] p0Attributes = planeAttributes.get("p0").split("\\s+");
+        Point p0 = new Point(Double.valueOf(p0Attributes[0]),
+                Double.valueOf(p0Attributes[1]),
+                Double.valueOf(p0Attributes[2]));
+        String[] normalAttributes = planeAttributes
+                .get("normal").split("\\s+");
+        if (normalAttributes!=null) {//using the constructor of normal+ q0
+            Vector normal = new Vector(Double.valueOf(normalAttributes[0]),
+                    Double.valueOf(normalAttributes[1]),
+                    Double.valueOf(normalAttributes[2]));
+            return new Plane(p0,normal);
+        }
+        else {//using 3 points constructor
+            String[] p1Attributes = planeAttributes.get("p0").split("\\s+");
+            Point p1 = new Point(Double.valueOf(p1Attributes[0]),
+                    Double.valueOf(p1Attributes[1]),
+                    Double.valueOf(p1Attributes[2]));
+            String[] p2Attributes = planeAttributes.get("p0").split("\\s+");
+            Point p2 = new Point(Double.valueOf(p2Attributes[0]),
+                    Double.valueOf(p2Attributes[1]),
+                    Double.valueOf(p2Attributes[2]));
+            return new Plane(p0,p1,p2);
+        }
+
+
+    }
 
     @Override
     public String toString() {

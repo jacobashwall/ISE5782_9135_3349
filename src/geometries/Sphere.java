@@ -6,6 +6,7 @@ import primitives.Util;
 import primitives.Vector;
 
 import java.util.List;
+import java.util.Map;
 
 import static java.lang.Math.*;
 import static primitives.Util.alignZero;
@@ -29,6 +30,19 @@ public class Sphere extends Geometry {
         this.center = center;
         this.radius = radius;
         this.radiusSqr = radius * radius;
+    }
+
+    public static Sphere ReadXMLSphere(Map<String, String> sphereAttributes) {
+        double radius = Double.valueOf(sphereAttributes.get("radius"));
+
+        String[] centerValues= sphereAttributes
+                .get("center").split("\\s+");
+
+        Point center = new Point(Double.valueOf(centerValues[0]),
+                Double.valueOf(centerValues[1]),
+                Double.valueOf(centerValues[2]));
+        return new Sphere(center,radius);
+
     }
 
     /**

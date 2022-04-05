@@ -18,8 +18,7 @@ public class AmbientLight {
      * @param double3 Attenuation coefficient
      */
     public AmbientLight(Color color, Double3 double3){
-        this.intensity = color;
-        this.intensity.scale(double3);
+        this.intensity = color.scale(double3);
     }
 
     /**

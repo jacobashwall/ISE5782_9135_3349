@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Class the represents a group of geometric entities
  */
-public class Geometries implements Intersectable {
+public class Geometries extends Intersectable {
     //we will use linked list since adding a new object to the list is a lot faster than array list.
     //Also, we will never try to access an object in a specific index, but we will always scan all the array.
     //Meaning there are no drawbacks using linked list, but we would have the best running time.
@@ -46,6 +46,20 @@ public class Geometries implements Intersectable {
         List<Point> intersections = null;
         for (var geometry : objects) {
             List<Point> returnList = geometry.findIntersections(ray);
+            if (returnList != null) { //if it's not null (there are intersections)
+                if (intersections == null)
+                    intersections = new LinkedList<>();
+                intersections.addAll(returnList);
+            }
+        }
+        return intersections;
+    }
+
+    @Override
+    public List<GeoPoint> findGeoIntersections(Ray ray) {
+        List<GeoPoint> intersections = null;
+        for (var geometry : objects) {
+            List<GeoPoint> returnList = geometry.findGeoIntersections(ray);
             if (returnList != null) { //if it's not null (there are intersections)
                 if (intersections == null)
                     intersections = new LinkedList<>();

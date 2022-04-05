@@ -63,7 +63,7 @@ public class Sphere extends Geometry {
         return (pnt.subtract(center)).normalize();
     }
 
-    @Override
+  /*  @Override
     public List<Point> findIntersections(Ray ray) {
         Vector vec;
         try {
@@ -89,7 +89,7 @@ public class Sphere extends Geometry {
         double t1 = alignZero(tm - th);
         // If only one is greater than 0 then the ray intersects the sphere only once
         return t1 <= 0 ? List.of(ray.getPoint(t2)) : List.of(ray.getPoint(t1), ray.getPoint(t2));
-    }
+    }*/
 
     @Override
     public List<GeoPoint> findGeoIntersections(Ray ray) {

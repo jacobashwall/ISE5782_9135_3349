@@ -25,7 +25,7 @@ public class Triangle extends Polygon {
                 '}';
     }
 
-    @Override
+   /* @Override
     public List<Point> findIntersections(Ray ray) {
         var result = this.plane.findIntersections(ray);
         if (result == null)//checks if there is an intersection with the plane of the triangle
@@ -51,7 +51,7 @@ public class Triangle extends Polygon {
 
         //if all signs are equal (+/-) the point is inside the triangle
         return result;
-    }
+    }*/
 
     @Override
     public List<GeoPoint> findGeoIntersections(Ray ray) {

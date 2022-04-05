@@ -76,7 +76,7 @@ public class Plane extends Geometry {
         return normal;
     }
 
-    @Override
+    /* @Override
     public List<Point> findIntersections(Ray ray) {
         double denominator = this.normal.dotProduct(ray.getDir());
         if (isZero(denominator))
@@ -92,7 +92,7 @@ public class Plane extends Geometry {
 
         double t = alignZero(this.normal.dotProduct(u) / denominator);
         return t <= 0 ? null : List.of(ray.getPoint(t));
-    }
+    }*/
 
     @Override
     public List<GeoPoint> findGeoIntersections(Ray ray) {

@@ -93,7 +93,7 @@ public class Polygon extends Geometry {
         return plane.getNormal();
     }
 
-    @Override
+ /*   @Override
     public List<Point> findIntersections(Ray ray) {
         List<Point> intersection =this.plane.findIntersections(ray);
         if (intersection == null)//checks if there is an intersection with the plane of the polygon
@@ -135,7 +135,7 @@ public class Polygon extends Geometry {
         }
         return null;//if the first sign is zero
 
-    }
+    }*/
 
     public List<GeoPoint> findGeoIntersections(Ray ray) {
         List<GeoPoint> intersection =this.plane.findGeoIntersections(ray);

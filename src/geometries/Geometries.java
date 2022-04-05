@@ -41,7 +41,7 @@ public class Geometries extends Intersectable {
     }
 
 
-    @Override
+   /* @Override
     public List<Point> findIntersections(Ray ray) {
         List<Point> intersections = null;
         for (var geometry : objects) {
@@ -53,7 +53,7 @@ public class Geometries extends Intersectable {
             }
         }
         return intersections;
-    }
+    }*/
 
     @Override
     public List<GeoPoint> findGeoIntersections(Ray ray) {

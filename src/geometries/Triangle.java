@@ -42,36 +42,6 @@ public class Triangle extends Polygon {
        return new Triangle(p0,p1,p2);
     }
 
-    /*private Point readP0(Map<String, String> triangleAttributes) {
-
-        String[] coordinates = triangleAttributes
-                .get("P0").split("\\s+");
-
-       return new Point(Double.valueOf(coordinates[0]),
-                Double.valueOf(coordinates[1]),
-                Double.valueOf(coordinates[2]));
-
-    }
-    private Point readP1(Map<String, String> triangleAttributes) {
-
-        String[] coordinates = triangleAttributes
-                .get("P1").split("\\s+");
-
-        return new Point(Double.valueOf(coordinates[0]),
-                Double.valueOf(coordinates[1]),
-                Double.valueOf(coordinates[2]));
-
-    }
-    private Point readP2(Map<String, String> triangleAttributes) {
-
-        String[] coordinates = triangleAttributes
-                .get("P0").split("\\s+");
-
-        return new Point(Double.valueOf(coordinates[0]),
-                Double.valueOf(coordinates[1]),
-                Double.valueOf(coordinates[2]));
-
-    }*/
 
     @Override
     public String toString() {

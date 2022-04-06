@@ -29,9 +29,9 @@ public class AmbientLight {
             return new AmbientLight();
         String[] colorAttributes = AmbientLightAttributes.get("color").split("\\s+");
         Color color = new Color(
-                (int) (1 * Double.valueOf(colorAttributes[0])),
-                (int) (1 * Double.valueOf(colorAttributes[1])),
-                (int) (1 * Double.valueOf(colorAttributes[2])));
+                Double.valueOf(colorAttributes[0]),
+                Double.valueOf(colorAttributes[1]),
+                Double.valueOf(colorAttributes[2]));
         String[] factorAttributes = AmbientLightAttributes.get("k").split("\\s+");
         Double3 k;
         if (factorAttributes.length == 1)//using the constructor that uses only one variable

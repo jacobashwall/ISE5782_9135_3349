@@ -39,10 +39,12 @@ public class Tube extends Geometry {
         double radius = Double.valueOf(tubeAttributes.get("radius"));
 
         String[] axisRayAtrribute = tubeAttributes
-                .get("axis").split("\\s+");
-        Point p0 = new Point(Double.valueOf(axisRayAtrribute[1]),
-                Double.valueOf(axisRayAtrribute[2]),
-                Double.valueOf(axisRayAtrribute[3]));
+                .get("p0").split("\\s+");
+        Point p0 = new Point(Double.valueOf(axisRayAtrribute[0]),
+                Double.valueOf(axisRayAtrribute[1]),
+                Double.valueOf(axisRayAtrribute[2]));
+        axisRayAtrribute = tubeAttributes
+                .get("dir").split("\\s+");
         Vector dir = new Vector(Double.valueOf(axisRayAtrribute[5]),
                 Double.valueOf(axisRayAtrribute[6]),
                 Double.valueOf(axisRayAtrribute[7]));

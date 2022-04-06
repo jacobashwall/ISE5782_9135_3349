@@ -19,14 +19,12 @@ public class SceneDescriptor {
 
     /**
      * Constructs scene description from given XML formatted text. Verifies
-     * syntactic requirements that at least one scene element and one camera
-     * element should exist.
+     * syntactic requirements that at least the scene element exist.
      *
      * @param text XML string
      * @throws ParseException
      */
     public void InitializeFromXMLString(String text) throws ParseException {
-
 
         SceneXMLParser parser = new SceneXMLParser();
         parser.parse(text, this);
@@ -35,29 +33,45 @@ public class SceneDescriptor {
         if (sceneAttributes == null) {
             throw new ParseException("No scene element found!", 0);
         }
-       /* if (ambientLightAttributes == null) {
-            throw new ParseException("No ambientLightAttributes element found!", 0);
-        }*/
-
     }
 
+    /**
+     * Scene attributes getter
+     * @return the scene attributes
+     */
     public Map<String, String> getSceneAttributes() {
         return sceneAttributes;
     }
 
+    /**
+     * Ambient Light attributes getter
+     * @return the Ambient Light attributes
+     */
     public Map<String, String> getAmbientLightAttributes() {
         return ambientLightAttributes;
     }
 
+    /**
+     * Sphere attributes getter
+     * @return the Sphere attributes
+     */
     public List<Map<String, String>> getSpheres() {
         return spheres;
     }
 
+    /**
+     * Triangle attributes getter
+     * @return the Triangle attributes
+     */
     public List<Map<String, String>> getTriangles() {
         return triangles;
     }
 
-    public List<Map<String, String>> get_planes() {
+    /**
+     * plane attributes getter
+     * @return the plane attributes
+     */
+    public List<Map<String, String>> getPlanes() {
         return planes;
     }
 }

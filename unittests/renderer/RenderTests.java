@@ -102,7 +102,7 @@ public class RenderTests {
      * xml tests for emission light
      */
     @Test
-    public void basicRenderMultiColorEmissionTest() {
+    public void basicRenderXMLEmissionTest() {
         Scene scene = new Scene("Test scene");
         scene = new SceneBuilder("emissionLightTest.xml", scene).getScene();
         Camera camera = new Camera(Point.ZERO, new Vector(0, 0, -1), new Vector(0, 1, 0)) //

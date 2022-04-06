@@ -13,16 +13,15 @@ public class SceneDescriptor {
 
     protected Map<String, String> sceneAttributes;
     protected Map<String, String> ambientLightAttributes;
-    protected List<Map<String, String>> spheres = new ArrayList<Map<String, String>>();
-    protected List<Map<String, String>> triangles = new ArrayList<Map<String, String>>();
-    protected List<Map<String, String>> planes = new ArrayList<Map<String, String>>();
+    protected List<Map<String, String>> spheres = new ArrayList<>();
+    protected List<Map<String, String>> triangles = new ArrayList<>();
+    protected List<Map<String, String>> planes = new ArrayList<>();
 
     /**
      * Constructs scene description from given XML formatted text. Verifies
      * syntactic requirements that at least the scene element exist.
      *
      * @param text XML string
-     * @throws ParseException
      */
     public void InitializeFromXMLString(String text) throws ParseException {
 
@@ -37,6 +36,7 @@ public class SceneDescriptor {
 
     /**
      * Scene attributes getter
+     *
      * @return the scene attributes
      */
     public Map<String, String> getSceneAttributes() {
@@ -45,6 +45,7 @@ public class SceneDescriptor {
 
     /**
      * Ambient Light attributes getter
+     *
      * @return the Ambient Light attributes
      */
     public Map<String, String> getAmbientLightAttributes() {
@@ -53,6 +54,7 @@ public class SceneDescriptor {
 
     /**
      * Sphere attributes getter
+     *
      * @return the Sphere attributes
      */
     public List<Map<String, String>> getSpheres() {
@@ -61,6 +63,7 @@ public class SceneDescriptor {
 
     /**
      * Triangle attributes getter
+     *
      * @return the Triangle attributes
      */
     public List<Map<String, String>> getTriangles() {
@@ -69,6 +72,7 @@ public class SceneDescriptor {
 
     /**
      * plane attributes getter
+     *
      * @return the plane attributes
      */
     public List<Map<String, String>> getPlanes() {

@@ -1,6 +1,6 @@
 package parser;
 
-import java.io.IOException;
+
 import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Map;
@@ -9,7 +9,6 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
@@ -26,7 +25,7 @@ public class SceneXMLParser extends DefaultHandler {
     public void startElement(String uri, String localName, String qName,
                              Attributes attributes) throws SAXException {
 
-        Map<String, String> myAttributes = new HashMap<String, String>();
+        Map<String, String> myAttributes = new HashMap<>();
 
         for (int i = 0; i < attributes.getLength(); ++i) {
             String k = attributes.getQName(i);
@@ -35,17 +34,17 @@ public class SceneXMLParser extends DefaultHandler {
             myAttributes.put(k, v);
         }
 
-        if (qName == "scene") {
+        if (qName.equals("scene")) {
             sceneDesc.sceneAttributes = myAttributes;
         } else {
-            if (qName == "ambient-light")
+            if (qName.equals("ambient-light"))
                 sceneDesc.ambientLightAttributes = myAttributes;
             else {
-                if (qName == "sphere")
+                if (qName.equals("sphere"))
                     sceneDesc.spheres.add(myAttributes);
-                if (qName == "triangle")
+                if (qName.equals("triangle"))
                     sceneDesc.triangles.add(myAttributes);
-                if (qName == "plane")
+                if (qName.equals("plane"))
                     sceneDesc.planes.add(myAttributes);
             }
         }
@@ -71,11 +70,7 @@ public class SceneXMLParser extends DefaultHandler {
             xr.setErrorHandler(this);
             xr.parse(new InputSource(new StringReader(text)));
 
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParserConfigurationException e) {
+        } catch (Exception e) {//if failed prints the exception description
             e.printStackTrace();
         }
     }

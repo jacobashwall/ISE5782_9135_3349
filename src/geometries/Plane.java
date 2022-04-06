@@ -45,6 +45,11 @@ public class Plane extends Geometry {
         normal = (v1.crossProduct(v2)).normalize();
     }
 
+    /**
+     * Creates a plane using the list of attributes from the XML file
+     * @param planeAttributes list of plane attributes fetched from the xml file
+     * @return a plane with the values stated in the plane attributes
+     */
     public static Plane ReadXMLPlane(Map<String, String> planeAttributes) {
 
         String[] p0Attributes = planeAttributes.get("p0").split("\\s+");

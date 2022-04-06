@@ -32,6 +32,11 @@ public class Sphere extends Geometry {
         this.radiusSqr = radius * radius;
     }
 
+    /**
+     * Creates a sphere using the list of attributes from the XML file
+     * @param sphereAttributes list of sphere attributes fetched from the xml file
+     * @return a sphere with the values stated in the sphere attributes
+     */
     public static Sphere ReadXMLSphere(Map<String, String> sphereAttributes) {
         double radius = Double.valueOf(sphereAttributes.get("radius"));
 

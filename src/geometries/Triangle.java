@@ -14,9 +14,18 @@ import static primitives.Util.alignZero;
  * Class that represents a triangle and extends the class polygon
  */
 public class Triangle extends Polygon {
+    /**
+     * Triangle constructor
+     * @param vertices the vertices of the triangle
+     */
     public Triangle(Point... vertices) {
         super(vertices);
     }
+    /**
+     * Creates a triangle using the list of attributes from the XML file
+     * @param triangleAttributes list of triangle attributes fetched from the xml file
+     * @return a triangle with the values stated in the triangle attributes
+     */
     public static Triangle ReadXmlTriangle(Map<String, String> triangleAttributes) {
 
         String[] P0coordinates = triangleAttributes

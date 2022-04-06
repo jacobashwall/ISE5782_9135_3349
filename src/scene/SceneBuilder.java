@@ -3,11 +3,13 @@ package scene;
 import geometries.*;
 import lighting.*;
 import parser.SceneDescriptor;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.Map;
+
 import primitives.Color;
 
 /**

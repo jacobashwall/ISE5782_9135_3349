@@ -2,6 +2,8 @@ package geometries;
 
 import primitives.*;
 
+import java.util.Map;
+
 import static primitives.Util.isZero;
 
 /**
@@ -21,6 +23,39 @@ public class Cylinder extends Tube {
     public Cylinder(Ray axisRay, double radius, double height) {
         super(axisRay, radius);
         this.height = height;
+    }
+
+    /**
+     * Creates a cylinder using the list of attributes from the XML file
+     *
+     * @param cylinderAttributes list of cylinder attributes fetched from the xml file
+     * @return a cylinder with the values stated in the tube attributes
+     */
+    public static Cylinder ReadXMLCylinder(Map<String, String> cylinderAttributes) {
+        double radius = Double.valueOf(cylinderAttributes.get("radius"));
+
+        String[] axisRayAtrribute = cylinderAttributes
+                .get("axis").split("\\s+");
+        Point p0 = new Point(Double.valueOf(axisRayAtrribute[1]),
+                Double.valueOf(axisRayAtrribute[2]),
+                Double.valueOf(axisRayAtrribute[3]));
+        Vector dir = new Vector(Double.valueOf(axisRayAtrribute[5]),
+                Double.valueOf(axisRayAtrribute[6]),
+                Double.valueOf(axisRayAtrribute[7]));
+        Ray axisRay = new Ray(p0, dir);
+
+        double height = Double.valueOf(cylinderAttributes.get("height"));
+
+        Cylinder cylinder = new Cylinder(axisRay, radius, height);
+        if (cylinderAttributes.get("emission") != null) {
+            String[] emissionLightAttributes = cylinderAttributes.get("emission").split("\\s+");
+            Color emissionLight = new Color(
+                    Double.valueOf(emissionLightAttributes[0]),
+                    Double.valueOf(emissionLightAttributes[1]),
+                    Double.valueOf(emissionLightAttributes[2]));
+            cylinder.setEmission(emissionLight);
+        }
+        return cylinder;
     }
 
     /**

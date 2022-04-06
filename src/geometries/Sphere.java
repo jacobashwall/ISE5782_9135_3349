@@ -1,9 +1,6 @@
 package geometries;
 
-import primitives.Point;
-import primitives.Ray;
-import primitives.Util;
-import primitives.Vector;
+import primitives.*;
 
 import java.util.List;
 import java.util.Map;
@@ -46,7 +43,15 @@ public class Sphere extends Geometry {
         Point center = new Point(Double.valueOf(centerValues[0]),
                 Double.valueOf(centerValues[1]),
                 Double.valueOf(centerValues[2]));
-        return new Sphere(center,radius);
+        Sphere sphere= new Sphere(center,radius);
+        if (sphereAttributes.get("emission")!=null){
+        String[] emissionLightAttributes = sphereAttributes.get("emission").split("\\s+");
+        Color emissionLight = new Color(
+                Double.valueOf(emissionLightAttributes[0]),
+                Double.valueOf(emissionLightAttributes[1]),
+                Double.valueOf(emissionLightAttributes[2]));
+        sphere.setEmission(emissionLight);}
+        return sphere;
 
     }
 

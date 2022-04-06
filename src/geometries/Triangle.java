@@ -1,5 +1,6 @@
 package geometries;
 
+import primitives.Color;
 import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
@@ -48,7 +49,15 @@ public class Triangle extends Polygon {
         Point p2 = new Point(Double.valueOf(P2coordinates[0]),
                 Double.valueOf(P2coordinates[1]),
                 Double.valueOf(P2coordinates[2]));
-       return new Triangle(p0,p1,p2);
+        Triangle triangle= new Triangle(p0,p1,p2);
+        if (triangleAttributes.get("emission")!=null){
+        String[] emissionLightAttributes = triangleAttributes.get("emission").split("\\s+");
+        Color emissionLight = new Color(
+                Double.valueOf(emissionLightAttributes[0]),
+                Double.valueOf(emissionLightAttributes[1]),
+                Double.valueOf(emissionLightAttributes[2]));
+       triangle.setEmission(emissionLight);}
+       return triangle;
     }
 
 

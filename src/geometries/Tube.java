@@ -1,10 +1,12 @@
 package geometries;
 
+import primitives.Color;
 import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 
 import java.util.List;
+import java.util.Map;
 
 import static primitives.Util.isZero;
 
@@ -25,6 +27,35 @@ public class Tube extends Geometry {
     public Tube(Ray axisRay, double radius) {
         this.axisRay = axisRay;
         this.radius = radius;
+    }
+
+    /**
+     * Creates a tube using the list of attributes from the XML file
+     *
+     * @param tubeAttributes list of tube attributes fetched from the xml file
+     * @return a tube with the values stated in the tube attributes
+     */
+    public static Tube ReadXMLTube(Map<String, String> tubeAttributes) {
+        double radius = Double.valueOf(tubeAttributes.get("radius"));
+
+        String[] axisRayAtrribute = tubeAttributes
+                .get("axis").split("\\s+");
+        Point p0 = new Point(Double.valueOf(axisRayAtrribute[1]),
+                Double.valueOf(axisRayAtrribute[2]),
+                Double.valueOf(axisRayAtrribute[3]));
+        Vector dir = new Vector(Double.valueOf(axisRayAtrribute[5]),
+                Double.valueOf(axisRayAtrribute[6]),
+                Double.valueOf(axisRayAtrribute[7]));
+        Ray axisRay = new Ray(p0, dir);
+        Tube tube= new Tube(axisRay, radius);
+        if (tubeAttributes.get("emission")!=null){
+        String[] emissionLightAttributes = tubeAttributes.get("emission").split("\\s+");
+        Color emissionLight = new Color(
+                Double.valueOf(emissionLightAttributes[0]),
+                Double.valueOf(emissionLightAttributes[1]),
+                Double.valueOf(emissionLightAttributes[2]));
+        tube.setEmission(emissionLight);}
+        return tube;
     }
 
     /**

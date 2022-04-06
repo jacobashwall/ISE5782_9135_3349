@@ -1,5 +1,6 @@
 package geometries;
 
+import primitives.Color;
 import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
@@ -73,7 +74,17 @@ public class Plane extends Geometry {
             Point p2 = new Point(Double.valueOf(p2Attributes[0]),
                     Double.valueOf(p2Attributes[1]),
                     Double.valueOf(p2Attributes[2]));
-            return new Plane(p0,p1,p2);
+
+            Plane plane= new Plane(p0,p1,p2);
+            if (planeAttributes.get("emission")!=null) {
+                String[] emissionLightAttributes = planeAttributes.get("emission").split("\\s+");
+                Color emissionLight = new Color(
+                        Double.valueOf(emissionLightAttributes[0]),
+                        Double.valueOf(emissionLightAttributes[1]),
+                        Double.valueOf(emissionLightAttributes[2]));
+                plane.setEmission(emissionLight);
+            }
+            return plane;
         }
 
 

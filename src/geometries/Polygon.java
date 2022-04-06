@@ -3,6 +3,7 @@ package geometries;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import primitives.*;
 
@@ -88,6 +89,36 @@ public class Polygon extends Geometry {
         }
     }
 
+    /**
+     * Creates a polygon using the list of attributes from the XML file
+     *
+     * @param polygonAttributes list of polygon attributes fetched from the xml file
+     * @return a polygon with the values stated in the polygon attributes
+     */
+    public static Polygon ReadXmlPolygon(Map<String, String> polygonAttributes) {
+        Point[] vertices= new Point[polygonAttributes.size()];
+        String[] PiCoordinates;
+        Point pi;
+        for (int i = 0; i < polygonAttributes.size(); i++) {
+            PiCoordinates=polygonAttributes.get("p"+String.valueOf(i)).split("\\s+");
+            pi= new Point(Double.valueOf(PiCoordinates[0]),
+                    Double.valueOf(PiCoordinates[1]),
+                    Double.valueOf(PiCoordinates[2]));
+            vertices[i]=pi;
+        }
+        Polygon polygon= new Polygon(vertices);
+        if (polygonAttributes.get("emission")!=null) {
+            String[] emissionLightAttributes = polygonAttributes.get("emission").split("\\s+");
+            Color emissionLight = new Color(
+                    Double.valueOf(emissionLightAttributes[0]),
+                    Double.valueOf(emissionLightAttributes[1]),
+                    Double.valueOf(emissionLightAttributes[2]));
+            polygon.setEmission(emissionLight);
+        }
+        return polygon;
+    }
+
+
     @Override
     public Vector getNormal(Point point) {
         return plane.getNormal();
@@ -138,12 +169,12 @@ public class Polygon extends Geometry {
     }*/
 
     public List<GeoPoint> findGeoIntersections(Ray ray) {
-        List<GeoPoint> intersection =this.plane.findGeoIntersections(ray);
+        List<GeoPoint> intersection = this.plane.findGeoIntersections(ray);
         if (intersection == null)//checks if there is an intersection with the plane of the polygon
             return null;
-        List<GeoPoint> geoIntersection= new LinkedList<>();
+        List<GeoPoint> geoIntersection = new LinkedList<>();
         for (var geoPoint : intersection)
-            geoIntersection.add(new GeoPoint(this,geoPoint.point));
+            geoIntersection.add(new GeoPoint(this, geoPoint.point));
         //we will check if the point is inside or outside the polygon
         Point p0 = ray.getP0();
         Vector v = ray.getDir();

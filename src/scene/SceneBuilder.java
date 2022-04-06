@@ -87,6 +87,24 @@ public class SceneBuilder {
             scene.geometries.add(plane);
         }
 
+        // creating and adding tubes
+        for (Map<String, String> tubeAttributes : sceneDescriptor.getTubes()) {
+            Tube tube = Tube.ReadXMLTube(tubeAttributes);
+            scene.geometries.add(tube);
+        }
+
+        // creating and adding cylinders
+        for (Map<String, String> cylinderAttributes : sceneDescriptor.getCylinders()) {
+            Cylinder cylinder = Cylinder.ReadXMLCylinder(cylinderAttributes);
+            scene.geometries.add(cylinder);
+        }
+
+        // creating and adding polygons
+        for (Map<String, String> polygonAttributes : sceneDescriptor.getPolygons()) {
+            Polygon polygon = Polygon.ReadXmlPolygon(polygonAttributes);
+            scene.geometries.add(polygon);
+        }
+
     }
 
     /**

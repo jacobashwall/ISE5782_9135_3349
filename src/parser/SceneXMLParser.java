@@ -46,6 +46,12 @@ public class SceneXMLParser extends DefaultHandler {
                     sceneDesc.triangles.add(myAttributes);
                 if (qName.equals("plane"))
                     sceneDesc.planes.add(myAttributes);
+                if (qName.equals("tube"))
+                    sceneDesc.planes.add(myAttributes);
+                if (qName.equals("cylinder"))
+                    sceneDesc.planes.add(myAttributes);
+                if (qName.equals("polygon"))
+                    sceneDesc.planes.add(myAttributes);
             }
         }
 

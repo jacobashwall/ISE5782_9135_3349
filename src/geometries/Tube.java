@@ -45,9 +45,9 @@ public class Tube extends Geometry {
                 Double.valueOf(axisRayAtrribute[2]));
         axisRayAtrribute = tubeAttributes
                 .get("dir").split("\\s+");
-        Vector dir = new Vector(Double.valueOf(axisRayAtrribute[5]),
-                Double.valueOf(axisRayAtrribute[6]),
-                Double.valueOf(axisRayAtrribute[7]));
+        Vector dir = new Vector(Double.valueOf(axisRayAtrribute[0]),
+                Double.valueOf(axisRayAtrribute[1]),
+                Double.valueOf(axisRayAtrribute[2]));
         Ray axisRay = new Ray(p0, dir);
         Tube tube = new Tube(axisRay, radius);
         if (tubeAttributes.get("emission") != null) {

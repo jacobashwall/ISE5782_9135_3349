@@ -41,9 +41,9 @@ public class Cylinder extends Tube {
                 Double.valueOf(axisRayAtrribute[2]));
         axisRayAtrribute = cylinderAttributes
                 .get("dir").split("\\s+");
-        Vector dir = new Vector(Double.valueOf(axisRayAtrribute[5]),
-                Double.valueOf(axisRayAtrribute[6]),
-                Double.valueOf(axisRayAtrribute[7]));
+        Vector dir = new Vector(Double.valueOf(axisRayAtrribute[0]),
+                Double.valueOf(axisRayAtrribute[1]),
+                Double.valueOf(axisRayAtrribute[2]));
         Ray axisRay = new Ray(p0, dir);
 
         double height = Double.valueOf(cylinderAttributes.get("height"));

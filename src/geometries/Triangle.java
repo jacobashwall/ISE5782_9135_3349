@@ -35,30 +35,30 @@ public class Triangle extends Polygon {
         String[] P0coordinates = triangleAttributes
                 .get("p0").split("\\s+");
 
-        Point p0 = new Point(Double.valueOf(P0coordinates[0]),
-                Double.valueOf(P0coordinates[1]),
-                Double.valueOf(P0coordinates[2]));
+        Point p0 = new Point(Double.parseDouble(P0coordinates[0]),
+                Double.parseDouble(P0coordinates[1]),
+                Double.parseDouble(P0coordinates[2]));
 
         String[] P1coordinates = triangleAttributes
                 .get("p1").split("\\s+");
 
-        Point p1 = new Point(Double.valueOf(P1coordinates[0]),
-                Double.valueOf(P1coordinates[1]),
-                Double.valueOf(P1coordinates[2]));
+        Point p1 = new Point(Double.parseDouble(P1coordinates[0]),
+                Double.parseDouble(P1coordinates[1]),
+                Double.parseDouble(P1coordinates[2]));
 
         String[] P2coordinates = triangleAttributes
                 .get("p2").split("\\s+");
 
-        Point p2 = new Point(Double.valueOf(P2coordinates[0]),
-                Double.valueOf(P2coordinates[1]),
-                Double.valueOf(P2coordinates[2]));
+        Point p2 = new Point(Double.parseDouble(P2coordinates[0]),
+                Double.parseDouble(P2coordinates[1]),
+                Double.parseDouble(P2coordinates[2]));
         Triangle triangle = new Triangle(p0, p1, p2);
         if (triangleAttributes.get("emission") != null) {
             String[] emissionLightAttributes = triangleAttributes.get("emission").split("\\s+");
             Color emissionLight = new Color(
-                    Double.valueOf(emissionLightAttributes[0]),
-                    Double.valueOf(emissionLightAttributes[1]),
-                    Double.valueOf(emissionLightAttributes[2]));
+                    Double.parseDouble(emissionLightAttributes[0]),
+                    Double.parseDouble(emissionLightAttributes[1]),
+                    Double.parseDouble(emissionLightAttributes[2]));
             triangle.setEmission(emissionLight);
         }
         return triangle;

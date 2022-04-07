@@ -16,6 +16,7 @@ class PlaneTest {
     /**
      * test for the constructor
      */
+   // @Test
     void Plane() {
         Point pnt1 = new Point(0, 0, 0);
         Point pnt2 = new Point(1, 0, 0);
@@ -23,7 +24,7 @@ class PlaneTest {
         //============ Equivalence Partitions Tests ==============//
         //TC: Testing that the three point ctor creates the correct plane
 
-        assertEquals(new Plane(pnt1, pnt2, pnt3), new Plane(pnt1, new Vector(0, 0, -1)), "Error");
+        assertEquals(new Plane(pnt1, pnt2, pnt3), new Plane(pnt1, new Vector(0, 0, 1)), "Error");
 
         //============ Boundary Tests ==============//
         //TC: Testing that the three point ctor creates the correct plane

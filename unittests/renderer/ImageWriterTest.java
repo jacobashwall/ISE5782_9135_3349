@@ -3,7 +3,6 @@ package renderer;
 import org.junit.jupiter.api.Test;
 import primitives.Color;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * test Image writer
@@ -15,7 +14,7 @@ class ImageWriterTest {
      * {@link renderer.ImageWriter}
      */
     @Test
-    void ImageWriterTest(){
+    void ImageWriterGridTest(){
         ImageWriter imageWriter = new ImageWriter("MyFirstPicture",800,500);
         //Printing a red net over yellow background
         for(int i = 0;i < 800; i++){

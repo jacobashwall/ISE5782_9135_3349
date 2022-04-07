@@ -55,33 +55,33 @@ public class Plane extends Geometry {
     public static Plane ReadXMLPlane(Map<String, String> planeAttributes) {
 
         String[] p0Attributes = planeAttributes.get("p0").split("\\s+");
-        Point p0 = new Point(Double.valueOf(p0Attributes[0]),
-                Double.valueOf(p0Attributes[1]),
-                Double.valueOf(p0Attributes[2]));
+        Point p0 = new Point(Double.parseDouble(p0Attributes[0]),
+                Double.parseDouble(p0Attributes[1]),
+                Double.parseDouble(p0Attributes[2]));
         String[] normalAttributes = planeAttributes
                 .get("normal").split("\\s+");
         if (normalAttributes != null) {//using the constructor of normal+ q0
-            Vector normal = new Vector(Double.valueOf(normalAttributes[0]),
-                    Double.valueOf(normalAttributes[1]),
-                    Double.valueOf(normalAttributes[2]));
+            Vector normal = new Vector(Double.parseDouble(normalAttributes[0]),
+                    Double.parseDouble(normalAttributes[1]),
+                    Double.parseDouble(normalAttributes[2]));
             return new Plane(p0, normal);
         } else {//using 3 points constructor
             String[] p1Attributes = planeAttributes.get("p0").split("\\s+");
-            Point p1 = new Point(Double.valueOf(p1Attributes[0]),
-                    Double.valueOf(p1Attributes[1]),
-                    Double.valueOf(p1Attributes[2]));
+            Point p1 = new Point(Double.parseDouble(p1Attributes[0]),
+                    Double.parseDouble(p1Attributes[1]),
+                    Double.parseDouble(p1Attributes[2]));
             String[] p2Attributes = planeAttributes.get("p0").split("\\s+");
-            Point p2 = new Point(Double.valueOf(p2Attributes[0]),
-                    Double.valueOf(p2Attributes[1]),
-                    Double.valueOf(p2Attributes[2]));
+            Point p2 = new Point(Double.parseDouble(p2Attributes[0]),
+                    Double.parseDouble(p2Attributes[1]),
+                    Double.parseDouble(p2Attributes[2]));
 
             Plane plane = new Plane(p0, p1, p2);
             if (planeAttributes.get("emission") != null) {
                 String[] emissionLightAttributes = planeAttributes.get("emission").split("\\s+");
                 Color emissionLight = new Color(
-                        Double.valueOf(emissionLightAttributes[0]),
-                        Double.valueOf(emissionLightAttributes[1]),
-                        Double.valueOf(emissionLightAttributes[2]));
+                        Double.parseDouble(emissionLightAttributes[0]),
+                        Double.parseDouble(emissionLightAttributes[1]),
+                        Double.parseDouble(emissionLightAttributes[2]));
                 plane.setEmission(emissionLight);
             }
             return plane;

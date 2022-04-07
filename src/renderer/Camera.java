@@ -5,7 +5,6 @@ import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 
-import javax.swing.*;
 import java.util.MissingResourceException;
 
 /**

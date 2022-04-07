@@ -6,7 +6,7 @@ import java.util.Map;
 
 /**
  * Class that represents an ambient light.
- * Ambient light is an omni-directional, fixed intensity and fixed color type of light.
+ * Ambient light is an omnidirectional, fixed intensity and fixed color type of light.
  */
 public class AmbientLight {
 
@@ -29,22 +29,22 @@ public class AmbientLight {
             return new AmbientLight();
         String[] colorAttributes = AmbientLightAttributes.get("color").split("\\s+");
         Color color = new Color(
-                Double.valueOf(colorAttributes[0]),
-                Double.valueOf(colorAttributes[1]),
-                Double.valueOf(colorAttributes[2]));
+                Double.parseDouble(colorAttributes[0]),
+                Double.parseDouble(colorAttributes[1]),
+                Double.parseDouble(colorAttributes[2]));
         String[] factorAttributes = AmbientLightAttributes.get("k").split("\\s+");
         Double3 k;
         if (factorAttributes.length == 1)//using the constructor that uses only one variable
-            k = new Double3(Double.valueOf(factorAttributes[0]));
+            k = new Double3(Double.parseDouble(factorAttributes[0]));
         else//using 3 values constructor
-            k = new Double3(Double.valueOf(factorAttributes[0]),
-                    Double.valueOf(factorAttributes[1]),
-                    Double.valueOf(factorAttributes[2]));
+            k = new Double3(Double.parseDouble(factorAttributes[0]),
+                    Double.parseDouble(factorAttributes[1]),
+                    Double.parseDouble(factorAttributes[2]));
         return new AmbientLight(color, k);
     }
 
     /**
-     * Default constructor, set the intensity field to Color.BLACK
+     * Default constructor, set the intensity field to Color. BLACK
      */
     public AmbientLight() {
         this.intensity = Color.BLACK;

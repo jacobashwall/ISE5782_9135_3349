@@ -32,29 +32,29 @@ public class Cylinder extends Tube {
      * @return a cylinder with the values stated in the tube attributes
      */
     public static Cylinder ReadXMLCylinder(Map<String, String> cylinderAttributes) {
-        double radius = Double.valueOf(cylinderAttributes.get("radius"));
+        double radius = Double.parseDouble(cylinderAttributes.get("radius"));
 
-        String[] axisRayAtrribute = cylinderAttributes
+        String[] axisRayAttribute = cylinderAttributes
                 .get("p0").split("\\s+");
-        Point p0 = new Point(Double.valueOf(axisRayAtrribute[0]),
-                Double.valueOf(axisRayAtrribute[1]),
-                Double.valueOf(axisRayAtrribute[2]));
-        axisRayAtrribute = cylinderAttributes
+        Point p0 = new Point(Double.parseDouble(axisRayAttribute[0]),
+                Double.parseDouble(axisRayAttribute[1]),
+                Double.parseDouble(axisRayAttribute[2]));
+        axisRayAttribute = cylinderAttributes
                 .get("dir").split("\\s+");
-        Vector dir = new Vector(Double.valueOf(axisRayAtrribute[0]),
-                Double.valueOf(axisRayAtrribute[1]),
-                Double.valueOf(axisRayAtrribute[2]));
+        Vector dir = new Vector(Double.parseDouble(axisRayAttribute[0]),
+                Double.parseDouble(axisRayAttribute[1]),
+                Double.parseDouble(axisRayAttribute[2]));
         Ray axisRay = new Ray(p0, dir);
 
-        double height = Double.valueOf(cylinderAttributes.get("height"));
+        double height = Double.parseDouble(cylinderAttributes.get("height"));
 
         Cylinder cylinder = new Cylinder(axisRay, radius, height);
         if (cylinderAttributes.get("emission") != null) {
             String[] emissionLightAttributes = cylinderAttributes.get("emission").split("\\s+");
             Color emissionLight = new Color(
-                    Double.valueOf(emissionLightAttributes[0]),
-                    Double.valueOf(emissionLightAttributes[1]),
-                    Double.valueOf(emissionLightAttributes[2]));
+                    Double.parseDouble(emissionLightAttributes[0]),
+                    Double.parseDouble(emissionLightAttributes[1]),
+                    Double.parseDouble(emissionLightAttributes[2]));
             cylinder.setEmission(emissionLight);
         }
         return cylinder;

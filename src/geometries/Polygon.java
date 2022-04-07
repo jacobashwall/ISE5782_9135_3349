@@ -1,6 +1,6 @@
 package geometries;
 
-import java.util.ArrayList;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -96,17 +96,17 @@ public class Polygon extends Geometry {
      * @return a polygon with the values stated in the polygon attributes
      */
     public static Polygon ReadXmlPolygon(Map<String, String> polygonAttributes) {
-        List<Point> copyVertices = new LinkedList<Point>();
-        String[] pIcoordinates;
+        List<Point> copyVertices = new LinkedList<>();
+        String[] coordinates;
         Point pI;
         String pointName;
         for (int i = 0; i < polygonAttributes.size(); i++) {
-            pointName="p"+ String.valueOf(i);
+            pointName="p"+ i;
             if(polygonAttributes.get(pointName)!=null) {
-                pIcoordinates = polygonAttributes.get(pointName).split("\\s+");
-                pI = new Point(Double.valueOf(pIcoordinates[0]),
-                        Double.valueOf(pIcoordinates[1]),
-                        Double.valueOf(pIcoordinates[2]));
+                coordinates = polygonAttributes.get(pointName).split("\\s+");
+                pI = new Point(Double.parseDouble(coordinates[0]),
+                        Double.parseDouble(coordinates[1]),
+                        Double.parseDouble(coordinates[2]));
                 copyVertices.add(pI);
             }
         }
@@ -115,9 +115,9 @@ public class Polygon extends Geometry {
         if (polygonAttributes.get("emission") != null) {
             String[] emissionLightAttributes = polygonAttributes.get("emission").split("\\s+");
             Color emissionLight = new Color(
-                    Double.valueOf(emissionLightAttributes[0]),
-                    Double.valueOf(emissionLightAttributes[1]),
-                    Double.valueOf(emissionLightAttributes[2]));
+                    Double.parseDouble(emissionLightAttributes[0]),
+                    Double.parseDouble(emissionLightAttributes[1]),
+                    Double.parseDouble(emissionLightAttributes[2]));
             polygon.setEmission(emissionLight);
         }
         return polygon;

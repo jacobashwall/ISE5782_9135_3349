@@ -13,7 +13,7 @@ import javax.imageio.*;
 /**
  * Image writer class combines accumulation of pixel color matrix and finally
  * producing a non-optimized jpeg image from this matrix. The class although is
- * responsible of holding image related parameters of View Plane - pixel matrix
+ * responsible for holding image related parameters of View Plane - pixel matrix
  * size and resolution
  *
  * @author Dan
@@ -86,8 +86,8 @@ public class ImageWriter {
      * The function writePixel writes a color of a specific pixel into pixel color
      * matrix
      *
-     * @param xIndex X axis index of the pixel
-     * @param yIndex Y axis index of the pixel
+     * @param xIndex X-axis index of the pixel
+     * @param yIndex Y-axis index of the pixel
      * @param color  final color of the pixel
      */
     public void writePixel(int xIndex, int yIndex, Color color) {

@@ -8,7 +8,6 @@ import primitives.Vector;
 import java.util.List;
 import java.util.Map;
 
-import static primitives.Util.isZero;
 
 /**
  * Class that represents a tube and implements the interface Geometry
@@ -36,26 +35,26 @@ public class Tube extends Geometry {
      * @return a tube with the values stated in the tube attributes
      */
     public static Tube ReadXMLTube(Map<String, String> tubeAttributes) {
-        double radius = Double.valueOf(tubeAttributes.get("radius"));
+        double radius = Double.parseDouble(tubeAttributes.get("radius"));
 
-        String[] axisRayAtrribute = tubeAttributes
+        String[] axisRayAttribute = tubeAttributes
                 .get("p0").split("\\s+");
-        Point p0 = new Point(Double.valueOf(axisRayAtrribute[0]),
-                Double.valueOf(axisRayAtrribute[1]),
-                Double.valueOf(axisRayAtrribute[2]));
-        axisRayAtrribute = tubeAttributes
+        Point p0 = new Point(Double.parseDouble(axisRayAttribute[0]),
+                Double.parseDouble(axisRayAttribute[1]),
+                Double.parseDouble(axisRayAttribute[2]));
+        axisRayAttribute = tubeAttributes
                 .get("dir").split("\\s+");
-        Vector dir = new Vector(Double.valueOf(axisRayAtrribute[0]),
-                Double.valueOf(axisRayAtrribute[1]),
-                Double.valueOf(axisRayAtrribute[2]));
+        Vector dir = new Vector(Double.parseDouble(axisRayAttribute[0]),
+                Double.parseDouble(axisRayAttribute[1]),
+                Double.parseDouble(axisRayAttribute[2]));
         Ray axisRay = new Ray(p0, dir);
         Tube tube = new Tube(axisRay, radius);
         if (tubeAttributes.get("emission") != null) {
             String[] emissionLightAttributes = tubeAttributes.get("emission").split("\\s+");
             Color emissionLight = new Color(
-                    Double.valueOf(emissionLightAttributes[0]),
-                    Double.valueOf(emissionLightAttributes[1]),
-                    Double.valueOf(emissionLightAttributes[2]));
+                    Double.parseDouble(emissionLightAttributes[0]),
+                    Double.parseDouble(emissionLightAttributes[1]),
+                    Double.parseDouble(emissionLightAttributes[2]));
             tube.setEmission(emissionLight);
         }
         return tube;

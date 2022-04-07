@@ -62,9 +62,9 @@ public class SceneBuilder {
         String[] backgroundColor = sceneDescriptor.getSceneAttributes()
                 .get("background-color").split("\\s+");
         Color background = new Color(
-                (Double.valueOf(backgroundColor[0])),
-                (Double.valueOf(backgroundColor[1])),
-                (Double.valueOf(backgroundColor[2])));
+                (Double.parseDouble(backgroundColor[0])),
+                (Double.parseDouble(backgroundColor[1])),
+                (Double.parseDouble(backgroundColor[2])));
 
         // adding the attributes to the scene
         scene.setBackground(background).setAmbientLight(ambientLight).setGeometries(new Geometries());

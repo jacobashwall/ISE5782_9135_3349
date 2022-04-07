@@ -1,7 +1,6 @@
 package primitives;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.function.Executable;
 
 import static java.lang.Math.sqrt;
 import static org.junit.jupiter.api.Assertions.*;
@@ -103,7 +102,7 @@ class VectorTest {
 
         //TC: Test that exception is thrown for cross product of opposite vectors.
         Vector vec5 = new Vector(-2, -4, -6);
-        assertThrows(IllegalArgumentException.class, () -> vec1.crossProduct(vec4), "TC5: Cross Product for opposite vectors does not throw an exception");
+        assertThrows(IllegalArgumentException.class, () -> vec1.crossProduct(vec5), "TC5: Cross Product for opposite vectors does not throw an exception");
 
     }
 

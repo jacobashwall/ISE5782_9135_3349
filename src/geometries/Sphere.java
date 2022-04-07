@@ -36,21 +36,21 @@ public class Sphere extends Geometry {
      * @return a sphere with the values stated in the sphere attributes
      */
     public static Sphere ReadXMLSphere(Map<String, String> sphereAttributes) {
-        double radius = Double.valueOf(sphereAttributes.get("radius"));
+        double radius = Double.parseDouble(sphereAttributes.get("radius"));
 
         String[] centerValues = sphereAttributes
                 .get("center").split("\\s+");
 
-        Point center = new Point(Double.valueOf(centerValues[0]),
-                Double.valueOf(centerValues[1]),
-                Double.valueOf(centerValues[2]));
+        Point center = new Point(Double.parseDouble(centerValues[0]),
+                Double.parseDouble(centerValues[1]),
+                Double.parseDouble(centerValues[2]));
         Sphere sphere = new Sphere(center, radius);
         if (sphereAttributes.get("emission") != null) {
             String[] emissionLightAttributes = sphereAttributes.get("emission").split("\\s+");
             Color emissionLight = new Color(
-                    Double.valueOf(emissionLightAttributes[0]),
-                    Double.valueOf(emissionLightAttributes[1]),
-                    Double.valueOf(emissionLightAttributes[2]));
+                    Double.parseDouble(emissionLightAttributes[0]),
+                    Double.parseDouble(emissionLightAttributes[1]),
+                    Double.parseDouble(emissionLightAttributes[2]));
             sphere.setEmission(emissionLight);
         }
         return sphere;

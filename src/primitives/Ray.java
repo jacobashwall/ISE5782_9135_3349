@@ -80,10 +80,10 @@ public class Ray {
 
 
     /**
-     * Method for finding the closest Geopoint to the head of the ray in a given list of points
+     * Method for finding the closest GeoPoint to the head of the ray in a given list of points
      *
      * @param lst List of points
-     * @return Closest Geopoint to the head of the ray
+     * @return Closest GeoPoint to the head of the ray
      */
     public GeoPoint findClosestGeoPoint(List<GeoPoint> lst) {
         //In case of empty list return null

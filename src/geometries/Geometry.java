@@ -8,10 +8,11 @@ import primitives.Vector;
  * abstract class which all the geometries implement
  */
 public abstract class Geometry extends Intersectable {
-    protected Color emission=Color.BLACK;
+    protected Color emission = Color.BLACK;
 
     /**
      * Emission getter
+     *
      * @return the emission
      */
     public Color getEmission() {
@@ -20,6 +21,7 @@ public abstract class Geometry extends Intersectable {
 
     /**
      * Emission setter
+     *
      * @param emission the new emission
      * @return the modified geometry
      */

@@ -49,14 +49,15 @@ public class Tube extends Geometry {
                 Double.valueOf(axisRayAtrribute[6]),
                 Double.valueOf(axisRayAtrribute[7]));
         Ray axisRay = new Ray(p0, dir);
-        Tube tube= new Tube(axisRay, radius);
-        if (tubeAttributes.get("emission")!=null){
-        String[] emissionLightAttributes = tubeAttributes.get("emission").split("\\s+");
-        Color emissionLight = new Color(
-                Double.valueOf(emissionLightAttributes[0]),
-                Double.valueOf(emissionLightAttributes[1]),
-                Double.valueOf(emissionLightAttributes[2]));
-        tube.setEmission(emissionLight);}
+        Tube tube = new Tube(axisRay, radius);
+        if (tubeAttributes.get("emission") != null) {
+            String[] emissionLightAttributes = tubeAttributes.get("emission").split("\\s+");
+            Color emissionLight = new Color(
+                    Double.valueOf(emissionLightAttributes[0]),
+                    Double.valueOf(emissionLightAttributes[1]),
+                    Double.valueOf(emissionLightAttributes[2]));
+            tube.setEmission(emissionLight);
+        }
         return tube;
     }
 

@@ -31,26 +31,28 @@ public class Sphere extends Geometry {
 
     /**
      * Creates a sphere using the list of attributes from the XML file
+     *
      * @param sphereAttributes list of sphere attributes fetched from the xml file
      * @return a sphere with the values stated in the sphere attributes
      */
     public static Sphere ReadXMLSphere(Map<String, String> sphereAttributes) {
         double radius = Double.valueOf(sphereAttributes.get("radius"));
 
-        String[] centerValues= sphereAttributes
+        String[] centerValues = sphereAttributes
                 .get("center").split("\\s+");
 
         Point center = new Point(Double.valueOf(centerValues[0]),
                 Double.valueOf(centerValues[1]),
                 Double.valueOf(centerValues[2]));
-        Sphere sphere= new Sphere(center,radius);
-        if (sphereAttributes.get("emission")!=null){
-        String[] emissionLightAttributes = sphereAttributes.get("emission").split("\\s+");
-        Color emissionLight = new Color(
-                Double.valueOf(emissionLightAttributes[0]),
-                Double.valueOf(emissionLightAttributes[1]),
-                Double.valueOf(emissionLightAttributes[2]));
-        sphere.setEmission(emissionLight);}
+        Sphere sphere = new Sphere(center, radius);
+        if (sphereAttributes.get("emission") != null) {
+            String[] emissionLightAttributes = sphereAttributes.get("emission").split("\\s+");
+            Color emissionLight = new Color(
+                    Double.valueOf(emissionLightAttributes[0]),
+                    Double.valueOf(emissionLightAttributes[1]),
+                    Double.valueOf(emissionLightAttributes[2]));
+            sphere.setEmission(emissionLight);
+        }
         return sphere;
 
     }
@@ -140,6 +142,6 @@ public class Sphere extends Geometry {
         if (t2 <= 0) return null;
         double t1 = alignZero(tm - th);
         // If only one is greater than 0 then the ray intersects the sphere only once
-        return t1 <= 0 ? List.of(new GeoPoint(this,ray.getPoint(t2))) : List.of(new GeoPoint(this,ray.getPoint(t1)), new GeoPoint(this,ray.getPoint(t2)));
+        return t1 <= 0 ? List.of(new GeoPoint(this, ray.getPoint(t2))) : List.of(new GeoPoint(this, ray.getPoint(t1)), new GeoPoint(this, ray.getPoint(t2)));
     }
 }

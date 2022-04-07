@@ -12,14 +12,16 @@ public abstract class RayTracerBase {
 
     /**
      * RayTracerBase constructor
+     *
      * @param scene the given scene to trace the rays in
      */
-    public RayTracerBase(Scene scene){
-        this.scene=scene;
+    public RayTracerBase(Scene scene) {
+        this.scene = scene;
     }
 
     /**
      * Trace the ray to find the color at the intersection point
+     *
      * @param ray the ray to find the color at the intersection point
      * @return the color at the intersection point
      */

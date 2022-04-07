@@ -17,13 +17,16 @@ import static primitives.Util.alignZero;
 public class Triangle extends Polygon {
     /**
      * Triangle constructor
+     *
      * @param vertices the vertices of the triangle
      */
     public Triangle(Point... vertices) {
         super(vertices);
     }
+
     /**
      * Creates a triangle using the list of attributes from the XML file
+     *
      * @param triangleAttributes list of triangle attributes fetched from the xml file
      * @return a triangle with the values stated in the triangle attributes
      */
@@ -49,15 +52,16 @@ public class Triangle extends Polygon {
         Point p2 = new Point(Double.valueOf(P2coordinates[0]),
                 Double.valueOf(P2coordinates[1]),
                 Double.valueOf(P2coordinates[2]));
-        Triangle triangle= new Triangle(p0,p1,p2);
-        if (triangleAttributes.get("emission")!=null){
-        String[] emissionLightAttributes = triangleAttributes.get("emission").split("\\s+");
-        Color emissionLight = new Color(
-                Double.valueOf(emissionLightAttributes[0]),
-                Double.valueOf(emissionLightAttributes[1]),
-                Double.valueOf(emissionLightAttributes[2]));
-       triangle.setEmission(emissionLight);}
-       return triangle;
+        Triangle triangle = new Triangle(p0, p1, p2);
+        if (triangleAttributes.get("emission") != null) {
+            String[] emissionLightAttributes = triangleAttributes.get("emission").split("\\s+");
+            Color emissionLight = new Color(
+                    Double.valueOf(emissionLightAttributes[0]),
+                    Double.valueOf(emissionLightAttributes[1]),
+                    Double.valueOf(emissionLightAttributes[2]));
+            triangle.setEmission(emissionLight);
+        }
+        return triangle;
     }
 
 
@@ -102,9 +106,9 @@ public class Triangle extends Polygon {
         var intersections = this.plane.findGeoIntersections(ray);
         if (intersections == null)//checks if there is an intersection with the plane of the triangle
             return null;
-        List<GeoPoint> geoIntersection= new LinkedList<>();
+        List<GeoPoint> geoIntersection = new LinkedList<>();
         for (var geoPoint : intersections)
-            geoIntersection.add(new GeoPoint(this,geoPoint.point));
+            geoIntersection.add(new GeoPoint(this, geoPoint.point));
         Point p0 = ray.getP0();
         Vector dir = ray.getDir();
         //we will check if the point is inside or outside the triangle

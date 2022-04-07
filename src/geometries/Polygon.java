@@ -96,18 +96,18 @@ public class Polygon extends Geometry {
      * @return a polygon with the values stated in the polygon attributes
      */
     public static Polygon ReadXmlPolygon(Map<String, String> polygonAttributes) {
-        Point[] vertices= new Point[polygonAttributes.size()];
+        Point[] vertices = new Point[polygonAttributes.size()];
         String[] PiCoordinates;
         Point pi;
         for (int i = 0; i < polygonAttributes.size(); i++) {
-            PiCoordinates=polygonAttributes.get("p"+String.valueOf(i)).split("\\s+");
-            pi= new Point(Double.valueOf(PiCoordinates[0]),
+            PiCoordinates = polygonAttributes.get("p" + String.valueOf(i)).split("\\s+");
+            pi = new Point(Double.valueOf(PiCoordinates[0]),
                     Double.valueOf(PiCoordinates[1]),
                     Double.valueOf(PiCoordinates[2]));
-            vertices[i]=pi;
+            vertices[i] = pi;
         }
-        Polygon polygon= new Polygon(vertices);
-        if (polygonAttributes.get("emission")!=null) {
+        Polygon polygon = new Polygon(vertices);
+        if (polygonAttributes.get("emission") != null) {
             String[] emissionLightAttributes = polygonAttributes.get("emission").split("\\s+");
             Color emissionLight = new Color(
                     Double.valueOf(emissionLightAttributes[0]),

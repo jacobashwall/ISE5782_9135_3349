@@ -48,6 +48,7 @@ public class Plane extends Geometry {
 
     /**
      * Creates a plane using the list of attributes from the XML file
+     *
      * @param planeAttributes list of plane attributes fetched from the xml file
      * @return a plane with the values stated in the plane attributes
      */
@@ -59,13 +60,12 @@ public class Plane extends Geometry {
                 Double.valueOf(p0Attributes[2]));
         String[] normalAttributes = planeAttributes
                 .get("normal").split("\\s+");
-        if (normalAttributes!=null) {//using the constructor of normal+ q0
+        if (normalAttributes != null) {//using the constructor of normal+ q0
             Vector normal = new Vector(Double.valueOf(normalAttributes[0]),
                     Double.valueOf(normalAttributes[1]),
                     Double.valueOf(normalAttributes[2]));
-            return new Plane(p0,normal);
-        }
-        else {//using 3 points constructor
+            return new Plane(p0, normal);
+        } else {//using 3 points constructor
             String[] p1Attributes = planeAttributes.get("p0").split("\\s+");
             Point p1 = new Point(Double.valueOf(p1Attributes[0]),
                     Double.valueOf(p1Attributes[1]),
@@ -75,8 +75,8 @@ public class Plane extends Geometry {
                     Double.valueOf(p2Attributes[1]),
                     Double.valueOf(p2Attributes[2]));
 
-            Plane plane= new Plane(p0,p1,p2);
-            if (planeAttributes.get("emission")!=null) {
+            Plane plane = new Plane(p0, p1, p2);
+            if (planeAttributes.get("emission") != null) {
                 String[] emissionLightAttributes = planeAttributes.get("emission").split("\\s+");
                 Color emissionLight = new Color(
                         Double.valueOf(emissionLightAttributes[0]),

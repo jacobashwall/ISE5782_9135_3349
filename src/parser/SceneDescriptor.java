@@ -15,11 +15,7 @@ public class SceneDescriptor {
     protected Map<String, String> ambientLightAttributes;
     protected List<Map<String, String>> spheres = new ArrayList<>();
     protected List<Map<String, String>> triangles = new ArrayList<>();
-
-    //not for the bonus
     protected List<Map<String, String>> planes = new ArrayList<>();
-
-    //to be implemented
     protected List<Map<String, String>> cylinders = new ArrayList<>();
     protected List<Map<String, String>> polygons = new ArrayList<>();
     protected List<Map<String, String>> tubes = new ArrayList<>();
@@ -36,10 +32,10 @@ public class SceneDescriptor {
         parser.parse(text, this);
 
         // Verify that scene structure is syntactically correct
+        //add everything that is essential to the scene to check here
         if (sceneAttributes == null) {
             throw new ParseException("No scene element found!", 0);
         }
-        //add everything that is essential to the scene to check
     }
 
     /**

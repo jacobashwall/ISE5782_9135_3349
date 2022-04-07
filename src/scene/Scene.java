@@ -24,9 +24,10 @@ public class Scene {
 
     /**
      * Constructor that sets the scene name and sets the other fields to their default values
+     *
      * @param name The name of the scene
      */
-    public Scene(String name){
+    public Scene(String name) {
         this.name = name;
         //Default values
         this.background = Color.BLACK;
@@ -40,6 +41,7 @@ public class Scene {
 
     /**
      * Set the background of the scene
+     *
      * @param background background of the scene
      * @return this
      */
@@ -50,6 +52,7 @@ public class Scene {
 
     /**
      * Set the ambientLight of the scene
+     *
      * @param ambientLight ambientLight of the scene
      * @return this
      */
@@ -60,6 +63,7 @@ public class Scene {
 
     /**
      * Set the geometric bodies of the scene
+     *
      * @param geometries geometric bodies of the scene
      * @return this
      */

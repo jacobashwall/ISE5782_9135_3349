@@ -58,9 +58,8 @@ public class Plane extends Geometry {
         Point p0 = new Point(Double.parseDouble(p0Attributes[0]),
                 Double.parseDouble(p0Attributes[1]),
                 Double.parseDouble(p0Attributes[2]));
-        String[] normalAttributes = planeAttributes
-                .get("normal").split("\\s+");
-        if (normalAttributes != null) {//using the constructor of normal+ q0
+        if (planeAttributes.get("normal") != null) {//using the constructor of normal+ q0
+            String[] normalAttributes = planeAttributes.get("normal").split("\\s+");
             Vector normal = new Vector(Double.parseDouble(normalAttributes[0]),
                     Double.parseDouble(normalAttributes[1]),
                     Double.parseDouble(normalAttributes[2]));

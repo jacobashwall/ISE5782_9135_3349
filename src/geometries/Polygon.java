@@ -96,20 +96,21 @@ public class Polygon extends Geometry {
      * @return a polygon with the values stated in the polygon attributes
      */
     public static Polygon ReadXmlPolygon(Map<String, String> polygonAttributes) {
-        Point[] vertices = new Point[polygonAttributes.size()-1];
-        String[] PiCoordinates;
-        Point pi;
+        List<Point> copyVertices = new LinkedList<Point>();
+        String[] pIcoordinates;
+        Point pI;
         String pointName;
-        for (int i = 0; i < polygonAttributes.size()-1; i++) {
+        for (int i = 0; i < polygonAttributes.size(); i++) {
             pointName="p"+ String.valueOf(i);
             if(polygonAttributes.get(pointName)!=null) {
-                PiCoordinates = polygonAttributes.get(pointName).split("\\s+");
-                pi = new Point(Double.valueOf(PiCoordinates[0]),
-                        Double.valueOf(PiCoordinates[1]),
-                        Double.valueOf(PiCoordinates[2]));
-                vertices[i] = pi;
+                pIcoordinates = polygonAttributes.get(pointName).split("\\s+");
+                pI = new Point(Double.valueOf(pIcoordinates[0]),
+                        Double.valueOf(pIcoordinates[1]),
+                        Double.valueOf(pIcoordinates[2]));
+                copyVertices.add(pI);
             }
         }
+        Point[] vertices=copyVertices.toArray(new Point[0]);
         Polygon polygon = new Polygon(vertices);
         if (polygonAttributes.get("emission") != null) {
             String[] emissionLightAttributes = polygonAttributes.get("emission").split("\\s+");

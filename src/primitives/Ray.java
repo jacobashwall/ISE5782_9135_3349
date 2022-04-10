@@ -73,7 +73,7 @@ public class Ray {
      */
     public Point findClosestPoint(List<Point> lst) {
         //In case of empty list return null
-        if (lst == null || lst.isEmpty()) {
+        if (lst == null) {
             return null;
         }
 
@@ -83,8 +83,8 @@ public class Ray {
         //than we have we replace the values.
         //This goes on until the end of the list.
         for (Point pnt : lst) {
-            if (d > this.getP0().distance(pnt)) {
-                d = this.getP0().distance(pnt);
+            if (d > this.p0.distance(pnt)) {
+                d = this.p0.distance(pnt);
                 p = pnt;
             }
         }

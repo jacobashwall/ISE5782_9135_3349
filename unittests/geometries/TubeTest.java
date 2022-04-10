@@ -22,17 +22,15 @@ class TubeTest {
         Ray ray = new Ray(pnt, vec);
         Tube tube = new Tube(ray, 1);
         //============ Equivalence Partitions Tests ==============//
-        //TC: Testing that getNormal returns the correct vector in the single equivalence partition
+        //EP1:Testing that getNormal returns the correct vector on the casing of the
 
-        //EP: casing
-        assertEquals(new Vector(0, 0, -1), tube.getNormal(new Point(1, 0, 0)), "getNormal is not working - EP1:casing");
+        assertEquals(new Vector(0, 0, -1), tube.getNormal(new Point(1, 0, 0)), "EP1: getNormal is not working on casing");
 
 
         //============ Boundary Tests ==============//
-        //TC: Testing the boundary case where the point creates an orthogonal vector to the ray direction vector.
+        //BVA1: Testing the boundary case where the point creates an orthogonal vector to the ray direction vector on the base.
 
-        //BVA: First base
-        assertEquals(new Vector(0, 0, -1), tube.getNormal(new Point(0, 0, 0)), "getNormal is not working - BVA");
+        assertEquals(new Vector(0, 0, -1), tube.getNormal(new Point(0, 0, 0)), "BVA1: getNormal is not working");
 
     }
 

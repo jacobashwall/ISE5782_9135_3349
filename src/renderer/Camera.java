@@ -163,13 +163,13 @@ public class Camera {
         //Center of the view plane
         Point pIJ = p0.add(vTo.scale(distance));
         //height of each pixel
-        double Ry = height / nY;
+        double rY = height / nY;
         //width of each pixel
-        double Rx = width / nX;
+        double rX = width / nX;
         //vertical distance of the required pixel from the center of the view plane
-        double yI = -(i - ((double) (nY - 1)) / 2) * Ry;
+        double yI = -(i - ((double) (nY - 1)) / 2) * rY;
         //horizontal distance of the required pixel from the center of the view plane
-        double xJ = -(j - ((double) (nX - 1)) / 2) * Rx;
+        double xJ = -(j - ((double) (nX - 1)) / 2) * rX;
 
         //changing the position of the center point so that the ray will intersect the view plane in the right place
         if (xJ != 0) {

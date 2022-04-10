@@ -9,7 +9,7 @@ import primitives.*;
 public class AmbientLight {
 
     //private field
-    private final Color intensity;
+    private Color intensity;
 
     /**
      * Constructor that takes a Color object and an attenuation coefficient (Double3) and return

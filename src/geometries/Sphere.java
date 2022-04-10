@@ -78,12 +78,12 @@ public class Sphere implements Geometry {
         // The idea is that the projection is the middle of the two intersection points
         // so all we have to do is to add and subtract the distance to the intersection points
         double tm = alignZero(vec.dotProduct(ray.getDir()));
-        double dSqr = vec.lengthSquared() - tm * tm;
-        double thSqr = this.radiusSqr - dSqr;
+        double dSqr = alignZero(vec.lengthSquared() - tm * tm);
+        double thSqr = alignZero(this.radiusSqr - dSqr);
         // If the ray is tangent to the sphere or doesn't intersect the sphere at all return null
         if (alignZero(thSqr) <= 0) return null;
 
-        double th = sqrt(thSqr);
+        double th = alignZero(sqrt(thSqr));
         double t2 = alignZero(tm + th);
         if (t2 <= 0) return null;
         double t1 = alignZero(tm - th);

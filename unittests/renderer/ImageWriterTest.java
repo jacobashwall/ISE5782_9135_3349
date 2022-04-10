@@ -18,17 +18,17 @@ class ImageWriterTest {
     void ImageWriterTest(){
         ImageWriter imageWriter = new ImageWriter("MyFirstPicture",800,500);
         //Printing a red net over yellow background
-        for(int i = 0;i < 800; i++){
-            for(int j = 0; j < 500; j++) {
+        for(int i = 0;i < 500; i++){
+            for(int j = 0; j < 800; j++) {
                 //Coordinates of the net
-                if((i+1)%50 == 0 || (j+1)%50 == 0){
+                if(i%50 == 0 || j%50 == 0){
                     //Red
-                    imageWriter.writePixel(i, j, new Color(255, 0, 0));
+                    imageWriter.writePixel(j, i, new Color(255, 0, 0));
                 }
                 //Background
                 else {
                     //Yellow
-                    imageWriter.writePixel(i, j, new Color(255,255 , 0));
+                    imageWriter.writePixel(j, i, new Color(255,255 , 0));
                 }
             }
         }

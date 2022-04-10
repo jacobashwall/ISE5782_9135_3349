@@ -41,7 +41,7 @@ public class Scene {
     /**
      * Set the background of the scene
      * @param background background of the scene
-     * @return this
+     * @return The object itself
      */
     public Scene setBackground(Color background) {
         this.background = background;
@@ -51,7 +51,7 @@ public class Scene {
     /**
      * Set the ambientLight of the scene
      * @param ambientLight ambientLight of the scene
-     * @return this
+     * @return The object itself
      */
     public Scene setAmbientLight(AmbientLight ambientLight) {
         this.ambientLight = ambientLight;
@@ -61,7 +61,7 @@ public class Scene {
     /**
      * Set the geometric bodies of the scene
      * @param geometries geometric bodies of the scene
-     * @return this
+     * @return The object itself
      */
     public Scene setGeometries(Geometries geometries) {
         this.geometries = geometries;

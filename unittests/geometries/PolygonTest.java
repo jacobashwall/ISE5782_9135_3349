@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import geometries.*;
+
 import primitives.*;
 
 import java.util.List;
@@ -55,17 +55,17 @@ public class PolygonTest {
         // TC10: Vertex on a side of a quadrangular
         assertThrows(IllegalArgumentException.class, //
                 () -> new Polygon(new Point(0, 0, 1), new Point(1, 0, 0), new Point(0, 1, 0), new Point(0, 0.5, 0.5)),
-                "Constructed a polygon with vertix on a side");
+                "Constructed a polygon with vertex on a side");
 
         // TC11: Last point = first point
         assertThrows(IllegalArgumentException.class, //
                 () -> new Polygon(new Point(0, 0, 1), new Point(1, 0, 0), new Point(0, 1, 0), new Point(0, 0, 1)),
-                "Constructed a polygon with vertice on a side");
+                "Constructed a polygon with vertex on a side");
 
         // TC12: Co-located points
         assertThrows(IllegalArgumentException.class, //
                 () -> new Polygon(new Point(0, 0, 1), new Point(1, 0, 0), new Point(0, 1, 0), new Point(0, 1, 0)),
-                "Constructed a polygon with vertice on a side");
+                "Constructed a polygon with vertex on a side");
 
     }
 
@@ -78,7 +78,7 @@ public class PolygonTest {
         // TC01: There is a simple single test here
         Polygon pl = new Polygon(new Point(0, 0, 1), new Point(1, 0, 0), new Point(0, 1, 0), new Point(-1, 1, 1));
         double sqrt3 = Math.sqrt(1d / 3);
-        assertEquals(new Vector(sqrt3, sqrt3, sqrt3), pl.getNormal(new Point(0, 0, 1)), "Bad normal to trinagle");
+        assertEquals(new Vector(sqrt3, sqrt3, sqrt3), pl.getNormal(new Point(0, 0, 1)), "Bad normal to triangle");
     }
 
 
@@ -86,7 +86,7 @@ public class PolygonTest {
      * Test method for{@link geometries.Polygon#findIntersections(Ray)}
      */
     @Test
-    void findIntsersections() {
+    void findIntersections() {
 
         Polygon plg = new Polygon(new Point(-1, 1, 0), new Point(1, 0, 0), new Point(2, -1, 0), new Point(-1, -1, 0));
         //============ Equivalence Partitions Tests ==============//

@@ -1,17 +1,18 @@
 package geometries;
 
+import primitives.Color;
 import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 
 import java.util.List;
+import java.util.Map;
 
-import static primitives.Util.isZero;
 
 /**
  * Class that represents a tube and implements the interface Geometry
  */
-public class Tube implements Geometry {
+public class Tube extends Geometry {
     //Fields
     protected final Ray axisRay;
     protected final double radius;
@@ -25,6 +26,38 @@ public class Tube implements Geometry {
     public Tube(Ray axisRay, double radius) {
         this.axisRay = axisRay;
         this.radius = radius;
+    }
+
+    /**
+     * Creates a tube using the list of attributes from the XML file
+     *
+     * @param tubeAttributes list of tube attributes fetched from the xml file
+     * @return a tube with the values stated in the tube attributes
+     */
+    public static Tube ReadXMLTube(Map<String, String> tubeAttributes) {
+        double radius = Double.parseDouble(tubeAttributes.get("radius"));
+
+        String[] axisRayAttribute = tubeAttributes
+                .get("p0").split("\\s+");
+        Point p0 = new Point(Double.parseDouble(axisRayAttribute[0]),
+                Double.parseDouble(axisRayAttribute[1]),
+                Double.parseDouble(axisRayAttribute[2]));
+        axisRayAttribute = tubeAttributes
+                .get("dir").split("\\s+");
+        Vector dir = new Vector(Double.parseDouble(axisRayAttribute[0]),
+                Double.parseDouble(axisRayAttribute[1]),
+                Double.parseDouble(axisRayAttribute[2]));
+        Ray axisRay = new Ray(p0, dir);
+        Tube tube = new Tube(axisRay, radius);
+        if (tubeAttributes.get("emission") != null) {
+            String[] emissionLightAttributes = tubeAttributes.get("emission").split("\\s+");
+            Color emissionLight = new Color(
+                    Double.parseDouble(emissionLightAttributes[0]),
+                    Double.parseDouble(emissionLightAttributes[1]),
+                    Double.parseDouble(emissionLightAttributes[2]));
+            tube.setEmission(emissionLight);
+        }
+        return tube;
     }
 
     /**
@@ -62,8 +95,13 @@ public class Tube implements Geometry {
         return pnt.subtract(axisRay.getPoint(t)).normalize();
     }
 
-    @Override
+    /*@Override
     public List<Point> findIntersections(Ray ray) {
+
+        return null;
+    }*/
+    @Override
+    public List<GeoPoint> findGeoIntersections(Ray ray) {
 
         return null;
     }

@@ -1,8 +1,9 @@
 package geometries;
 
-import java.util.ArrayList;
+
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import primitives.*;
 
@@ -14,7 +15,7 @@ import static primitives.Util.*;
  *
  * @author Dan
  */
-public class Polygon implements Geometry {
+public class Polygon extends Geometry {
     /**
      * List of polygon's vertices
      */
@@ -88,12 +89,47 @@ public class Polygon implements Geometry {
         }
     }
 
+    /**
+     * Creates a polygon using the list of attributes from the XML file
+     *
+     * @param polygonAttributes list of polygon attributes fetched from the xml file
+     * @return a polygon with the values stated in the polygon attributes
+     */
+    public static Polygon ReadXmlPolygon(Map<String, String> polygonAttributes) {
+        List<Point> copyVertices = new LinkedList<>();
+        String[] coordinates;
+        Point pI;
+        String pointName;
+        for (int i = 0; i < polygonAttributes.size(); i++) {
+            pointName="p"+ i;
+            if(polygonAttributes.get(pointName)!=null) {
+                coordinates = polygonAttributes.get(pointName).split("\\s+");
+                pI = new Point(Double.parseDouble(coordinates[0]),
+                        Double.parseDouble(coordinates[1]),
+                        Double.parseDouble(coordinates[2]));
+                copyVertices.add(pI);
+            }
+        }
+        Point[] vertices=copyVertices.toArray(new Point[0]);
+        Polygon polygon = new Polygon(vertices);
+        if (polygonAttributes.get("emission") != null) {
+            String[] emissionLightAttributes = polygonAttributes.get("emission").split("\\s+");
+            Color emissionLight = new Color(
+                    Double.parseDouble(emissionLightAttributes[0]),
+                    Double.parseDouble(emissionLightAttributes[1]),
+                    Double.parseDouble(emissionLightAttributes[2]));
+            polygon.setEmission(emissionLight);
+        }
+        return polygon;
+    }
+
+
     @Override
     public Vector getNormal(Point point) {
         return plane.getNormal();
     }
 
-    @Override
+ /*   @Override
     public List<Point> findIntersections(Ray ray) {
         List<Point> intersection =this.plane.findIntersections(ray);
         if (intersection == null)//checks if there is an intersection with the plane of the polygon
@@ -128,6 +164,52 @@ public class Polygon implements Geometry {
         {
             if (counter == size)//all signs are negative
                 return intersection;
+            sign = v.dotProduct(listNi.get(counter));
+            if (!(sign < 0))//if the sign is not negative
+                return null;//not all signs are negative therefore no intersection
+            counter++;
+        }
+        return null;//if the first sign is zero
+
+    }*/
+
+    public List<GeoPoint> findGeoIntersections(Ray ray) {
+        List<GeoPoint> intersection = this.plane.findGeoIntersections(ray);
+        if (intersection == null)//checks if there is an intersection with the plane of the polygon
+            return null;
+        List<GeoPoint> geoIntersection = new LinkedList<>();
+        for (var geoPoint : intersection)
+            geoIntersection.add(new GeoPoint(this, geoPoint.point));
+        //we will check if the point is inside or outside the polygon
+        Point p0 = ray.getP0();
+        Vector v = ray.getDir();
+        //V(i)= vertices[i]-p0
+        List<Vector> listVi = vertices.stream().map(p -> p.subtract(p0)).toList();
+        //N(i)= Normalize(V(i)*V(i+1))
+        List<Vector> listNi = new LinkedList<>();
+        //can't use map since I need to reach the i and i+1 (don't know how to do it)
+        //also can't use for each for the same reason
+        int i = 0;
+        for (; i < size - 1; i++) {
+            listNi.add(listVi.get(i).crossProduct(listVi.get(i + 1).normalize()));
+        }
+        listNi.add((listVi.get(i).crossProduct(listVi.get(0))).normalize());//cross product the last and the first vectors
+        //Sign(i)= v*N(i)
+        double sign = v.dotProduct(listNi.get(0));
+        int counter = 1;
+        while (sign > 0)//all signs must be positive from now on in order the point to be inside the polygon
+        {
+            if (counter == size)//all signs are positive
+                return geoIntersection;
+            sign = v.dotProduct(listNi.get(counter));
+            if (!(sign > 0))//if the sign is not positive
+                return null;//not all signs are positive therefore no intersection
+            counter++;
+        }
+        while (sign < 0)//all signs must be negative from now on in order the point to be inside the polygon
+        {
+            if (counter == size)//all signs are negative
+                return geoIntersection;
             sign = v.dotProduct(listNi.get(counter));
             if (!(sign < 0))//if the sign is not negative
                 return null;//not all signs are negative therefore no intersection

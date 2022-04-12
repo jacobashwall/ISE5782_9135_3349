@@ -1,7 +1,6 @@
 package primitives;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.function.Executable;
 
 import static java.lang.Math.sqrt;
 import static org.junit.jupiter.api.Assertions.*;

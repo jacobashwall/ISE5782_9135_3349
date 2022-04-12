@@ -65,7 +65,7 @@ class TubeTest {
         Point pnt3 = new Point(1.5, 0, 3);
         Point pnt4 = new Point(4.5, 0, 1);
         Point pnt5 = new Point(-3, 0, 4);
-        Point pnt6 = new Point(3, 0, 0);
+        //Point pnt6 = new Point(3, 0, 0);
         Point pnt7 = new Point(-1.5, 0, 3);
         Point pnt8 = new Point(1.5, 0, 1);
         Vector vec1 = new Vector(6, 0, -4);

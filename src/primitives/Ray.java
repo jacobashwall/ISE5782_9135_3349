@@ -1,5 +1,7 @@
 package primitives;
 
+import geometries.Intersectable.GeoPoint;
+
 import java.util.List;
 
 import static primitives.Util.isZero;
@@ -68,21 +70,36 @@ public class Ray {
     /**
      * Method for finding the closest point to the head of the ray in a given list of points
      *
-     * @param lst List of points
+     * @param points List of points
      * @return Closest point to the head of the ray
      */
-    public Point findClosestPoint(List<Point> lst) {
+    public Point findClosestPoint(List<Point> points) {
+        return points == null || points.isEmpty() ? null
+                : findClosestGeoPoint(points.stream().map(p -> new GeoPoint(null, p)).toList()).point;
+    }
+
+
+    /**
+     * Method for finding the closest GeoPoint to the head of the ray in a given list of points
+     *
+     * @param lst List of points
+     * @return Closest GeoPoint to the head of the ray
+     */
+    public GeoPoint findClosestGeoPoint(List<GeoPoint> lst) {
         //In case of empty list return null
         if (lst == null) {
             return null;
         }
 
-        Point p = null;
+        GeoPoint p = null;
         double d = Double.POSITIVE_INFINITY;
         //Iterating through the list. Once we find smaller distance
         //than we have we replace the values.
         //This goes on until the end of the list.
-        for (Point pnt : lst) {
+        for (GeoPoint pnt : lst) {
+            if (d > this.getP0().distance(pnt.point)) {
+                d = this.getP0().distance(pnt.point);
+        for (GeoPoint pnt : lst) {
             if (d > this.p0.distance(pnt)) {
                 d = this.p0.distance(pnt);
                 p = pnt;

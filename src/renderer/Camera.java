@@ -5,7 +5,6 @@ import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 
-import javax.swing.*;
 import java.util.MissingResourceException;
 
 /**
@@ -214,7 +213,7 @@ public class Camera {
         this.p0 = from;
         this.vTo = vec.normalize();
         //the up vector would be 90 degrees to the Vto (z axis is to the right)
-        this.vUp = vec.rotateVector(new Vector(0, 0, 1),90).normalize();
+        this.vUp = vec.rotateVector(new Vector(0, 0, 1), 90).normalize();
         this.vRight = (vUp.crossProduct(vTo)).normalize();
         return this;
     }
@@ -255,13 +254,14 @@ public class Camera {
     public void printGrid(int interval, Color color) {
         if (imageWriter == null)
             throw new MissingResourceException("One of the camera's attributes are missing", "imageWriter", "7");
+        int nX = imageWriter.getNx();
+        int nY = imageWriter.getNy();
         //move over the coordinates of the grid
-        for (int i = 0; i < imageWriter.getNx(); i++) {
-            for (int j = 0; j < imageWriter.getNy(); j++) {
+        for (int i = 0; i < nX; i++) {
+            for (int j = 0; j < nY; j++) {
                 //Coordinates of the net
-                if (i % interval == 0 || j % interval == 0) {
-                    //print in Red
-                    imageWriter.writePixel(i, j, color);
+                if (i % interval == 0 || j % interval == 0 || i == nX - 1 || j == nY - 1) {
+                    imageWriter.writePixel(j, i, color);
                 }
             }
         }

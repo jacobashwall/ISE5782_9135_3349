@@ -220,7 +220,8 @@ public class Camera {
 
     /**
      * Checks if there are any empty camera fields
-     */
+     *
+     * */
     public void renderImage() {
         if (width == 0)
             throw new MissingResourceException("One of the camera's attributes are missing", "width", "4");

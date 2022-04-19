@@ -1,8 +1,8 @@
 package renderer;
 
 import geometries.Intersectable.GeoPoint;
-import primitives.Color;
-import primitives.Ray;
+import lighting.LightSource;
+import primitives.*;
 import scene.Scene;
 
 /**
@@ -29,7 +29,7 @@ public class RayTracerBasic extends RayTracerBase {
         GeoPoint intersection = ray.findClosestGeoPoint(scene.geometries.findGeoIntersections(ray));//all intersection points wit the ray
         if (intersection == null)//if no intersection return background color
             return scene.background;
-        return calcColor(intersection);
+        return calcColor(intersection,ray);
     }
 
     /**
@@ -38,8 +38,41 @@ public class RayTracerBasic extends RayTracerBase {
      * @param intersection the point to calculate the color of it
      * @return the color that was calculated
      */
-    private Color calcColor(GeoPoint intersection) {
+    private Color calcColor(GeoPoint intersection, Ray ray) {
         return scene.ambientLight.getIntensity()
-                .add(intersection.geometry.getEmission());
+                .add(calcLocalEffects(intersection, ray));
     }
+
+    private Color calcLocalEffects(GeoPoint intersection, Ray ray){
+        // Getting the emission of the geometric body
+        Color color = intersection.geometry.getEmission();
+
+        Vector v = ray.getDir ();//direction of the ray
+        Vector n = intersection.geometry.getNormal(intersection.point);//normal to the geometric body in the intersection point
+
+        //if the ray and the normal in the intersection point
+        //orthogonal to each other, return just the emission.
+        double nv = Util.alignZero(n.dotProduct(v));
+        if (nv == 0) return color;
+
+
+        Material material = intersection.geometry.getMaterial();//the material of the geometric body
+
+        for (LightSource lightSource : scene.lights) {
+            Vector l = lightSource.getL(intersection.point);
+            double nl = Util.alignZero(n.dotProduct(l);
+            if (nl * nv > 0) { // sign(nl) == sing(nv)
+                Color iL = lightSource.getIntensity(intersection.point);
+                color = color.add(iL.scale(calcDiffusive(material, nl)),
+                        iL.scale(calcSpecular(material, n, l, nl, v));
+            }
+        }
+        return color;
+    }
+
+    private Double3 calcDiffusive(Material material,double nl){
+        return material.kD.scale(nl);
+    }
+
+    private Double3 calcSpecular(Material material, Vector n, Vector l, Vector nl, Vector v);
 }

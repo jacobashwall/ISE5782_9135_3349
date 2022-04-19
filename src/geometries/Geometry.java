@@ -1,14 +1,14 @@
 package geometries;
 
-import primitives.Color;
-import primitives.Point;
-import primitives.Vector;
+import primitives.*;
 
 /**
  * abstract class which all the geometries implement
  */
 public abstract class Geometry extends Intersectable {
     protected Color emission = Color.BLACK;
+    private Material material = new Material();
+
 
     /**
      * Emission getter
@@ -27,6 +27,26 @@ public abstract class Geometry extends Intersectable {
      */
     public Geometry setEmission(Color emission) {
         this.emission = emission;
+        return this;
+    }
+
+    /**
+     * material field getter
+     * @return the material field
+     */
+    public Material getMaterial() {
+
+        return this.material;
+    }
+
+    /**
+     * material field setter
+     * @param material parameter for the material
+     * @return The object itself
+     */
+    public Geometry setMaterial(Material material) {
+
+        this.material = material;
         return this;
     }
 

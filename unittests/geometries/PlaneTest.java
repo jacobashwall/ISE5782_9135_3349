@@ -16,7 +16,7 @@ class PlaneTest {
     /**
      * test for the constructor
      */
-   // @Test
+    @Test
     void Plane() {
         Point pnt1 = new Point(0, 0, 0);
         Point pnt2 = new Point(1, 0, 0);

@@ -7,6 +7,7 @@ import primitives.Vector;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static primitives.Util.*;
 
@@ -95,6 +96,14 @@ public class Plane extends Geometry {
                 "q0=" + q0 +
                 ", normal=" + normal +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Plane)) return false;
+        Plane plane = (Plane) o;
+        return Objects.equals(getQ0(), plane.getQ0()) && Objects.equals(getNormal(), plane.getNormal());
     }
 
     /**

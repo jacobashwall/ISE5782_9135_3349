@@ -96,12 +96,12 @@ public class Ray {
         //Iterating through the list. Once we find smaller distance
         //than we have we replace the values.
         //This goes on until the end of the list.
-        for (GeoPoint pnt : lst) {
+       /** for (GeoPoint pnt : lst) {
             if (d > this.getP0().distance(pnt.point)) {
-                d = this.getP0().distance(pnt.point);
+                d = this.getP0().distance(pnt.point);**/
         for (GeoPoint pnt : lst) {
-            if (d > this.p0.distance(pnt)) {
-                d = this.p0.distance(pnt);
+            if (d > this.p0.distance(pnt.point)) {
+                d = this.p0.distance(pnt.point);
                 p = pnt;
             }
         }

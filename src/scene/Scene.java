@@ -2,7 +2,11 @@ package scene;
 
 import lighting.AmbientLight;
 import geometries.Geometries;
+import lighting.LightSource;
 import primitives.Color;
+
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * The class Scene is a passive data structure (PDS)
@@ -21,6 +25,8 @@ public class Scene {
     public AmbientLight ambientLight;
     //The geometric bodies in the scene
     public Geometries geometries;
+    //List of light sources
+    public List<LightSource> lights;
 
     /**
      * Constructor that sets the scene name and sets the other fields to their default values
@@ -33,6 +39,7 @@ public class Scene {
         this.background = Color.BLACK;
         this.ambientLight = new AmbientLight();
         this.geometries = new Geometries();
+        this.lights = new LinkedList<>();
     }
 
     //Since this class is just a PDS, it is essential
@@ -69,6 +76,17 @@ public class Scene {
      */
     public Scene setGeometries(Geometries geometries) {
         this.geometries = geometries;
+        return this;
+    }
+
+    /**
+     * Set the list of light sources in the scene
+     *
+     * @param lights geometric bodies of the scene
+     * @return The object itself
+     */
+    public Scene setLights(List<LightSource> lights) {
+        this.lights = lights;
         return this;
     }
 }

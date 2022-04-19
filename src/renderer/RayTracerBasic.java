@@ -15,6 +15,7 @@ public class RayTracerBasic extends RayTracerBase {
      * @param scene the scene we trace rays in.
      */
     public RayTracerBasic(Scene scene) {
+
         super(scene);
     }
 
@@ -55,24 +56,47 @@ public class RayTracerBasic extends RayTracerBase {
         double nv = Util.alignZero(n.dotProduct(v));
         if (nv == 0) return color;
 
-
         Material material = intersection.geometry.getMaterial();//the material of the geometric body
 
+        //go through all the light sources and calculate their
+        //intersection at the point
         for (LightSource lightSource : scene.lights) {
             Vector l = lightSource.getL(intersection.point);
-            double nl = Util.alignZero(n.dotProduct(l);
+            double nl = Util.alignZero(n.dotProduct(l));
+            //Check the angle to decide whether
+            //to add the effect of the other light sources
             if (nl * nv > 0) { // sign(nl) == sing(nv)
                 Color iL = lightSource.getIntensity(intersection.point);
-                color = color.add(iL.scale(calcDiffusive(material, nl)),
-                        iL.scale(calcSpecular(material, n, l, nl, v));
+                color = color.add(iL.scale(calcDiffusive(material, nl)),//diffusive effect
+                        iL.scale(calcSpecular(material, n, l, nl, v)));//specular efect
             }
         }
         return color;
     }
 
+    /**
+     * Calculates the diffusive effect
+     * @param material material of the geometric object
+     * @param nl the dot product of the light source ray direction and the normal to the geometric object at the point
+     * @return the diffusive effect expressed by Double3 object
+     */
     private Double3 calcDiffusive(Material material,double nl){
-        return material.kD.scale(nl);
+        return material.kD.scale(Math.abs(nl));
     }
 
-    private Double3 calcSpecular(Material material, Vector n, Vector l, Vector nl, Vector v);
+    /**
+     * Calculates the specular effect
+     * @param material material of the geometric object
+     * @param n the normal to the geometric object at the point
+     * @param l the ray of the light source
+     * @param nl the dot product of the light source ray direction and the normal to the geometric object at the point
+     * @param v the direction of the camera ray
+     * @return the specular effect expressed by Double3 object
+     */
+    private Double3 calcSpecular(Material material, Vector n, Vector l, double nl, Vector v){
+        //the reflection of the light source vector (l)
+        Vector r = l.subtract(n.scale(2*nl));
+        //Calculation of the effect according to phong model
+        return material.kS.scale(Math.pow(v.scale(-1).dotProduct(r), material.nShininess));
+    }
 }

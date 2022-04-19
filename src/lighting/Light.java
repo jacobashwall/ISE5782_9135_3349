@@ -14,6 +14,7 @@ abstract class Light {
      * @param color The color for the intensity field
      */
     protected Light(Color color){
+
         this.intensity = color;
     }
 

@@ -8,6 +8,7 @@ import primitives.*;
  * @author Yonatan Dahary
  */
 public class DirectionalLight extends Light implements LightSource  {
+
     private Vector direction;
 
     /**
@@ -18,7 +19,7 @@ public class DirectionalLight extends Light implements LightSource  {
      */
     protected DirectionalLight(Color color, Vector direction) {
         super(color);
-        this.direction = direction;
+        this.direction = direction.normalize();
     }
 
     @Override

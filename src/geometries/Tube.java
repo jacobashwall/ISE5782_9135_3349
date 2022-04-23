@@ -1,9 +1,6 @@
 package geometries;
 
-import primitives.Color;
-import primitives.Point;
-import primitives.Ray;
-import primitives.Vector;
+import primitives.*;
 
 import java.util.List;
 import java.util.Map;
@@ -95,14 +92,92 @@ public class Tube extends Geometry {
         return pnt.subtract(axisRay.getPoint(t)).normalize();
     }
 
-    /*@Override
+    @Override
     public List<Point> findIntersections(Ray ray) {
 
-        return null;
-    }*/
+        Vector tubeDir = this.axisRay.getDir();
+        Vector rayDir = ray.getDir();
+
+        if(tubeDir.equals(rayDir) || tubeDir.equals(rayDir.scale(-1))){
+            return null;
+        }
+
+        double dotP1 = Util.alignZero(rayDir.dotProduct(tubeDir));
+        Vector vec1 = dotP1 == 0? rayDir : rayDir.subtract(tubeDir.scale(dotP1));
+        double radiusSquared = this.radius*this.radius;
+
+        double A = Util.alignZero(vec1.lengthSquared());
+
+        if(ray.getP0().equals(this.axisRay.getP0())){
+            return List.of(ray.getPoint(Math.sqrt(radiusSquared/A)));
+        }
+
+        Vector deltaP = ray.getP0().subtract(this.axisRay.getP0());
+
+        if(tubeDir.equals(deltaP.normalize()) || tubeDir.equals(deltaP.normalize().scale(-1))){
+            return List.of(ray.getPoint(Math.sqrt(radiusSquared/A)));
+        }
+
+        double dotP2 = Util.alignZero(deltaP.dotProduct(tubeDir));
+        var vec2 = dotP2 == 0 ? deltaP : deltaP.subtract(tubeDir.scale(dotP2));
+
+        double B = Util.alignZero(2*(vec1.dotProduct(vec2)));
+        double C = Util.alignZero(vec2.lengthSquared()-radiusSquared);
+
+        double det = Util.alignZero(B*B - 4*A*C);
+
+        if (det <= 0) return null;
+
+        det  = Math.sqrt(det);
+        double t1 = Util.alignZero((-B + det)/(2*A));
+        double t2 = Util.alignZero((-B - det)/(2*A));
+
+        if(t1 <= 0) return null;
+
+        return t2 <= 0 ? List.of(ray.getPoint(t1)) : List.of(ray.getPoint(t2), ray.getPoint(t1));
+    }
+
     @Override
     public List<GeoPoint> findGeoIntersections(Ray ray) {
+        Vector tubeDir = this.axisRay.getDir();
+        Vector rayDir = ray.getDir();
 
-        return null;
+        if(tubeDir.equals(rayDir) || tubeDir.equals(rayDir.scale(-1))){
+            return null;
+        }
+
+        double dotP1 = Util.alignZero(rayDir.dotProduct(tubeDir));
+        Vector vec1 = dotP1 == 0? rayDir : rayDir.subtract(tubeDir.scale(dotP1));
+        double radiusSquared = this.radius*this.radius;
+
+        double A = Util.alignZero(vec1.lengthSquared());
+
+        if(ray.getP0().equals(this.axisRay.getP0())){
+            return List.of(new GeoPoint(this,ray.getPoint(Math.sqrt(radiusSquared/A))));
+        }
+
+        Vector deltaP = ray.getP0().subtract(this.axisRay.getP0());
+
+        if(tubeDir.equals(deltaP.normalize()) || tubeDir.equals(deltaP.normalize().scale(-1))){
+            return List.of(new GeoPoint(this,(ray.getPoint(Math.sqrt(radiusSquared/A)))));
+        }
+
+        double dotP2 = Util.alignZero(deltaP.dotProduct(tubeDir));
+        var vec2 = dotP2 == 0 ? deltaP : deltaP.subtract(tubeDir.scale(dotP2));
+
+        double B = Util.alignZero(2*(vec1.dotProduct(vec2)));
+        double C = Util.alignZero(vec2.lengthSquared()-radiusSquared);
+
+        double det = Util.alignZero(B*B - 4*A*C);
+
+        if (det <= 0) return null;
+
+        det  = Math.sqrt(det);
+        double t1 = Util.alignZero((-B + det)/(2*A));
+        double t2 = Util.alignZero((-B - det)/(2*A));
+
+        if(t1 <= 0) return null;
+
+        return t2 <= 0 ? List.of(new GeoPoint(this,ray.getPoint(t1))) : List.of(new GeoPoint(this,ray.getPoint(t2)), new GeoPoint(this,ray.getPoint(t1)));
     }
 }

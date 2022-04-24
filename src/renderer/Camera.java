@@ -212,16 +212,22 @@ public class Camera {
         }
         this.p0 = from;
         this.vTo = vec.normalize();
-        //the up vector would be 90 degrees to the Vto (z axis is to the right)
-        this.vUp = vec.rotateVector(new Vector(0, 0, 1), 90).normalize();
-        this.vRight = (vUp.crossProduct(vTo)).normalize();
+        //in order to determine Vup, we will find the intersection vector of two planes, the plane that Vto is represented
+        //as its normal, and the plane that includes the Y axis and the Vto vector (as demanded in the instructions).
+
+        //if the Vto is already on the Y axis, we will use the Z axis instead
+        if (this.vTo.equals(new Vector(0, 1, 0)) || this.vTo.equals(new Vector(0, -1, 0))) {
+            this.vUp = vTo.crossProduct(vTo.crossProduct(new Vector(0, 0, 1))).normalize();
+        } else {
+            this.vUp = vTo.crossProduct(vTo.crossProduct(new Vector(0, 1, 0))).normalize();
+        }
+        this.vRight = vTo.crossProduct(vUp).normalize();
         return this;
     }
 
     /**
      * Checks if there are any empty camera fields
-     *
-     * */
+     */
     public void renderImage() {
         if (width == 0)
             throw new MissingResourceException("One of the camera's attributes are missing", "width", "4");

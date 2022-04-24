@@ -44,6 +44,13 @@ public class RayTracerBasic extends RayTracerBase {
                 .add(calcLocalEffects(intersection, ray));
     }
 
+    /**
+     * Calculating the local lighting effects of different light sources
+     * @param intersection the intersection point of the ray parameter with the geometric body.
+     *                     This method calculate the light intensity at this point.
+     * @param ray the ray that intersects the geometric body
+     * @return
+     */
     private Color calcLocalEffects(GeoPoint intersection, Ray ray){
         // Getting the emission of the geometric body
         Color color = intersection.geometry.getEmission();
@@ -81,7 +88,7 @@ public class RayTracerBasic extends RayTracerBase {
      * @return the diffusive effect expressed by Double3 object
      */
     private Double3 calcDiffusive(Material material,double nl){
-        return material.kD.scale(Math.abs(nl));
+        return material.kD.scale(nl>0?nl:-nl);
     }
 
     /**

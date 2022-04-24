@@ -2,10 +2,13 @@ package lighting;
 
 import primitives.*;
 
-
+/**
+ * Class that extends the class PointLight and represent spot light
+ */
 public class SpotLight extends PointLight{
 
     private Vector direction;
+    private double narrow;
 
     /**
      * Constructor with parameters
@@ -16,6 +19,7 @@ public class SpotLight extends PointLight{
     public SpotLight(Color color, Point p,Vector direction) {
         super(color, p);
         this.direction = direction.normalize();
+        this.narrow = 1;
     }
 
     @Override
@@ -25,7 +29,16 @@ public class SpotLight extends PointLight{
 
     @Override
     public Color getIntensity(Point p) {
-        return super.getIntensity(p).scale(Math.max(0,this.direction.dotProduct(this.getL(p))));
+        return super.getIntensity(p).scale(Math.pow(Math.max(0,this.direction.dotProduct(super.getL(p))),narrow));
     }
 
+    /**
+     * Determines the width of the spotlight
+     * @param narrow
+     * @return the object itself
+     */
+    public PointLight setNarrowBeam(double narrow) {
+        this.narrow = narrow;
+        return this;
+    }
 }

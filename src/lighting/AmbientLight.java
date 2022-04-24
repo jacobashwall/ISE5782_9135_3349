@@ -24,6 +24,13 @@ public class AmbientLight extends Light {
         super(color.scale(k));
     }
 
+    /**
+     * Default constructor, set the intensity field to Color. BLACK
+     */
+    public AmbientLight() {
+        super(Color.BLACK);
+    }
+
     public static AmbientLight ReadAmbientLight(Map<String, String> AmbientLightAttributes) {
         if (AmbientLightAttributes == null)
             return new AmbientLight();
@@ -43,11 +50,6 @@ public class AmbientLight extends Light {
         return new AmbientLight(color, k);
     }
 
-    /**
-     * Default constructor, set the intensity field to Color. BLACK
-     */
-    public AmbientLight() {
-        super(Color.BLACK);
-    }
+
 }
 

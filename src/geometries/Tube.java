@@ -142,22 +142,29 @@ public class Tube extends Geometry {
         Vector tubeDir = this.axisRay.getDir();
         Vector rayDir = ray.getDir();
 
+        // if the ray is parallel  to the tube axis ray return null
         if(tubeDir.equals(rayDir) || tubeDir.equals(rayDir.scale(-1))){
             return null;
         }
 
         double dotP1 = Util.alignZero(rayDir.dotProduct(tubeDir));
+        //if rayDir and tubeDir are orthogonal return just the rayDir,
+        //else return their dot product.
         Vector vec1 = dotP1 == 0? rayDir : rayDir.subtract(tubeDir.scale(dotP1));
         double radiusSquared = this.radius*this.radius;
 
+        //First coefficient of the quadratic equation.
         double A = Util.alignZero(vec1.lengthSquared());
 
-        if(ray.getP0().equals(this.axisRay.getP0())){
+        try{ray.getP0().equals(this.axisRay.getP0());}
+        catch (IllegalArgumentException exc){
             return List.of(new GeoPoint(this,ray.getPoint(Math.sqrt(radiusSquared/A))));
         }
 
+        //The vector between the ray heads.
         Vector deltaP = ray.getP0().subtract(this.axisRay.getP0());
 
+        //If the ray starts at the tube axis ray
         if(tubeDir.equals(deltaP.normalize()) || tubeDir.equals(deltaP.normalize().scale(-1))){
             return List.of(new GeoPoint(this,(ray.getPoint(Math.sqrt(radiusSquared/A)))));
         }
@@ -165,19 +172,27 @@ public class Tube extends Geometry {
         double dotP2 = Util.alignZero(deltaP.dotProduct(tubeDir));
         var vec2 = dotP2 == 0 ? deltaP : deltaP.subtract(tubeDir.scale(dotP2));
 
+        //Second coefficient for the quadratic equation
         double B = Util.alignZero(2*(vec1.dotProduct(vec2)));
+        //Third coefficient for the quadratic equation
         double C = Util.alignZero(vec2.lengthSquared()-radiusSquared);
 
+        //Discriminant for the quadratic equation
         double det = Util.alignZero(B*B - 4*A*C);
 
+        //If the discriminant is smaller or equal to 0,
+        // the ray is outside the tube.
         if (det <= 0) return null;
 
+        //Solving the quadratic equation.
         det  = Math.sqrt(det);
         double t1 = Util.alignZero((-B + det)/(2*A));
         double t2 = Util.alignZero((-B - det)/(2*A));
 
+        //The intersection points are behind the head of the ray
         if(t1 <= 0) return null;
 
+        //Check if there are one or two intersection points.
         return t2 <= 0 ? List.of(new GeoPoint(this,ray.getPoint(t1))) : List.of(new GeoPoint(this,ray.getPoint(t2)), new GeoPoint(this,ray.getPoint(t1)));
     }
 }

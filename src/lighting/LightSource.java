@@ -3,7 +3,7 @@ package lighting;
 import primitives.*;
 
 /**
- * An interface for different kinds of lighting
+ * An interface for different kinds of lighting. All of them should implement getIntensity and getL.
  * @author Yonatan Dahary
  */
 public interface LightSource {

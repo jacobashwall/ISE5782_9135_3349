@@ -148,7 +148,7 @@ public class Plane extends Geometry {
     }*/
 
     @Override
-    public List<GeoPoint> findGeoIntersections(Ray ray) {
+    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
         double denominator = this.normal.dotProduct(ray.getDir());
         if (isZero(denominator))
             return null; // ray parallel to the plane- the ray direction orthogonal to the normal

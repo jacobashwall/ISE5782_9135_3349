@@ -92,7 +92,7 @@ public class Tube extends Geometry {
         return pnt.subtract(axisRay.getPoint(t)).normalize();
     }
 
-    @Override
+/*    @Override
     public List<Point> findIntersections(Ray ray) {
 
         Vector tubeDir = this.axisRay.getDir();
@@ -135,10 +135,16 @@ public class Tube extends Geometry {
         if(t1 <= 0) return null;
 
         return t2 <= 0 ? List.of(ray.getPoint(t1)) : List.of(ray.getPoint(t2), ray.getPoint(t1));
-    }
+    }*/
 
     @Override
-    public List<GeoPoint> findGeoIntersections(Ray ray) {
+    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
+        //The overall idea is to form a quadratic equation that it's
+        //solutions are the scale factor for the getPoint method.
+        //We form this quadratic equation by setting two restriction on an arbitrary point:
+        // 1. It is on the ray (i.e. of the form p+t*v)
+        // 2. It is on the tube (i.e. it's distance from the tube axis ray is r)
+        //Give those two restrictions we extract the requested quadratic equation.
         Vector tubeDir = this.axisRay.getDir();
         Vector rayDir = ray.getDir();
 
@@ -156,8 +162,7 @@ public class Tube extends Geometry {
         //First coefficient of the quadratic equation.
         double A = Util.alignZero(vec1.lengthSquared());
 
-        try{ray.getP0().equals(this.axisRay.getP0());}
-        catch (IllegalArgumentException exc){
+        if(ray.getP0().equals(this.axisRay.getP0())){
             return List.of(new GeoPoint(this,ray.getPoint(Math.sqrt(radiusSquared/A))));
         }
 

@@ -102,7 +102,7 @@ public class Triangle extends Polygon {
     }*/
 
     @Override
-    public List<GeoPoint> findGeoIntersections(Ray ray) {
+    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
         var intersections = this.plane.findGeoIntersections(ray);
         if (intersections == null)//checks if there is an intersection with the plane of the triangle
             return null;

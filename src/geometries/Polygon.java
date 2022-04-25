@@ -173,7 +173,7 @@ public class Polygon extends Geometry {
 
     }*/
 
-    public List<GeoPoint> findGeoIntersections(Ray ray) {
+    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
         List<GeoPoint> intersection = this.plane.findGeoIntersections(ray);
         if (intersection == null)//checks if there is an intersection with the plane of the polygon
             return null;

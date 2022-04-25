@@ -118,7 +118,7 @@ public class Sphere extends Geometry {
     }*/
 
     @Override
-    public List<GeoPoint> findGeoIntersections(Ray ray) {
+    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
         Vector vec;
         try {
             vec = this.center.subtract(ray.getP0());

@@ -96,7 +96,6 @@ public class RenderTests {
         camera.writeToImage();
     }
 
-
     /**
      * xml tests for emission light
      */

@@ -8,7 +8,7 @@ import scene.Scene;
  * an abstract class to be the base to RayTracerBasic
  */
 public abstract class RayTracerBase {
-    protected Scene scene;
+    protected final Scene scene;
 
     /**
      * RayTracerBase constructor

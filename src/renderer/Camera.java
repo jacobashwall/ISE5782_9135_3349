@@ -12,7 +12,7 @@ import java.util.MissingResourceException;
  */
 public class Camera {
     //position
-    Point p0;
+    private Point p0;
     //rotation
     private Vector vUp, vRight, vTo;
     //view plane attributes
@@ -250,7 +250,6 @@ public class Camera {
             }
         }
     }
-
 
     /**
      * Prints a grid

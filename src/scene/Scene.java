@@ -18,7 +18,7 @@ public class Scene {
     //public fields
 
     //Name of the scene
-    public String name;
+    public final String name;
     //Background color of the scene
     public Color background;
     //The ambient light in the scene

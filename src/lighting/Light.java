@@ -7,14 +7,13 @@ import primitives.Color;
  * @author Yonatan Dahary
  */
 abstract class Light {
-    private Color intensity;
+    protected final Color intensity;
 
     /**
      * Constructor to initialize the intensity field
      * @param color The color for the intensity field
      */
     protected Light(Color color){
-
         this.intensity = color;
     }
 

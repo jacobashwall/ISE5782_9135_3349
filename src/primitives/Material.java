@@ -50,6 +50,7 @@ public class Material {
         this.kS = new Double3(kS);
         return this;
     }
+
     /**
      * Setter for the nShininess field
      * @param nShininess parameter for the nShininess field

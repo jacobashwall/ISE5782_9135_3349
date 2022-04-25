@@ -10,7 +10,6 @@ import java.util.Map;
  */
 public class AmbientLight extends Light {
 
-
     /**
      * Constructor that takes a Color object and an attenuation coefficient (Double3) and calculates
      * the color object scaled by the attenuation coefficient, by calling
@@ -20,7 +19,6 @@ public class AmbientLight extends Light {
      * @param k     Attenuation coefficient
      */
     public AmbientLight(Color color, Double3 k) {
-
         super(color.scale(k));
     }
 
@@ -49,7 +47,5 @@ public class AmbientLight extends Light {
                     Double.parseDouble(factorAttributes[2]));
         return new AmbientLight(color, k);
     }
-
-
 }
 

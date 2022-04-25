@@ -73,42 +73,12 @@ public class Triangle extends Polygon {
                 '}';
     }
 
-   /* @Override
-    public List<Point> findIntersections(Ray ray) {
-        var result = this.plane.findIntersections(ray);
-        if (result == null)//checks if there is an intersection with the plane of the triangle
-            return null;
-
-        Point p0 = ray.getP0();
-        Vector dir = ray.getDir();
-        //we will check if the point is inside or outside the triangle
-        Vector v1 = this.vertices.get(0).subtract(p0);
-        Vector v2 = this.vertices.get(1).subtract(p0);
-        Vector n1 = (v1.crossProduct(v2)).normalize();
-        double sign1 = alignZero(dir.dotProduct(n1));
-        if (sign1 == 0) return null;
-
-        Vector v3 = this.vertices.get(2).subtract(p0);
-        Vector n2 = (v2.crossProduct(v3)).normalize();
-        double sign2 = alignZero(dir.dotProduct(n2));
-        if (sign1 * sign2 <= 0) return null;
-
-        Vector n3 = (v3.crossProduct(v1)).normalize();
-        double sign3 = alignZero(dir.dotProduct(n3));
-        if (sign1 * sign3 <= 0) return null;
-
-        //if all signs are equal (+/-) the point is inside the triangle
-        return result;
-    }*/
-
     @Override
     public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
         var intersections = this.plane.findGeoIntersections(ray);
         if (intersections == null)//checks if there is an intersection with the plane of the triangle
             return null;
-        List<GeoPoint> geoIntersection = new LinkedList<>();
-        for (var geoPoint : intersections)
-            geoIntersection.add(new GeoPoint(this, geoPoint.point));
+
         Point p0 = ray.getP0();
         Vector dir = ray.getDir();
         //we will check if the point is inside or outside the triangle
@@ -128,7 +98,7 @@ public class Triangle extends Polygon {
         if (sign1 * sign3 <= 0) return null;
 
         //if all signs are equal (+/-) the point is inside the triangle
-        return geoIntersection;
+        return List.of(new GeoPoint(this, intersections.get(0).point));
     }
 
 }

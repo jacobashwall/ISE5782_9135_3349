@@ -46,7 +46,7 @@ public class LightsTests {
 			.setMaterial(new Material().setKd(0.5).setKs(0.5).setnShininess(300));
 	private Geometry sphere = new Sphere(new Point(0, 0, -50), 50d) //
 			.setEmission(new Color(BLUE).reduce(2)) //
-			.setMaterial(new Material().setKd(0.5).setKs(0.5).setnShininess(300));
+			.setMaterial(new Material().setKd(0.5).setKs(0.5).setnShininess(301));
 
 	/**
 	 * Produce a picture of a sphere lighted by a directional light

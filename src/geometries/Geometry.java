@@ -6,9 +6,8 @@ import primitives.*;
  * abstract class which all the geometries implement
  */
 public abstract class Geometry extends Intersectable {
-    protected Color emission = Color.BLACK;
+    private Color emission = Color.BLACK;
     private Material material = new Material();
-
 
     /**
      * Emission getter
@@ -35,7 +34,6 @@ public abstract class Geometry extends Intersectable {
      * @return the material field
      */
     public Material getMaterial() {
-
         return this.material;
     }
 
@@ -45,7 +43,6 @@ public abstract class Geometry extends Intersectable {
      * @return The object itself
      */
     public Geometry setMaterial(Material material) {
-
         this.material = material;
         return this;
     }

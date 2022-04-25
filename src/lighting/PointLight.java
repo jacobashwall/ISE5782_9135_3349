@@ -1,12 +1,13 @@
 package lighting;
 
 import primitives.*;
+
 /**
  * Class that represents a light spot that has on origin in a specific point.
  * Affected by all three attenuation coefficients.
  * Extends the abstract class Light and implements the interface LightSource
  */
-public class PointLight extends Light implements LightSource{
+public class PointLight extends Light implements LightSource {
     //private fields
 
     private Point position;// position of the light source
@@ -16,10 +17,11 @@ public class PointLight extends Light implements LightSource{
 
     /**
      * Constructor with parameters
-     * @param p point for the position field
+     *
+     * @param p     point for the position field
      * @param color color for the intensity field in the base class
      */
-    public PointLight(Color color, Point p){
+    public PointLight(Color color, Point p) {
         super(color);
         this.position = p;
         //Default values
@@ -30,6 +32,7 @@ public class PointLight extends Light implements LightSource{
 
     /**
      * Setter for the kC field
+     *
      * @param kC parameter for the kC field
      * @return the object itself
      */
@@ -40,6 +43,7 @@ public class PointLight extends Light implements LightSource{
 
     /**
      * Setter for the kL field
+     *
      * @param kL parameter for the kL field
      * @return the object itself
      */
@@ -50,6 +54,7 @@ public class PointLight extends Light implements LightSource{
 
     /**
      * Setter for the kQ field
+     *
      * @param kQ parameter for the kQ field
      * @return the object itself
      */
@@ -62,7 +67,7 @@ public class PointLight extends Light implements LightSource{
     @Override
     public Color getIntensity(Point p) {
         double d = p.distance(this.position);
-        return this.getIntensity().reduce(kC +kL*d +kQ*d*d);
+        return this.intensity.reduce(kC + kL * d + kQ * d * d);
     }
 
 

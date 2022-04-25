@@ -72,7 +72,7 @@ class PointTest {
         //============ Equivalence Partitions Tests ==============//
         Point pnt1 = new Point(1, 2, 3);
         Point pnt2 = new Point(2, 3, 4);
-        //TC: Test that distance is proper. We should get the distance between the two points.
+        //TC1: Test that distance is proper. We should get the distance between the two points.
         assertEquals(pnt2.distance(pnt1), sqrt(3), 0.000001, "TC1: distanceSquared is wrong");
 
         //============ Boundary Partitions Tests ==============//

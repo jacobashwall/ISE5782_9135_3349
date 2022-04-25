@@ -5,7 +5,6 @@ import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -24,45 +23,6 @@ public class Triangle extends Polygon {
         super(vertices);
     }
 
-    /**
-     * Creates a triangle using the list of attributes from the XML file
-     *
-     * @param triangleAttributes list of triangle attributes fetched from the xml file
-     * @return a triangle with the values stated in the triangle attributes
-     */
-    public static Triangle ReadXmlTriangle(Map<String, String> triangleAttributes) {
-
-        String[] P0coordinates = triangleAttributes
-                .get("p0").split("\\s+");
-
-        Point p0 = new Point(Double.parseDouble(P0coordinates[0]),
-                Double.parseDouble(P0coordinates[1]),
-                Double.parseDouble(P0coordinates[2]));
-
-        String[] P1coordinates = triangleAttributes
-                .get("p1").split("\\s+");
-
-        Point p1 = new Point(Double.parseDouble(P1coordinates[0]),
-                Double.parseDouble(P1coordinates[1]),
-                Double.parseDouble(P1coordinates[2]));
-
-        String[] P2coordinates = triangleAttributes
-                .get("p2").split("\\s+");
-
-        Point p2 = new Point(Double.parseDouble(P2coordinates[0]),
-                Double.parseDouble(P2coordinates[1]),
-                Double.parseDouble(P2coordinates[2]));
-        Triangle triangle = new Triangle(p0, p1, p2);
-        if (triangleAttributes.get("emission") != null) {
-            String[] emissionLightAttributes = triangleAttributes.get("emission").split("\\s+");
-            Color emissionLight = new Color(
-                    Double.parseDouble(emissionLightAttributes[0]),
-                    Double.parseDouble(emissionLightAttributes[1]),
-                    Double.parseDouble(emissionLightAttributes[2]));
-            triangle.setEmission(emissionLight);
-        }
-        return triangle;
-    }
 
 
     @Override

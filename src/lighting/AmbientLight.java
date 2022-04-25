@@ -28,24 +28,5 @@ public class AmbientLight extends Light {
     public AmbientLight() {
         super(Color.BLACK);
     }
-
-    public static AmbientLight ReadAmbientLight(Map<String, String> AmbientLightAttributes) {
-        if (AmbientLightAttributes == null)
-            return new AmbientLight();
-        String[] colorAttributes = AmbientLightAttributes.get("color").split("\\s+");
-        Color color = new Color(
-                Double.parseDouble(colorAttributes[0]),
-                Double.parseDouble(colorAttributes[1]),
-                Double.parseDouble(colorAttributes[2]));
-        String[] factorAttributes = AmbientLightAttributes.get("k").split("\\s+");
-        Double3 k;
-        if (factorAttributes.length == 1)//using the constructor that uses only one variable
-            k = new Double3(Double.parseDouble(factorAttributes[0]));
-        else//using 3 values constructor
-            k = new Double3(Double.parseDouble(factorAttributes[0]),
-                    Double.parseDouble(factorAttributes[1]),
-                    Double.parseDouble(factorAttributes[2]));
-        return new AmbientLight(color, k);
-    }
 }
 

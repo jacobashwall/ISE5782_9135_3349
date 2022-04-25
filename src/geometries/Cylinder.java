@@ -26,41 +26,6 @@ public class Cylinder extends Tube {
     }
 
     /**
-     * Creates a cylinder using the list of attributes from the XML file
-     *
-     * @param cylinderAttributes list of cylinder attributes fetched from the xml file
-     * @return a cylinder with the values stated in the tube attributes
-     */
-    public static Cylinder ReadXMLCylinder(Map<String, String> cylinderAttributes) {
-        double radius = Double.parseDouble(cylinderAttributes.get("radius"));
-
-        String[] axisRayAttribute = cylinderAttributes
-                .get("p0").split("\\s+");
-        Point p0 = new Point(Double.parseDouble(axisRayAttribute[0]),
-                Double.parseDouble(axisRayAttribute[1]),
-                Double.parseDouble(axisRayAttribute[2]));
-        axisRayAttribute = cylinderAttributes
-                .get("dir").split("\\s+");
-        Vector dir = new Vector(Double.parseDouble(axisRayAttribute[0]),
-                Double.parseDouble(axisRayAttribute[1]),
-                Double.parseDouble(axisRayAttribute[2]));
-        Ray axisRay = new Ray(p0, dir);
-
-        double height = Double.parseDouble(cylinderAttributes.get("height"));
-
-        Cylinder cylinder = new Cylinder(axisRay, radius, height);
-        if (cylinderAttributes.get("emission") != null) {
-            String[] emissionLightAttributes = cylinderAttributes.get("emission").split("\\s+");
-            Color emissionLight = new Color(
-                    Double.parseDouble(emissionLightAttributes[0]),
-                    Double.parseDouble(emissionLightAttributes[1]),
-                    Double.parseDouble(emissionLightAttributes[2]));
-            cylinder.setEmission(emissionLight);
-        }
-        return cylinder;
-    }
-
-    /**
      * height getter
      *
      * @return cylinder height

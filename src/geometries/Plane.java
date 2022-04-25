@@ -47,49 +47,6 @@ public class Plane extends Geometry {
         normal = (v1.crossProduct(v2)).normalize();
     }
 
-    /**
-     * Creates a plane using the list of attributes from the XML file
-     *
-     * @param planeAttributes list of plane attributes fetched from the xml file
-     * @return a plane with the values stated in the plane attributes
-     */
-    public static Plane ReadXMLPlane(Map<String, String> planeAttributes) {
-
-        String[] p0Attributes = planeAttributes.get("p0").split("\\s+");
-        Point p0 = new Point(Double.parseDouble(p0Attributes[0]),
-                Double.parseDouble(p0Attributes[1]),
-                Double.parseDouble(p0Attributes[2]));
-        if (planeAttributes.get("normal") != null) {//using the constructor of normal+ q0
-            String[] normalAttributes = planeAttributes.get("normal").split("\\s+");
-            Vector normal = new Vector(Double.parseDouble(normalAttributes[0]),
-                    Double.parseDouble(normalAttributes[1]),
-                    Double.parseDouble(normalAttributes[2]));
-            return new Plane(p0, normal);
-        } else {//using 3 points constructor
-            String[] p1Attributes = planeAttributes.get("p0").split("\\s+");
-            Point p1 = new Point(Double.parseDouble(p1Attributes[0]),
-                    Double.parseDouble(p1Attributes[1]),
-                    Double.parseDouble(p1Attributes[2]));
-            String[] p2Attributes = planeAttributes.get("p0").split("\\s+");
-            Point p2 = new Point(Double.parseDouble(p2Attributes[0]),
-                    Double.parseDouble(p2Attributes[1]),
-                    Double.parseDouble(p2Attributes[2]));
-
-            Plane plane = new Plane(p0, p1, p2);
-            if (planeAttributes.get("emission") != null) {
-                String[] emissionLightAttributes = planeAttributes.get("emission").split("\\s+");
-                Color emissionLight = new Color(
-                        Double.parseDouble(emissionLightAttributes[0]),
-                        Double.parseDouble(emissionLightAttributes[1]),
-                        Double.parseDouble(emissionLightAttributes[2]));
-                plane.setEmission(emissionLight);
-            }
-            return plane;
-        }
-
-
-    }
-
     @Override
     public String toString() {
         return "Plane{" +

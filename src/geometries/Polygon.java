@@ -89,40 +89,6 @@ public class Polygon extends Geometry {
         }
     }
 
-    /**
-     * Creates a polygon using the list of attributes from the XML file
-     *
-     * @param polygonAttributes list of polygon attributes fetched from the xml file
-     * @return a polygon with the values stated in the polygon attributes
-     */
-    public static Polygon ReadXmlPolygon(Map<String, String> polygonAttributes) {
-        List<Point> copyVertices = new LinkedList<>();
-        String[] coordinates;
-        Point pI;
-        String pointName;
-        for (int i = 0; i < polygonAttributes.size(); i++) {
-            pointName="p"+ i;
-            if(polygonAttributes.get(pointName)!=null) {
-                coordinates = polygonAttributes.get(pointName).split("\\s+");
-                pI = new Point(Double.parseDouble(coordinates[0]),
-                        Double.parseDouble(coordinates[1]),
-                        Double.parseDouble(coordinates[2]));
-                copyVertices.add(pI);
-            }
-        }
-        Point[] vertices=copyVertices.toArray(new Point[0]);
-        Polygon polygon = new Polygon(vertices);
-        if (polygonAttributes.get("emission") != null) {
-            String[] emissionLightAttributes = polygonAttributes.get("emission").split("\\s+");
-            Color emissionLight = new Color(
-                    Double.parseDouble(emissionLightAttributes[0]),
-                    Double.parseDouble(emissionLightAttributes[1]),
-                    Double.parseDouble(emissionLightAttributes[2]));
-            polygon.setEmission(emissionLight);
-        }
-        return polygon;
-    }
-
 
     @Override
     public Vector getNormal(Point point) {

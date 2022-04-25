@@ -29,33 +29,6 @@ public class Sphere extends Geometry {
         this.radiusSqr = radius * radius;
     }
 
-    /**
-     * Creates a sphere using the list of attributes from the XML file
-     *
-     * @param sphereAttributes list of sphere attributes fetched from the xml file
-     * @return a sphere with the values stated in the sphere attributes
-     */
-    public static Sphere ReadXMLSphere(Map<String, String> sphereAttributes) {
-        double radius = Double.parseDouble(sphereAttributes.get("radius"));
-
-        String[] centerValues = sphereAttributes
-                .get("center").split("\\s+");
-
-        Point center = new Point(Double.parseDouble(centerValues[0]),
-                Double.parseDouble(centerValues[1]),
-                Double.parseDouble(centerValues[2]));
-        Sphere sphere = new Sphere(center, radius);
-        if (sphereAttributes.get("emission") != null) {
-            String[] emissionLightAttributes = sphereAttributes.get("emission").split("\\s+");
-            Color emissionLight = new Color(
-                    Double.parseDouble(emissionLightAttributes[0]),
-                    Double.parseDouble(emissionLightAttributes[1]),
-                    Double.parseDouble(emissionLightAttributes[2]));
-            sphere.setEmission(emissionLight);
-        }
-        return sphere;
-
-    }
 
     /**
      * center getter

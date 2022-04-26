@@ -20,13 +20,13 @@ public class Scene {
     //Name of the scene
     public final String name;
     //Background color of the scene
-    public Color background;
+    public Color background = Color.BLACK;
     //The ambient light in the scene
-    public AmbientLight ambientLight;
+    public AmbientLight ambientLight = new AmbientLight();
     //The geometric bodies in the scene
-    public Geometries geometries;
+    public Geometries geometries = new Geometries();
     //List of light sources
-    public List<LightSource> lights;
+    public List<LightSource> lights = new LinkedList<>();
 
     /**
      * Constructor that sets the scene name and sets the other fields to their default values
@@ -35,11 +35,7 @@ public class Scene {
      */
     public Scene(String name) {
         this.name = name;
-        //Default values
-        this.background = Color.BLACK;
-        this.ambientLight = new AmbientLight();
-        this.geometries = new Geometries();
-        this.lights = new LinkedList<>();
+
     }
 
     //Since this class is just a PDS, it is essential

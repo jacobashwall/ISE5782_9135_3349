@@ -86,26 +86,9 @@ public class Plane extends Geometry {
         return normal;
     }
 
-    /* @Override
-    public List<Point> findIntersections(Ray ray) {
-        double denominator = this.normal.dotProduct(ray.getDir());
-        if (isZero(denominator))
-            return null; // ray parallel to the plane- the ray direction orthogonal to the normal
-
-        Vector u;
-        try {
-            u = q0.subtract(ray.getP0());
-        } catch (IllegalArgumentException ignore) {
-            // the ray starts at the plane's reference point
-            return null;
-        }
-
-        double t = alignZero(this.normal.dotProduct(u) / denominator);
-        return t <= 0 ? null : List.of(ray.getPoint(t));
-    }*/
 
     @Override
-    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
+    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance) {
         double denominator = this.normal.dotProduct(ray.getDir());
         if (isZero(denominator))
             return null; // ray parallel to the plane- the ray direction orthogonal to the normal
@@ -119,6 +102,7 @@ public class Plane extends Geometry {
         }
 
         double t = alignZero(this.normal.dotProduct(u) / denominator);
+        if(alignZero(t-maxDistance)>0) return null;
         return t <= 0 ? null : List.of(new GeoPoint(this, ray.getPoint(t)));
     }
 }

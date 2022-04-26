@@ -5,6 +5,8 @@ import primitives.*;
 import java.util.List;
 import java.util.Map;
 
+import static primitives.Util.alignZero;
+
 
 /**
  * Class that represents a tube and implements the interface Geometry
@@ -60,53 +62,9 @@ public class Tube extends Geometry {
         return pnt.subtract(axisRay.getPoint(t)).normalize();
     }
 
-/*    @Override
-    public List<Point> findIntersections(Ray ray) {
-
-        Vector tubeDir = this.axisRay.getDir();
-        Vector rayDir = ray.getDir();
-
-        if(tubeDir.equals(rayDir) || tubeDir.equals(rayDir.scale(-1))){
-            return null;
-        }
-
-        double dotP1 = Util.alignZero(rayDir.dotProduct(tubeDir));
-        Vector vec1 = dotP1 == 0? rayDir : rayDir.subtract(tubeDir.scale(dotP1));
-        double radiusSquared = this.radius*this.radius;
-
-        double A = Util.alignZero(vec1.lengthSquared());
-
-        if(ray.getP0().equals(this.axisRay.getP0())){
-            return List.of(ray.getPoint(Math.sqrt(radiusSquared/A)));
-        }
-
-        Vector deltaP = ray.getP0().subtract(this.axisRay.getP0());
-
-        if(tubeDir.equals(deltaP.normalize()) || tubeDir.equals(deltaP.normalize().scale(-1))){
-            return List.of(ray.getPoint(Math.sqrt(radiusSquared/A)));
-        }
-
-        double dotP2 = Util.alignZero(deltaP.dotProduct(tubeDir));
-        var vec2 = dotP2 == 0 ? deltaP : deltaP.subtract(tubeDir.scale(dotP2));
-
-        double B = Util.alignZero(2*(vec1.dotProduct(vec2)));
-        double C = Util.alignZero(vec2.lengthSquared()-radiusSquared);
-
-        double det = Util.alignZero(B*B - 4*A*C);
-
-        if (det <= 0) return null;
-
-        det  = Math.sqrt(det);
-        double t1 = Util.alignZero((-B + det)/(2*A));
-        double t2 = Util.alignZero((-B - det)/(2*A));
-
-        if(t1 <= 0) return null;
-
-        return t2 <= 0 ? List.of(ray.getPoint(t1)) : List.of(ray.getPoint(t2), ray.getPoint(t1));
-    }*/
 
     @Override
-    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
+    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance) {
         //The overall idea is to form a quadratic equation that it's
         //solutions are the scale factor for the getPoint method.
         //We form this quadratic equation by setting two restriction on an arbitrary point:
@@ -128,10 +86,10 @@ public class Tube extends Geometry {
         double radiusSquared = this.radius * this.radius;
 
         //First coefficient of the quadratic equation.
-        double A = Util.alignZero(vec1.lengthSquared());
+        double a = Util.alignZero(vec1.lengthSquared());
 
         if (ray.getP0().equals(this.axisRay.getP0())) {
-            return List.of(new GeoPoint(this, ray.getPoint(Math.sqrt(radiusSquared / A))));
+            return List.of(new GeoPoint(this, ray.getPoint(Math.sqrt(radiusSquared / a))));
         }
 
         //The vector between the ray heads.
@@ -139,19 +97,19 @@ public class Tube extends Geometry {
 
         //If the ray starts at the tube axis ray
         if (tubeDir.equals(deltaP.normalize()) || tubeDir.equals(deltaP.normalize().scale(-1))) {
-            return List.of(new GeoPoint(this, (ray.getPoint(Math.sqrt(radiusSquared / A)))));
+            return List.of(new GeoPoint(this, (ray.getPoint(Math.sqrt(radiusSquared / a)))));
         }
 
         double dotP2 = Util.alignZero(deltaP.dotProduct(tubeDir));
         var vec2 = dotP2 == 0 ? deltaP : deltaP.subtract(tubeDir.scale(dotP2));
 
         //Second coefficient for the quadratic equation
-        double B = Util.alignZero(2 * (vec1.dotProduct(vec2)));
+        double b = Util.alignZero(2 * (vec1.dotProduct(vec2)));
         //Third coefficient for the quadratic equation
-        double C = Util.alignZero(vec2.lengthSquared() - radiusSquared);
+        double c = Util.alignZero(vec2.lengthSquared() - radiusSquared);
 
         //Discriminant for the quadratic equation
-        double det = Util.alignZero(B * B - 4 * A * C);
+        double det = Util.alignZero(b * b - 4 * a * c);
 
         //If the discriminant is smaller or equal to 0,
         // the ray is outside the tube.
@@ -159,11 +117,11 @@ public class Tube extends Geometry {
 
         //Solving the quadratic equation.
         det = Math.sqrt(det);
-        double t1 = Util.alignZero((-B + det) / (2 * A));
-        double t2 = Util.alignZero((-B - det) / (2 * A));
+        double t1 = Util.alignZero((-b + det) / (2 * a));
+        double t2 = Util.alignZero((-b - det) / (2 * a));
 
         //The intersection points are behind the head of the ray
-        if (t1 <= 0) return null;
+        if (t1 <= 0 || alignZero(t2 - maxDistance) > 0) return null;
 
         //Check if there are one or two intersection points.
         return t2 <= 0 ? List.of(new GeoPoint(this, ray.getPoint(t1))) : List.of(new GeoPoint(this, ray.getPoint(t2)), new GeoPoint(this, ray.getPoint(t1)));

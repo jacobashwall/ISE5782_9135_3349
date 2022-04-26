@@ -24,7 +24,6 @@ public class Triangle extends Polygon {
     }
 
 
-
     @Override
     public String toString() {
         return "Triangle{" +
@@ -34,8 +33,8 @@ public class Triangle extends Polygon {
     }
 
     @Override
-    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
-        var intersections = this.plane.findGeoIntersections(ray);
+    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance) {
+        var intersections = this.plane.findGeoIntersectionsHelper(ray,maxDistance);
         if (intersections == null)//checks if there is an intersection with the plane of the triangle
             return null;
 

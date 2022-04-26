@@ -62,36 +62,9 @@ public class Sphere extends Geometry {
         return (pnt.subtract(center)).normalize();
     }
 
-  /*  @Override
-    public List<Point> findIntersections(Ray ray) {
-        Vector vec;
-        try {
-            vec = this.center.subtract(ray.getP0());
-        } catch (IllegalArgumentException ignore) {
-            return List.of(ray.getPoint(this.radius));
-        }
-
-        // Here we calculate the projection of the vector formed by the center of the
-        // circle and the head of the ray. Then we calculate the distance between then center
-        // and the projection and the distance between the projection to the intersections points.
-        // The idea is that the projection is the middle of the two intersection points
-        // so all we have to do is to add and subtract the distance to the intersection points
-        double tm = alignZero(vec.dotProduct(ray.getDir()));
-        double dSqr = alignZero(vec.lengthSquared() - tm * tm);
-        double thSqr = alignZero(this.radiusSqr - dSqr);
-        // If the ray is tangent to the sphere or doesn't intersect the sphere at all return null
-        if (alignZero(thSqr) <= 0) return null;
-
-        double th = alignZero(sqrt(thSqr));
-        double t2 = alignZero(tm + th);
-        if (t2 <= 0) return null;
-        double t1 = alignZero(tm - th);
-        // If only one is greater than 0 then the ray intersects the sphere only once
-        return t1 <= 0 ? List.of(ray.getPoint(t2)) : List.of(ray.getPoint(t1), ray.getPoint(t2));
-    }*/
 
     @Override
-    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
+    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance) {
         Vector vec;
         try {
             vec = this.center.subtract(ray.getP0());
@@ -112,7 +85,7 @@ public class Sphere extends Geometry {
 
         double th = sqrt(thSqr);
         double t2 = alignZero(tm + th);
-        if (t2 <= 0) return null;
+        if (t2 <= 0 || alignZero(t2 - maxDistance) > 0) return null;
         double t1 = alignZero(tm - th);
         // If only one is greater than 0 then the ray intersects the sphere only once
         return t1 <= 0 ? List.of(new GeoPoint(this, ray.getPoint(t2))) : List.of(new GeoPoint(this, ray.getPoint(t1)), new GeoPoint(this, ray.getPoint(t2)));

@@ -4,6 +4,7 @@ import primitives.Color;
 
 /**
  * An abstract that includes common properties of light sources
+ *
  * @author Yonatan Dahary
  */
 abstract class Light {
@@ -11,9 +12,10 @@ abstract class Light {
 
     /**
      * Constructor to initialize the intensity field
+     *
      * @param color The color for the intensity field
      */
-    protected Light(Color color){
+    protected Light(Color color) {
         this.intensity = color;
     }
 

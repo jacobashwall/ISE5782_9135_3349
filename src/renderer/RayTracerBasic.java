@@ -7,10 +7,14 @@ import lighting.LightSource;
 import primitives.*;
 import scene.Scene;
 
+import java.util.List;
+
 /**
  * A class that inherits from RayTracerBase to trace rays in a scene
  */
 public class RayTracerBasic extends RayTracerBase {
+    private static final double DELTA = 0.1;
+
     /**
      * RayTracerBasic Constructor.
      *
@@ -74,10 +78,12 @@ public class RayTracerBasic extends RayTracerBase {
             //Check the angle to decide whether
             //to add the effect of the other light sources
             if (nl * nv > 0) { // sign(nl) == sing(nv)
-                Color iL = lightSource.getIntensity(intersection.point);
-                color = color.add( //
-                        iL.scale(calcDiffusive(material, nl)//diffusive effect
-                                .add(calcSpecular(material, n, l, nl, v))));//specular efect
+                if (unshaded(intersection, l, n, nv, lightSource)) {
+                    Color iL = lightSource.getIntensity(intersection.point);
+                    color = color.add( //
+                            iL.scale(calcDiffusive(material, nl)//diffusive effect
+                                    .add(calcSpecular(material, n, l, nl, v))));//specular effect
+                }
             }
         }
         return color;
@@ -112,5 +118,30 @@ public class RayTracerBasic extends RayTracerBase {
 
         //Calculation of the effect according to phong model
         return material.kS.scale(Math.pow(minusVR, material.nShininess));
+    }
+
+    /**
+     * Checks whether a given point is lighted by the light source
+     * by tracing a ray back to the light source and check if it intersects
+     * with a geometrical body
+     *
+     * @param gp          the given point to check
+     * @param l           the ray light from the light source to the point
+     * @param n           normal to the geometric body in this point
+     * @param nv          dot product of the camera ray and the normal
+     * @param lightSource the light source that we check shadiness for
+     * @return
+     */
+    private boolean unshaded(GeoPoint gp, Vector l, Vector n, double nv, LightSource lightSource) {
+        Vector lightDirection = l.scale(-1); // from point to light source
+        //We make sure to move the object by DELTA
+        //int the correct direction
+        Vector epsVector = n.scale(nv < 0 ? DELTA : -DELTA);
+        Point point = gp.point.add(epsVector);
+        //Create a new ray to check shadiness
+        Ray lightRay = new Ray(point, lightDirection);
+        //Find if any geometric object blocks the light
+        List<GeoPoint> intersections = scene.geometries.findGeoIntersections(lightRay, lightSource.getDistance(gp.point));
+        return intersections == null;
     }
 }

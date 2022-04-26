@@ -14,9 +14,13 @@ public class Camera {
     //position
     private Point p0;
     //rotation
-    private Vector vUp, vRight, vTo;
+    private Vector vUp;
+    private Vector vRight;
+    private Vector vTo;
     //view plane attributes
-    double width, height, distance;
+    double width;
+    double height;
+    double distance;
 
     private ImageWriter imageWriter;
     private RayTracerBase rayTracerBase;

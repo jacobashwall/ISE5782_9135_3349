@@ -174,7 +174,7 @@ class CylinderTest {
         assertNull(cylinder.findIntersections(new Ray(new Point(1, 0, 2), vec1)), "BVA1.8: Bad intersection");
 
 
-        //Group 2 - ray starts at the base (not parallel - see group 1)
+        //Group 2 - ray starts at the base with the head of the axis ray (not parallel - see group 1)
 
         //BVA2.1: ray starts at the head of the axis ray and goes outside
         assertNull(cylinder.findIntersections(new Ray(new Point(-1, 0, 0), new Vector(-1, 0, 1))), "BVA1.8: Bad intersection");
@@ -227,6 +227,7 @@ class CylinderTest {
 
         //BVA2.17: ray starts at the base and goes through the head of the axis ray
         assertNull(cylinder.findIntersections(new Ray(new Point(-1, 0, 0.5), new Vector(0, 0, -1))), "BVA1.8: Bad intersection");
+
 
         //Group 2* - ray starts at the other base (the one that doesn't contain the head of the axis ray) (not parallel - see group 1)
 
@@ -303,19 +304,62 @@ class CylinderTest {
         //BVA3.5: rays starts outside the cylinder and goes through the perimeters
         assertEquals(List.of(new Point(-1, 0, 1), new Point(1,0,-1)), cylinder.findIntersections(new Ray(new Point(-2, 0, 2), vec1)), "BVA1.5: Bad intersection");
 
-        //BVA3.2: ray starts after the first base before the axis ray and goes through the second base perimetre
+        //BVA3.6: ray starts after the first base before the axis ray and goes through the second base perimetre
         assertEquals(List.of(new Point(1,0,-1)), cylinder.findIntersections(new Ray(new Point(-0.5, 0, 0.5), vec1)), "BVA1.5: Bad intersection");
 
-        //BVA3.2: ray starts after the first base before the axis ray and goes through the second base perimeter
+        //BVA3.7: ray starts after the first base before the axis ray and goes through the second base perimeter
         assertEquals(List.of(new Point(1,0,1)), cylinder.findIntersections(new Ray(new Point(0.5, 0, -0.25), vec1)), "BVA1.5: Bad intersection");
 
-        //BV3.4: ray starts after the second base
+        //BVA3.8: ray starts after the second base
         assertNull(cylinder.findIntersections(new Ray(new Point(20, 0, -0.25), vec1)), "BVA1.5: Bad intersection");
 
         //Group 4 - ray starts inside the cylinder
 
         //BVA4.1: ray starts at the axis ray and goes through the perimeter of the base with the head of the axis ray
         assertEquals(List.of(new Point(-1, 0, 1), cylinder.findIntersections(new Ray(new Point(-0.5, 0, 0), new Vector(-0.5,0,2))), "BVA1.5: Bad intersection");
+
+        //BVA4.2: ray starts at the axis ray and goes through the perimeter of the base without the head of the axis ray
+        assertEquals(List.of(new Point(1, 0, 1), cylinder.findIntersections(new Ray(new Point(1.5, 0, 0), new Vector(0.5,0,2))), "BVA1.5: Bad intersection");
+
+        //BVA4.3: ray starts inside the cylinder and intersects with the head of the axis ray
+        assertEquals(List.of(new Point(-1,0,0)),cylinder.findIntersections(new Ray(new Point(-0.5,0,0.5),new Vector(-1,0,-1))),"BVA1.5: Bad intersection");
+
+        //BVA4.4: ray starts inside the cylinder and intersects the perimeter of the base with the head of the axis ray
+        assertEquals(List.of(new Point(-1,0,1)),cylinder.findIntersections(new Ray(new Point(-0.5,0.1,0.5),new Vector(-1,-0.2,1))),"BVA1.5: Bad intersection");
+
+        //BVA4.5: ray starts inside the cylinder and intersects the perimeter of the other base
+        assertEquals(List.of(new Point(1,0,1)),cylinder.findIntersections(new Ray(new Point(0.5,0.1,0.5),new Vector(1,-0.2,1))),"BVA1.5: Bad intersection");
+
+        //BVA4.6: ray starts inside the cylinder and intersects the center of the other base
+        assertEquals(List.of(new Point(1,0,0)),cylinder.findIntersections(new Ray(new Point(0.5,0.1,0.5),new Vector(1,-0.2,-1))),"BVA1.5: Bad intersection");
+
+        //Group 5 - ray is tangent to the perimeters - base with the head of the axis ray
+        vec1 = new Vector(1,0,1);
+        //BVA5.1: ray starts before the axis ray
+        assertNull(cylinder.findIntersections(new Ray(new Point(-2, 0, 0), vec1)), "BVA1.5: Bad intersection");
+
+        //BVA5.2: backs of the rays intersects
+        assertNull(cylinder.findIntersections(new Ray(new Point(-1.5, 0, 0.5), vec1)), "BVA1.5: Bad intersection");
+
+        //BVA5.3: ray intersects with the back of the axis ray
+        assertNull(cylinder.findIntersections(new Ray(new Point(-3, 0, -1), vec1)), "BVA1.5: Bad intersection");
+
+        //BVA5.4:simple tangent ray
+        assertNull(cylinder.findIntersections(new Ray(new Point(-2,-2,-2), new Vector(1,2,3))), "BVA1.5: Bad intersection");
+
+        //Group 7* - ray is tangent to the perimeters - base without the head of the axis ray
+        vec1 = new Vector(-1,0,1);
+        //BVA5.1: ray starts before the axis ray
+        assertNull(cylinder.findIntersections(new Ray(new Point(2, 0, 0), vec1)), "BVA1.5: Bad intersection");
+
+        //BVA5.2: backs of the rays intersects
+        assertNull(cylinder.findIntersections(new Ray(new Point(1.5, 0, 0.5), vec1)), "BVA1.5: Bad intersection");
+
+        //BVA5.3: ray intersects with the back of the axis ray
+        assertNull(cylinder.findIntersections(new Ray(new Point(3, 0, -1), vec1)), "BVA1.5: Bad intersection");
+
+        //BVA5.4:simple tangent ray
+        assertNull(cylinder.findIntersections(new Ray(new Point(2,2,-2), new Vector(-1,-2,3))), "BVA1.5: Bad intersection");
 
 
     }

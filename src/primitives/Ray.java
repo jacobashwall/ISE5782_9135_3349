@@ -12,6 +12,7 @@ import static primitives.Util.isZero;
 public class Ray {
     private final Point p0;
     private final Vector dir;
+    private final double DELTA=0.01;
 
     /**
      * Creates a new Ray
@@ -22,6 +23,20 @@ public class Ray {
     public Ray(Point p0, Vector dir) {
         this.p0 = p0;
         this.dir = dir.normalize();
+    }
+
+    /**
+     * the head of the constructed ray will be moves by the direction vector multiplied by delta.
+     * the direction ov the move with or against the normal vector determined by the dot product of the direction and normal.
+     *
+     * @param head      the point that the ray suppose to start with.
+     * @param direction the direction of the ray.
+     * @param normal    the direction to move the ray with.
+     */
+    public Ray(Point head, Vector direction, Vector normal) {
+        double mult = direction.dotProduct(normal);
+        this.p0 = head.add(normal.scale(mult >= 0 ? DELTA : -DELTA));
+        this.dir = direction;
     }
 
     /**

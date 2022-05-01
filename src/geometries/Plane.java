@@ -102,7 +102,7 @@ public class Plane extends Geometry {
         }
 
         double t = alignZero(this.normal.dotProduct(u) / denominator);
-        if(alignZero(t-maxDistance)>0) return null;
+        if (alignZero(t - maxDistance) > 0) return null;
         return t <= 0 ? null : List.of(new GeoPoint(this, ray.getPoint(t)));
     }
 }

@@ -3,7 +3,7 @@ package lighting;
 import primitives.Color;
 
 /**
- * An abstract that includes common properties of light sources
+ * An abstract class that includes common properties of light sources
  *
  * @author Yonatan Dahary
  */

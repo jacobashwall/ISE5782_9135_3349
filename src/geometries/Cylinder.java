@@ -2,6 +2,7 @@ package geometries;
 
 import primitives.*;
 
+import java.util.List;
 import java.util.Map;
 
 import static primitives.Util.isZero;
@@ -60,5 +61,9 @@ public class Cylinder extends Tube {
         return super.getNormal(pnt);
     }
 
-
+    @Override
+    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance) {
+        return null;
+        //List<GeoPoint> intersections = super.findGeoIntersectionsHelper(ray, maxDistance);
+    }
 }

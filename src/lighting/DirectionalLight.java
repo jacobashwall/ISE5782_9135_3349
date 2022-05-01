@@ -19,7 +19,7 @@ public class DirectionalLight extends Light implements LightSource {
      * @param color     The color for the intensity field
      * @param direction The vector for the direction field
      */
-    protected DirectionalLight(Color color, Vector direction) {
+    public DirectionalLight(Color color, Vector direction) {
         super(color);
         this.direction = direction.normalize();
     }

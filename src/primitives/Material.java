@@ -3,6 +3,7 @@ package primitives;
 /**
  * Class that represents the material of a geometric object.
  * The class is PDS.
+ *
  * @author Yonatan Dahary
  */
 public class Material {
@@ -13,6 +14,7 @@ public class Material {
 
     /**
      * Setter for the kD field
+     *
      * @param kD parameter for the kD field
      * @return The object itself
      */
@@ -23,6 +25,7 @@ public class Material {
 
     /**
      * Setter for the kD field
+     *
      * @param kD double parameter for all three values in the the kD field
      * @return The object itself
      */
@@ -33,6 +36,7 @@ public class Material {
 
     /**
      * Setter for the kS field
+     *
      * @param kS parameter for the kS field
      * @return The object itself
      */
@@ -43,6 +47,7 @@ public class Material {
 
     /**
      * Setter for the kS field
+     *
      * @param kS double parameter for all three values in the the kS field
      * @return The object itself
      */
@@ -53,6 +58,7 @@ public class Material {
 
     /**
      * Setter for the nShininess field
+     *
      * @param nShininess parameter for the nShininess field
      * @return The object itself
      */

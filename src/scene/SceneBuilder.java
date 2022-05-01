@@ -232,8 +232,8 @@ public class SceneBuilder {
         Point pI;
         String pointName;
         for (int i = 0; i < polygonAttributes.size(); i++) {
-            pointName="p"+ i;
-            if(polygonAttributes.get(pointName)!=null) {
+            pointName = "p" + i;
+            if (polygonAttributes.get(pointName) != null) {
                 coordinates = polygonAttributes.get(pointName).split("\\s+");
                 pI = new Point(Double.parseDouble(coordinates[0]),
                         Double.parseDouble(coordinates[1]),
@@ -241,7 +241,7 @@ public class SceneBuilder {
                 copyVertices.add(pI);
             }
         }
-        Point[] vertices=copyVertices.toArray(new Point[0]);
+        Point[] vertices = copyVertices.toArray(new Point[0]);
         Polygon polygon = new Polygon(vertices);
         if (polygonAttributes.get("emission") != null) {
             String[] emissionLightAttributes = polygonAttributes.get("emission").split("\\s+");
@@ -253,6 +253,7 @@ public class SceneBuilder {
         }
         return polygon;
     }
+
     /**
      * Creates a sphere using the list of attributes from the XML file
      *
@@ -280,6 +281,7 @@ public class SceneBuilder {
         return sphere;
 
     }
+
     /**
      * Creates a triangle using the list of attributes from the XML file
      *
@@ -319,6 +321,7 @@ public class SceneBuilder {
         }
         return triangle;
     }
+
     /**
      * Creates a tube using the list of attributes from the XML file
      *
@@ -375,7 +378,6 @@ public class SceneBuilder {
                     Double.parseDouble(factorAttributes[2]));
         return new AmbientLight(color, k);
     }
-
 
 
 }

@@ -64,7 +64,7 @@ public class PointLight extends Light implements LightSource {
     @Override
     public Color getIntensity(Point p) {
         double d = p.distance(this.position);
-        return this.intensity.reduce(kC.add(kL.scale(d)).add(kQ .scale( d * d)));
+        return this.intensity.reduce(kC.add(kL.scale(d)).add(kQ.scale(d * d)));
     }
 
 

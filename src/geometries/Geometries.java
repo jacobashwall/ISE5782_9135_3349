@@ -45,7 +45,7 @@ public class Geometries extends Intersectable {
     public List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance) {
         List<GeoPoint> intersections = null;
         for (var geometry : objects) {
-            List<GeoPoint> returnList = geometry.findGeoIntersectionsHelper(ray,maxDistance);
+            List<GeoPoint> returnList = geometry.findGeoIntersectionsHelper(ray, maxDistance);
             if (returnList != null) { //if it's not null (there are intersections)
                 if (intersections == null)
                     intersections = new LinkedList<>();

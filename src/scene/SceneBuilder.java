@@ -49,7 +49,7 @@ public class SceneBuilder {
         sceneDescriptor = new SceneDescriptor();
         //checks if the file is in the right structure
         try {
-            sceneDescriptor.InitializeFromXMLString(sceneXMLDesc);
+            sceneDescriptor.InitializeFromXmlString(sceneXMLDesc);
         } catch (ParseException e) {
             System.out.println("Syntactical error in scene description:");
             e.printStackTrace();
@@ -73,7 +73,7 @@ public class SceneBuilder {
 
         // creating and adding spheres
         for (Map<String, String> sphereAttributes : sceneDescriptor.getSpheres()) {
-            Sphere sphere = readXMLSphere(sphereAttributes);
+            Sphere sphere = readXmlSphere(sphereAttributes);
             scene.geometries.add(sphere);
         }
 
@@ -85,19 +85,19 @@ public class SceneBuilder {
 
         // creating and adding planes
         for (Map<String, String> planeAttributes : sceneDescriptor.getPlanes()) {
-            Plane plane = readXMLPlane(planeAttributes);
+            Plane plane = readXmlPlane(planeAttributes);
             scene.geometries.add(plane);
         }
 
         // creating and adding tubes
         for (Map<String, String> tubeAttributes : sceneDescriptor.getTubes()) {
-            Tube tube = readXMLTube(tubeAttributes);
+            Tube tube = readXmlTube(tubeAttributes);
             scene.geometries.add(tube);
         }
 
         // creating and adding cylinders
         for (Map<String, String> cylinderAttributes : sceneDescriptor.getCylinders()) {
-            Cylinder cylinder = readXMLCylinder(cylinderAttributes);
+            Cylinder cylinder = readXmlCylinder(cylinderAttributes);
             scene.geometries.add(cylinder);
         }
 
@@ -150,7 +150,7 @@ public class SceneBuilder {
      * @param cylinderAttributes list of cylinder attributes fetched from the xml file
      * @return a cylinder with the values stated in the tube attributes
      */
-    private Cylinder readXMLCylinder(Map<String, String> cylinderAttributes) {
+    private Cylinder readXmlCylinder(Map<String, String> cylinderAttributes) {
         double radius = Double.parseDouble(cylinderAttributes.get("radius"));
 
         String[] axisRayAttribute = cylinderAttributes
@@ -185,7 +185,7 @@ public class SceneBuilder {
      * @param planeAttributes list of plane attributes fetched from the xml file
      * @return a plane with the values stated in the plane attributes
      */
-    private Plane readXMLPlane(Map<String, String> planeAttributes) {
+    private Plane readXmlPlane(Map<String, String> planeAttributes) {
 
         String[] p0Attributes = planeAttributes.get("p0").split("\\s+");
         Point p0 = new Point(Double.parseDouble(p0Attributes[0]),
@@ -260,7 +260,7 @@ public class SceneBuilder {
      * @param sphereAttributes list of sphere attributes fetched from the xml file
      * @return a sphere with the values stated in the sphere attributes
      */
-    private Sphere readXMLSphere(Map<String, String> sphereAttributes) {
+    private Sphere readXmlSphere(Map<String, String> sphereAttributes) {
         double radius = Double.parseDouble(sphereAttributes.get("radius"));
 
         String[] centerValues = sphereAttributes
@@ -328,7 +328,7 @@ public class SceneBuilder {
      * @param tubeAttributes list of tube attributes fetched from the xml file
      * @return a tube with the values stated in the tube attributes
      */
-    private Tube readXMLTube(Map<String, String> tubeAttributes) {
+    private Tube readXmlTube(Map<String, String> tubeAttributes) {
         double radius = Double.parseDouble(tubeAttributes.get("radius"));
 
         String[] axisRayAttribute = tubeAttributes

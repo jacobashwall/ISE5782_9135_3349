@@ -26,9 +26,9 @@ public class SceneDescriptor {
      *
      * @param text XML string
      */
-    public void InitializeFromXMLString(String text) throws ParseException {
+    public void InitializeFromXmlString(String text) throws ParseException {
 
-        SceneXMLParser parser = new SceneXMLParser();
+        SceneXmlParser parser = new SceneXmlParser();
         parser.parse(text, this);
 
         // Verify that scene structure is syntactically correct

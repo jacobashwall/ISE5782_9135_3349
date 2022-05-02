@@ -17,7 +17,7 @@ import javax.xml.parsers.SAXParserFactory;
 /**
  * Parses the scene XML description and initializes the scene description object
  */
-public class SceneXMLParser extends DefaultHandler {
+public class SceneXmlParser extends DefaultHandler {
     /**
      * the entire string of the XML file
      */

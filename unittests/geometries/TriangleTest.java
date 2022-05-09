@@ -60,4 +60,26 @@ class TriangleTest {
         assertNull(trn.findIntersections(ray6), "TC6: The ray failed to intersect with the triangle's plane on one of the triangle's rib's vector");
     }
 
+    /**
+     * Test method for{@link geometries.Triangle#findGeoIntersectionsHelper(Ray,double)}
+     */
+    @Test
+    void findGeoIntersectionsHelper() {
+        Triangle tr1 = new Triangle(new Point(2, 0, 0), new Point(0, 2, 0), new Point(2, 2, 0));
+        Ray ray = new Ray(new Point(1.5,1.5,1), new Vector(0,0,-1));
+        Intersectable.GeoPoint p1 = new Intersectable.GeoPoint(tr1,new Point(1.5,1.5,0));
+        //============ Equivalence Partitions Tests ==============//
+        //EP1: Distance is enough
+        assertEquals(List.of(p1),tr1.findGeoIntersectionsHelper(ray,2),"Bad intersection!");
+        //EP2: Distance isn't enough
+        assertNull(tr1.findGeoIntersectionsHelper(ray,0),"Bad intersection!");
+
+
+        //============ Boundary Tests ==============//
+        //BVA1: Distance is just enough
+        assertEquals(List.of(p1),tr1.findGeoIntersectionsHelper(ray,1),"Bad intersection!");
+
+
+    }
+
 }

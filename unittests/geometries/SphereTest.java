@@ -110,4 +110,36 @@ class SphereTest {
 
 
     }
+
+    /**
+     * Test method for{@link Sphere#findGeoIntersectionsHelper(Ray)}
+     */
+    @Test
+    void findGeoIntersectionsHelper() {
+        Sphere sphere = new Sphere(new Point(2, 1, 0), 1);
+        Vector vec = new Vector(1,0,0);
+        Ray ray = new Ray(new Point(0,1,0),vec);
+        Intersectable.GeoPoint p1 = new Intersectable.GeoPoint(sphere,new Point(1,1,0));
+        Intersectable.GeoPoint p2 = new Intersectable.GeoPoint(sphere,new Point(3,1,0));
+
+        //============ Equivalence Partitions Tests ==============//
+        //Group: Head of the ray is outside the sphere and intersects the sphere twice
+        //EP1: maxDistance<t1
+        assertNull(sphere.findGeoIntersectionsHelper(ray,0.5),"EP1: Bad intersection!");
+        //EP2: Head of the ray is inside the sphere and intersects the sphere once t1<maxDistance<t2
+        assertEquals(List.of(p1),sphere.findGeoIntersectionsHelper(ray,2),"EP2: Bad intersection");
+        //EP3: t2<maxDistance
+        assertEquals(List.of(p1,p2),sphere.findGeoIntersectionsHelper(ray,4),"EP3: Bad intersection");
+
+        //============ Boundary Tests ==============//
+        //EP1: Ray maxDistance=t1
+        assertEquals(List.of(p1),sphere.findGeoIntersectionsHelper(ray,1),"EP1: Bad intersection!");
+        //EP2:maxDistance=t2
+        assertEquals(List.of(p1,p2),sphere.findGeoIntersectionsHelper(ray,3),"EP2: Bad intersection");
+
+
+
+
+
+    }
 }

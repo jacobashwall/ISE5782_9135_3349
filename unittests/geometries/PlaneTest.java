@@ -101,4 +101,26 @@ class PlaneTest {
         Ray ray9 = new Ray(new Point(-2, 0, -2), new Vector(1, 1, 1));
         assertNull(pln9.findIntersections(ray9), "Ray is neither orthogonal nor parallel to the plane and begins in the same point which appears as reference point in the plane Failed to not intersect");
     }
+
+    /**
+     * Test method for{@link geometries.Plane#findGeoIntersectionsHelper(Ray,double)}
+     */
+    @Test
+    void findGeoIntersectionsHelper() {
+        Plane pln1 = new Plane(new Point(1, 0, 0), new Point(0, 1, 0), new Point(1, 1, 0));
+        Ray ray = new Ray(new Point(1,1,1), new Vector(0,0,-1));
+        Intersectable.GeoPoint p1 = new Intersectable.GeoPoint(pln1,new Point(1,1,0));
+        //============ Equivalence Partitions Tests ==============//
+        //EP1: Distance is enough
+        assertEquals(List.of(p1),pln1.findGeoIntersectionsHelper(ray,2),"Bad intersection!");
+        //EP2: Distance isn't enough
+        assertNull(pln1.findGeoIntersectionsHelper(ray,0),"Bad intersection!");
+
+
+        //============ Boundary Tests ==============//
+        //BVA1: Distance is just enough
+        assertEquals(List.of(p1),pln1.findGeoIntersectionsHelper(ray,1),"Bad intersection!");
+
+
+    }
 }

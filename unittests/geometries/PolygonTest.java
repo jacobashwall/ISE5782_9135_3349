@@ -115,4 +115,26 @@ public class PolygonTest {
         Ray ray6 = new Ray(new Point(0, 0, 1), new Vector(-1, -2, -1));
         assertNull(plg.findIntersections(ray6), "The ray failed to intersect with the Polygon's plane on one of the Polygon's rib's vector");
     }
+
+    /**
+     * Test method for{@link geometries.Polygon#findGeoIntersectionsHelper(Ray,double)}
+     */
+    @Test
+    void findGeoIntersectionsHelper() {
+        Polygon plgn1 = new Polygon(new Point(0,0,0),new Point(2, 0, 0), new Point(2, 2, 0), new Point(0, 2, 0));
+        Ray ray = new Ray(new Point(1,1,1), new Vector(0,0,-1));
+        Intersectable.GeoPoint p1 = new Intersectable.GeoPoint(plgn1,new Point(1,1,0));
+        //============ Equivalence Partitions Tests ==============//
+        //EP1: Distance is enough
+        assertEquals(List.of(p1),plgn1.findGeoIntersectionsHelper(ray,2),"Bad intersection!");
+        //EP2: Distance isn't enough
+        assertNull(plgn1.findGeoIntersectionsHelper(ray,0),"Bad intersection!");
+
+
+        //============ Boundary Tests ==============//
+        //BVA1: Distance is just enough
+        assertEquals(List.of(p1),plgn1.findGeoIntersectionsHelper(ray,1),"Bad intersection!");
+
+
+    }
 }

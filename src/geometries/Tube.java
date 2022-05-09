@@ -89,7 +89,7 @@ public class Tube extends Geometry {
         double a = Util.alignZero(vec1.lengthSquared());
 
         if (ray.getP0().equals(this.axisRay.getP0())) {
-            return List.of(new GeoPoint(this, ray.getPoint(Math.sqrt(radiusSquared / a))));
+            return alignZero(radiusSquared / a - maxDistance) > 0 ? null: List.of(new GeoPoint(this, ray.getPoint(Math.sqrt(radiusSquared / a))));
         }
 
         //The vector between the ray heads.
@@ -97,7 +97,7 @@ public class Tube extends Geometry {
 
         //If the ray starts at the tube axis ray
         if (tubeDir.equals(deltaP.normalize()) || tubeDir.equals(deltaP.normalize().scale(-1))) {
-            return List.of(new GeoPoint(this, (ray.getPoint(Math.sqrt(radiusSquared / a)))));
+            return alignZero(radiusSquared / a - maxDistance) > 0 ? null: List.of(new GeoPoint(this, ray.getPoint(Math.sqrt(radiusSquared / a))));
         }
 
         double dotP2 = Util.alignZero(deltaP.dotProduct(tubeDir));
@@ -122,8 +122,11 @@ public class Tube extends Geometry {
 
         //The intersection points are behind the head of the ray
         if (t1 <= 0 || alignZero(t2 - maxDistance) > 0) return null;
-
-        //Check if there are one or two intersection points.
-        return t2 <= 0 ? List.of(new GeoPoint(this, ray.getPoint(t1))) : List.of(new GeoPoint(this, ray.getPoint(t2)), new GeoPoint(this, ray.getPoint(t1)));
+        if (t1 - maxDistance > 0) {
+            return t2 <= 0 ? null : List.of(new GeoPoint(this, ray.getPoint(t2)));
+        } else {
+            //Check if there are one or two intersection points.
+            return t2 <= 0 ? List.of(new GeoPoint(this, ray.getPoint(t1))) : List.of(new GeoPoint(this, ray.getPoint(t2)), new GeoPoint(this, ray.getPoint(t1)));
+        }
     }
 }

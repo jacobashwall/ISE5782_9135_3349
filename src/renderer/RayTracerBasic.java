@@ -26,6 +26,8 @@ public class RayTracerBasic extends RayTracerBase {
     private static final double MIN_CALC_COLOR_K = 0.001;
 
     private static final double INITIAL_K = 1.0;
+    private static final double DELTA = 0.1;
+
 
     /**
      * construction the class with the given scene.
@@ -72,7 +74,7 @@ public class RayTracerBasic extends RayTracerBase {
      */
     private Color calcColor(GeoPoint gp, Ray ray, int level, Double3 k) {
         Color color = scene.ambientLight.getIntensity()
-                .add(calcLocalEffects(gp, ray))
+                .add(calcLocalEffects(gp, ray,k))
                 .add(gp.geometry.getEmission());
         if (level > 1) {
             color = color.add(calcGlobalEffects(gp, ray, level, k));
@@ -120,64 +122,65 @@ public class RayTracerBasic extends RayTracerBase {
 
 
     /**
-     * the sum of all the impacts of the light sources on the point.
+     * Calculating the local lighting effects of different light sources
      *
-     * @param gp  the point with the geometry properties including the material properties.
-     * @param ray the ray to check the light from.
-     * @return the sum of all the light sources on the point.
+     * @param intersection the intersection point of the ray parameter with the geometric body.
+     *                     This method calculate the light intensity at this point.
+     * @param ray          the ray that intersects the geometric body
+     * @return
      */
-    private Color calcLocalEffects(GeoPoint gp, Ray ray) {
+    private Color calcLocalEffects(GeoPoint intersection, Ray ray, Double3 k) {
+        // Getting the emission of the geometric body
         Color color = Color.BLACK;
-        Vector v = ray.getDir();
-        Vector n = gp.geometry.getNormal(gp.point);
+
+        Vector v = ray.getDir();//direction of the ray
+        Vector n = intersection.geometry.getNormal(intersection.point);//normal to the geometric body in the intersection point
+
+        //if the ray and the normal in the intersection point
+        //orthogonal to each other, return just the emission.
         double nv = alignZero(n.dotProduct(v));
         if (nv == 0) return color;
-        Material material = gp.geometry.getMaterial();
 
+        Material material = intersection.geometry.getMaterial();//the material of the geometric body
+
+        //go through all the light sources and calculate their
+        //intersection at the point
         for (LightSource lightSource : scene.lights) {
-            Vector l = lightSource.getL(gp.point);
-            double nl = alignZero(l.dotProduct(n));
-            Color iL = lightSource.getIntensity(gp.point);
-
-            if (unshaded(gp, l, n, lightSource)) {
-                color = color.add(iL.scale(calcDiffusive(material, nl)),
-                        iL.scale(calcSpecular(material, n, l, nl, v)));
+            Vector l = lightSource.getL(intersection.point);
+            double nl = alignZero(n.dotProduct(l));
+            //Check the angle to decide whether
+            //to add the effect of the other light sources
+            if (nl * nv > 0) { // sign(nl) == sing(nv)
+                Double3 ktr = transparency(intersection,l, n,lightSource);
+                if (!ktr.product(k).lowerThan(MIN_CALC_COLOR_K )) {
+                    Color iL = lightSource.getIntensity(intersection.point).scale(ktr);
+                    color = color.add( //
+                            iL.scale(calcDiffusive(material, nl)//diffusive effect
+                                    .add(calcSpecular(material, n, l, nl, v))));//specular effect
+                }
             }
         }
         return color;
     }
 
     /**
-     * calculating the specular part of the light.
+     * Calculates the specular effect
      *
-     * @param material the material containing the properties of
-     * @param n        the normal vector of the point in the intersection.
-     * @param l        the direction point of the camera.
-     * @param nl       the dot product between them.
-     * @param v        the to vector of the camera.
-     * @return the specular coefficient.
+     * @param material material of the geometric object
+     * @param n        the normal to the geometric object at the point
+     * @param l        the ray of the light source
+     * @param nl       the dot product of the light source ray direction and the normal to the geometric object at the point
+     * @param v        the direction of the camera ray
+     * @return the specular effect expressed by Double3 object
      */
     private Double3 calcSpecular(Material material, Vector n, Vector l, double nl, Vector v) {
+        //the reflection of the light source vector (l)
+        Vector r = l.subtract(n.scale(2 * nl));
+        double minusVR = alignZero(-v.dotProduct(r));
+        if (minusVR <= 0) return Double3.ZERO;
 
-        Vector r;
-
-        //the specular vector, to check the match between it and the camera to vector.
-        if(isZero(2*nl)){
-            r = l;
-        }else {
-            r = l.subtract(n.scale(2 * nl)).normalize();
-        }
-        double vr = -v.dotProduct(r);
-
-        //if the object is behind the light source in relation to the camera the specular impact is zero.
-        if (vr <= 0) return Double3.ZERO;
-
-        //duplicating it by itself for the nShininess factor.
-        double vrMult = 1;
-        for (int i = 0; i < material.nShininess; i++) {
-            vrMult *= vr;
-        }
-        return material.kS.scale(vrMult);
+        //Calculation of the effect according to phong model
+        return material.kS.scale(Math.pow(minusVR, material.nShininess));
     }
 
     /**
@@ -192,36 +195,50 @@ public class RayTracerBasic extends RayTracerBase {
     }
 
 
+
     /**
-     * calculate if the point is shaded, then the phong model is useless.
+     * Checks whether a given point is lighted by the light source
+     * by tracing a ray back to the light source and check if it intersects
+     * with a geometrical body
      *
-     * @param gp the intersection point.
-     * @param l  the vector from the light source to the point.
-     * @param n  the normal vector.
-     * @return true if the point is unshaded, false if it is shaded.
+     * @param gp          the given point to check
+     * @param l           the ray light from the light source to the point
+     * @param n           normal to the geometric body in this point
+     * @param lightSource the light source that we check shadiness for
+     * @return
      */
-    private boolean unshaded(GeoPoint gp, Vector l, Vector n, LightSource lightSource) {
-
-        Vector lightDirection = l.scale(-1);
-
-        //the ray from the modified point to the light source.
+    private boolean unshaded(GeoPoint gp, Vector l, Vector n,LightSource lightSource) {
+        Vector lightDirection = l.scale(-1); // from point to light source
+        //We make sure to move the object by DELTA
+        //int the correct direction
+        //Create a new ray to check shadiness
         Ray lightRay = new Ray(gp.point, lightDirection, n);
-
-        List<GeoPoint> shadePoints = scene.geometries.findGeoIntersections(lightRay);
-
-        //check if there are any intersections and return the result.
-        if (shadePoints == null)
+        //Find if any geometric object blocks the light
+        List<GeoPoint> intersections = scene.geometries.findGeoIntersections(lightRay, lightSource.getDistance(lightRay.getP0()));
+        if (intersections == null)
             return true;
-
-        //iterate over all the points and check if there is a point that is closer to the head, with on transparency
-        // of the ray more than to the light source return false.
-        for (GeoPoint shadeGp : shadePoints) {
-            if (lightSource.getDistance(gp.point) > gp.point.distance(shadeGp.point) &&
-                    shadeGp.geometry.getMaterial().kT.equals(new Double3(0)))
-                return false;
+        for (var geoPoint : intersections) {
+                if (geoPoint.geometry.getMaterial().kT.equals(Double3.ZERO))
+                    return false;
         }
-
         return true;
+    }
+
+    private Double3 transparency(GeoPoint gp, Vector l, Vector n,LightSource lightSource) {
+        Vector lightDirection = l.scale(-1); // from point to light source
+        //We make sure to move the object by DELTA
+        //int the correct direction
+        //Create a new ray to check shadiness
+        Ray lightRay = new Ray(gp.point, lightDirection, n);
+        //Find if any geometric object blocks the light
+        List<GeoPoint> intersections = scene.geometries.findGeoIntersections(lightRay, lightSource.getDistance(lightRay.getP0()));
+        if (intersections == null)
+            return Double3.ONE;
+        Double3 ktr = Double3.ONE;
+        for (var geoPoint : intersections) {
+            ktr = ktr.product(geoPoint.geometry.getMaterial().kT);
+        }
+        return ktr;
     }
 
 
@@ -250,32 +267,14 @@ public class RayTracerBasic extends RayTracerBase {
     }
 
     /**
-     * Finds the closest intersection
-     * @param ray the ray that we look for the closest intersection point
-     * @return the closest intersection point
+     * finds the closest intersection GeoPoint to the base of the ray
+     *
+     * @param ray the ray that we find intersection from
+     * @return the closest intersection GeoPoint
      */
     private GeoPoint findClosestIntersection(Ray ray) {
-
-        List<GeoPoint> intersections = scene.geometries.findGeoIntersections(ray);
-
-        if (intersections == null || intersections.size() == 0) {
-            return null;
-        }
-
-        //initializing the first values for comperation.
-        GeoPoint closestGeoPoint = intersections.get(0);
-        double distance = intersections.get(0).point.distance(ray.getP0());
-
-        //iterating over the list.
-        for (GeoPoint p : intersections) {
-            if (p.point.distance(ray.getP0()) < distance) {
-                distance = p.point.distance(ray.getP0());
-                closestGeoPoint = p;
-            }
-        }
-
-        //returning the result
-        return closestGeoPoint;
+        return ray.findClosestGeoPoint(scene.geometries.findGeoIntersections(ray));
     }
+
 
 }

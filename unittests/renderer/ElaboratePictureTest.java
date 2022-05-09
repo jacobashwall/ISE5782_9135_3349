@@ -100,28 +100,28 @@ public class ElaboratePictureTest {
 
         //choose one of those:
 
-
+/*
         //taking picture for images
-        camera.moveCamera(new Point(0, 0, 0),new Point(0, 1000,-6000)).turnCamera(180).setVPDistance(2500);
+        camera.moveCamera(new Point(0, 0, 0),new Point(0, 1000,-6000)).setVPDistance(2500);
         ImageWriter imageWriter = new ImageWriter("elaboratePicture", 10000, 10000);
         camera.setImageWriter(imageWriter) //
                 .setRayTracer(new RayTracerBasic(scene)) //
                 .renderImage(); //
         camera.writeToImage();
+*/
 
-        /*
         //taking pictures for the gif using move camera and rotate camera
         double movingFactor = 10;
         double rotatingFactor = 4.5;
         for (int i = 0; i <= 40; i++) {
             camera.moveCamera(new Point(camera.getP0().getX(), camera.getP0().getY(), camera.getP0().getZ() - (i * movingFactor)),
                             new Point(0, 1000, -6000))
-                    .turnCamera(180 - (i * rotatingFactor))
+                    .turnCamera(i * rotatingFactor)
                     .setImageWriter(new ImageWriter("gif\\image" + i, 500, 500))
                     .setRayTracer(new RayTracerBasic(scene))
                     .renderImage();
             camera.writeToImage();
         }
-*/
+
     }
 }

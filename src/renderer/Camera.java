@@ -221,9 +221,9 @@ public class Camera {
 
         //if the Vto is already on the Y axis, we will use the Z axis instead
         if (this.vTo.equals(new Vector(0, 1, 0)) || this.vTo.equals(new Vector(0, -1, 0))) {
-            this.vUp = vTo.crossProduct(vTo.crossProduct(new Vector(0, 0, 1))).normalize();
+            this.vUp = (vTo.crossProduct(new Vector(0, 0, 1))).crossProduct(vTo).normalize();
         } else {
-            this.vUp = vTo.crossProduct(vTo.crossProduct(new Vector(0, 1, 0))).normalize();
+            this.vUp = (vTo.crossProduct(new Vector(0, 1, 0))).crossProduct(vTo).normalize();
         }
         this.vRight = vTo.crossProduct(vUp).normalize();
         return this;

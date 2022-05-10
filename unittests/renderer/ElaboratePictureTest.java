@@ -1,6 +1,7 @@
 package renderer;
 
 import geometries.Plane;
+import geometries.Polygon;
 import geometries.Sphere;
 import geometries.Triangle;
 import lighting.AmbientLight;
@@ -73,12 +74,24 @@ public class ElaboratePictureTest {
         scene.lights.add(new SpotLight(new Color(191, 191, 191), new Point(0, 3500, -4500), new Vector(-2, -2, -3)).setKc(0).setKl(0.000001).setKq(0.0000005));
         scene.lights.add(new SpotLight(new Color(191, 191, 191), new Point(0, 3500, -4500), new Vector(-2, -2, -3)).setKc(0).setKl(0.000001).setKq(0.0000005));
 
-        /*
-        Triangle t = new Triangle(new Point(-3000, -400, 0), new Point(3000, -400, 0), new Point(0, -400, -8000));
-        t.setEmission(new Color(0, 0, 0));
-        t.setMaterial(new Material().setKs(1).setKr(0.4));
-        scene.geometries.add(t);
-        */
+        //wall
+        int dis = 0;
+        int magnify = 0;
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                if ((j + i) % 2 == 0) {
+                    magnify = 0;
+                    dis = 0;
+                } else {
+                    magnify = 10;
+                    dis = 100;
+                }
+
+                Polygon polygon = new Polygon(new Point(-2000 + j * 400 + magnify, -400 + i * 400 + magnify, -8000 - dis), new Point(-1600 + j * 400 + magnify, -400 + i * 400 + magnify, -8000 - dis), new Point(-1600 + j * 400 + magnify, i * 400 + magnify, -8000 - dis), new Point(-2000 + j * 400 + magnify, i * 400 + magnify, -8000 - dis));
+                polygon.setEmission(new Color(122, 122, 122)).setMaterial(new Material().setKs(1).setKd(0.5));
+                scene.geometries.add(polygon);
+            }
+        }
 
         //mirror surface
         Plane pl = new Plane(new Point(-3000, -400, 0), new Point(3000, -400, 0), new Point(0, -400, -8000));
@@ -100,8 +113,17 @@ public class ElaboratePictureTest {
 
         //choose one of those:
 
-/*
-        //taking picture for images
+
+        //taking picture for images without the wall
+        camera.moveCamera(new Point(0, 0, 0), new Point(0, 1000, -6000)).setVPDistance(2500);
+        ImageWriter imageWriter = new ImageWriter("elaboratePictureWall", 5000, 5000);
+        camera.setImageWriter(imageWriter) //
+                .setRayTracer(new RayTracerBasic(scene)) //
+                .renderImage(); //
+        camera.writeToImage();
+
+        /*
+        //taking picture for images with the wall
         camera.moveCamera(new Point(0, 0, 0),new Point(0, 1000,-6000)).setVPDistance(2500);
         ImageWriter imageWriter = new ImageWriter("elaboratePicture", 10000, 10000);
         camera.setImageWriter(imageWriter) //
@@ -110,6 +132,7 @@ public class ElaboratePictureTest {
         camera.writeToImage();
 */
 
+        /*
         //taking pictures for the gif using move camera and rotate camera
         double movingFactor = 10;
         double rotatingFactor = 4.5;
@@ -122,6 +145,6 @@ public class ElaboratePictureTest {
                     .renderImage();
             camera.writeToImage();
         }
-
+*/
     }
 }

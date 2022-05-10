@@ -5,6 +5,7 @@ import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 
+import java.io.Console;
 import java.util.MissingResourceException;
 
 /**
@@ -247,6 +248,7 @@ public class Camera {
         int nX = imageWriter.getNx();
         int nY = imageWriter.getNy();
         for (int i = 0; i < nX; i++) {
+            System.out.println(i+"/"+nX);
             for (int j = 0; j < nY; j++) {
                 //get the ray through the pixel
                 Ray ray = this.constructRay(nX, nY, j, i);
@@ -254,6 +256,7 @@ public class Camera {
             }
         }
     }
+
 
     /**
      * Prints a grid

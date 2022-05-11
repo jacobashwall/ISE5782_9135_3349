@@ -65,29 +65,34 @@ public class ElaboratePictureTest {
         //spheres helix
         int index = 0;
         for (double t = 0; t < 25; t += 0.2) {
-            scene.geometries.add(new Sphere(new Point(Math.cos(t) * 1000, t * 100, Math.sin(t) * 1000 - 6000), 100)//using helix coordinates function
+            //helix coordinates
+            //x=Rcos(t)
+            //y=Bt
+            //z=Rsint(t)
+            //B=100, R=1000, 0<=t<=25
+            scene.geometries.add(new Sphere(new Point(Math.cos(t) * 1000, t * 100, Math.sin(t) * 1000 - 6000), 100)
                     .setEmission(rainbow[(index++) % rainbow.length]) //
                     .setMaterial(new Material().setKd(0.4).setKs(0.3).setnShininess(100).setKt(0.3).setKr(0)));
         }
 
         //lights
         scene.lights.add(new SpotLight(new Color(191, 191, 191), new Point(0, 3500, -4500), new Vector(-2, -2, -3)).setKc(0).setKl(0.000001).setKq(0.0000005));
-        scene.lights.add(new SpotLight(new Color(191, 191, 191), new Point(0, 3500, -4500), new Vector(-2, -2, -3)).setKc(0).setKl(0.000001).setKq(0.0000005));
+        scene.lights.add(new SpotLight(new Color(191, 191, 191), new Point(0, 3500, -4500), new Vector(2, -2, -3)).setKc(0).setKl(0.000001).setKq(0.0000005));
 
-        //wall
-        int dis = 0;
-        int magnify = 0;
+        //tiles wall
+        int distance = 0;//distance gap between tiles
+        int fix = 0;//fixing the distance by point of view
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
-                if ((j + i) % 2 == 0) {
-                    magnify = 0;
-                    dis = 0;
-                } else {
-                    magnify = 10;
-                    dis = 100;
+                if ((j + i) % 2 == 0) {//on even row the even tile would be closer, on odd row the odd tile would be closer
+                    fix = 0;
+                    distance = 0;
+                } else {//on even row the odd tile, on odd row the even tile
+                    fix = 10;
+                    distance = 100;
                 }
 
-                Polygon polygon = new Polygon(new Point(-2000 + j * 400 + magnify, -400 + i * 400 + magnify, -8000 - dis), new Point(-1600 + j * 400 + magnify, -400 + i * 400 + magnify, -8000 - dis), new Point(-1600 + j * 400 + magnify, i * 400 + magnify, -8000 - dis), new Point(-2000 + j * 400 + magnify, i * 400 + magnify, -8000 - dis));
+                Polygon polygon = new Polygon(new Point(-2000 + j * 400 + fix, -400 + i * 400 + fix, -8000 - distance), new Point(-1600 + j * 400 + fix, -400 + i * 400 + fix, -8000 - distance), new Point(-1600 + j * 400 + fix, i * 400 + fix, -8000 - distance), new Point(-2000 + j * 400 + fix, i * 400 + fix, -8000 - distance));
                 polygon.setEmission(new Color(122, 122, 122)).setMaterial(new Material().setKs(1).setKd(0.5));
                 scene.geometries.add(polygon);
             }
@@ -116,7 +121,7 @@ public class ElaboratePictureTest {
 
         //taking picture for images without the wall
         camera.moveCamera(new Point(0, 0, 0), new Point(0, 1000, -6000)).setVPDistance(2500);
-        ImageWriter imageWriter = new ImageWriter("elaboratePictureWall", 5000, 5000);
+        ImageWriter imageWriter = new ImageWriter("elaboratePictureWallNewLight", 5000, 5000);
         camera.setImageWriter(imageWriter) //
                 .setRayTracer(new RayTracerBasic(scene)) //
                 .renderImage(); //

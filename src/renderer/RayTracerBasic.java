@@ -127,7 +127,7 @@ public class RayTracerBasic extends RayTracerBase {
      * @param intersection the intersection point of the ray parameter with the geometric body.
      *                     This method calculate the light intensity at this point.
      * @param ray          the ray that intersects the geometric body
-     * @return
+     * @return Color calculated by the light sources
      */
     private Color calcLocalEffects(GeoPoint intersection, Ray ray, Double3 k) {
         // Getting the emission of the geometric body
@@ -152,6 +152,7 @@ public class RayTracerBasic extends RayTracerBase {
             //to add the effect of the other light sources
             if (nl * nv > 0) { // sign(nl) == sing(nv)
                 Double3 ktr = transparency(intersection,l, n,lightSource);
+                //Here we deal with the transparency of the objects
                 if (!ktr.product(k).lowerThan(MIN_CALC_COLOR_K )) {
                     Color iL = lightSource.getIntensity(intersection.point).scale(ktr);
                     color = color.add( //
@@ -194,36 +195,14 @@ public class RayTracerBasic extends RayTracerBase {
         return material.kD.scale(nl < 0 ? -nl : nl);
     }
 
-
-
     /**
-     * Checks whether a given point is lighted by the light source
-     * by tracing a ray back to the light source and check if it intersects
-     * with a geometrical body
      *
-     * @param gp          the given point to check
-     * @param l           the ray light from the light source to the point
-     * @param n           normal to the geometric body in this point
-     * @param lightSource the light source that we check shadiness for
-     * @return
+     * @param gp the point we want to calculate the transparency for
+     * @param l vector from the light source
+     * @param n normal to the point
+     * @param lightSource the light source
+     * @return the transparency of the point
      */
-    private boolean unshaded(GeoPoint gp, Vector l, Vector n,LightSource lightSource) {
-        Vector lightDirection = l.scale(-1); // from point to light source
-        //We make sure to move the object by DELTA
-        //int the correct direction
-        //Create a new ray to check shadiness
-        Ray lightRay = new Ray(gp.point, lightDirection, n);
-        //Find if any geometric object blocks the light
-        List<GeoPoint> intersections = scene.geometries.findGeoIntersections(lightRay, lightSource.getDistance(lightRay.getP0()));
-        if (intersections == null)
-            return true;
-        for (var geoPoint : intersections) {
-                if (geoPoint.geometry.getMaterial().kT.equals(Double3.ZERO))
-                    return false;
-        }
-        return true;
-    }
-
     private Double3 transparency(GeoPoint gp, Vector l, Vector n,LightSource lightSource) {
         Vector lightDirection = l.scale(-1); // from point to light source
         //We make sure to move the object by DELTA
@@ -235,6 +214,7 @@ public class RayTracerBasic extends RayTracerBase {
         if (intersections == null)
             return Double3.ONE;
         Double3 ktr = Double3.ONE;
+        //For every geometric object in the list, scale by its transparency coefficient
         for (var geoPoint : intersections) {
             ktr = ktr.product(geoPoint.geometry.getMaterial().kT);
         }

@@ -3,10 +3,8 @@ package geometries;
 import primitives.*;
 
 import java.util.List;
-import java.util.Map;
 
 import static primitives.Util.alignZero;
-
 
 /**
  * Class that represents a tube and implements the interface Geometry
@@ -62,7 +60,6 @@ public class Tube extends Geometry {
         return pnt.subtract(axisRay.getPoint(t)).normalize();
     }
 
-
     @Override
     public List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance) {
         //The overall idea is to form a quadratic equation that it's
@@ -89,7 +86,7 @@ public class Tube extends Geometry {
         double a = Util.alignZero(vec1.lengthSquared());
 
         if (ray.getP0().equals(this.axisRay.getP0())) {
-            return alignZero(radiusSquared / a - maxDistance) > 0 ? null: List.of(new GeoPoint(this, ray.getPoint(Math.sqrt(radiusSquared / a))));
+            return alignZero(radiusSquared / a - maxDistance) > 0 ? null : List.of(new GeoPoint(this, ray.getPoint(Math.sqrt(radiusSquared / a))));
         }
 
         //The vector between the ray heads.
@@ -97,7 +94,7 @@ public class Tube extends Geometry {
 
         //If the ray starts at the tube axis ray
         if (tubeDir.equals(deltaP.normalize()) || tubeDir.equals(deltaP.normalize().scale(-1))) {
-            return alignZero(radiusSquared / a - maxDistance) > 0 ? null: List.of(new GeoPoint(this, ray.getPoint(Math.sqrt(radiusSquared / a))));
+            return alignZero(radiusSquared / a - maxDistance) > 0 ? null : List.of(new GeoPoint(this, ray.getPoint(Math.sqrt(radiusSquared / a))));
         }
 
         double dotP2 = Util.alignZero(deltaP.dotProduct(tubeDir));

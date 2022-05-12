@@ -14,13 +14,7 @@ public class Geometries extends Intersectable {
     //we will use linked list since adding a new object to the list is a lot faster than array list.
     //Also, we will never try to access an object in a specific index, but we will always scan all the array.
     //Meaning there are no drawbacks using linked list, but we would have the best running time.
-    private List<Intersectable> objects = new LinkedList<>();
-
-    /**
-     * Default ctor of Geometries.
-     */
-    public Geometries() {
-    }
+    private final List<Intersectable> objects = new LinkedList<>();
 
     /**
      * Ctor that gets objects and adds them to the list of objects.
@@ -37,7 +31,7 @@ public class Geometries extends Intersectable {
      * @param geometries geometric entities.
      */
     public void add(Intersectable... geometries) {
-        this.objects.addAll(List.of(geometries));
+        if (geometries.length > 0) this.objects.addAll(List.of(geometries));
     }
 
 
@@ -45,11 +39,12 @@ public class Geometries extends Intersectable {
     public List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance) {
         List<GeoPoint> intersections = null;
         for (var geometry : objects) {
-            List<GeoPoint> returnList = geometry.findGeoIntersectionsHelper(ray, maxDistance);
+            List<GeoPoint> returnList = geometry.findGeoIntersections(ray, maxDistance);
             if (returnList != null) { //if it's not null (there are intersections)
                 if (intersections == null)
-                    intersections = new LinkedList<>();
-                intersections.addAll(returnList);
+                    intersections = new LinkedList<>(returnList);
+                else
+                    intersections.addAll(returnList);
             }
         }
         return intersections;

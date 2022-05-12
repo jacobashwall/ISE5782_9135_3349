@@ -12,7 +12,7 @@ import static primitives.Util.isZero;
 public class Ray {
     private final Point p0;
     private final Vector dir;
-    private final double DELTA=0.01;
+    private static final double DELTA = 0.01;
 
     /**
      * Creates a new Ray
@@ -66,9 +66,7 @@ public class Ray {
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (obj == null) return false;
-        if (!(obj instanceof Ray)) return false;
-        Ray other = (Ray) obj;
+        if (!(obj instanceof Ray other)) return false;
         return this.p0.equals(other.p0) && this.dir.equals(other.dir);
     }
 

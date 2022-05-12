@@ -69,7 +69,7 @@ public class Sphere extends Geometry {
         try {
             vec = this.center.subtract(ray.getP0());
         } catch (IllegalArgumentException ignore) {
-            return alignZero(radius-maxDistance)>0? null:List.of(new GeoPoint(this, ray.getPoint(this.radius)));
+            return alignZero(radius - maxDistance) > 0 ? null : List.of(new GeoPoint(this, ray.getPoint(this.radius)));
         }
 
         // Here we calculate the projection of the vector formed by the center of the
@@ -87,11 +87,10 @@ public class Sphere extends Geometry {
         double t2 = alignZero(tm + th);
         if (t2 <= 0) return null;
         double t1 = alignZero(tm - th);
-        if( t1 - maxDistance > 0) return null;
+        if (t1 - maxDistance > 0) return null;
         // If only one is greater than 0 then the ray intersects the sphere only once
-        if(t2 - maxDistance > 0){
+        if (t2 - maxDistance > 0)
             return t1 <= 0 ? null : List.of(new GeoPoint(this, ray.getPoint(t1)));
-        }
         return t1 <= 0 ? List.of(new GeoPoint(this, ray.getPoint(t2))) : List.of(new GeoPoint(this, ray.getPoint(t1)), new GeoPoint(this, ray.getPoint(t2)));
     }
 }

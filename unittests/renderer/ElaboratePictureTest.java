@@ -11,15 +11,17 @@ import org.junit.jupiter.api.Test;
 import primitives.*;
 import scene.Scene;
 
-import static java.awt.Color.BLUE;
+
 
 /**
  * testing the renderer using all the elements we have
  */
+
 public class ElaboratePictureTest {
     /**
      * Produce an elaborate picture with several objects
      */
+    /*
     @Test
     public void createElaboratePicture() {
         //settings
@@ -136,8 +138,8 @@ public class ElaboratePictureTest {
                 .renderImage(); //
         camera.writeToImage();
 */
+/*
 
-        /*
         //taking pictures for the gif using move camera and rotate camera
         double movingFactor = 10;
         double rotatingFactor = 4.5;
@@ -150,6 +152,8 @@ public class ElaboratePictureTest {
                     .renderImage();
             camera.writeToImage();
         }
-*/
+
     }
+
+        */
 }

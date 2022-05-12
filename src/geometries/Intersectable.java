@@ -36,7 +36,6 @@ public abstract class Intersectable {
         @Override
         public boolean equals(Object obj) {
             if (this == obj) return true;
-            if (obj == null) return false;
             if (!(obj instanceof GeoPoint other)) return false;
             //checks if it's the same geometric entity by pointer(therefore no use of equals)
             return this.geometry == other.geometry && this.point.equals(other.point);

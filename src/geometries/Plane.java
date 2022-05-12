@@ -1,12 +1,8 @@
 package geometries;
 
-import primitives.Color;
-import primitives.Point;
-import primitives.Ray;
-import primitives.Vector;
+import primitives.*;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 import static primitives.Util.*;
@@ -48,19 +44,24 @@ public class Plane extends Geometry {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Plane plane = (Plane) o;
+        return q0.equals(plane.q0) && normal.equals(plane.normal);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(q0, normal);
+    }
+
+    @Override
     public String toString() {
         return "Plane{" +
                 "q0=" + q0 +
                 ", normal=" + normal +
                 '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Plane)) return false;
-        Plane plane = (Plane) o;
-        return Objects.equals(getQ0(), plane.getQ0()) && Objects.equals(getNormal(), plane.getNormal());
     }
 
     /**
@@ -102,7 +103,7 @@ public class Plane extends Geometry {
         }
 
         double t = alignZero(this.normal.dotProduct(u) / denominator);
-        if (alignZero(t - maxDistance) > 0) return null;
-        return t <= 0 ? null : List.of(new GeoPoint(this, ray.getPoint(t)));
+        return alignZero(t - maxDistance) > 0 || t <= 0 ? null
+                : List.of(new GeoPoint(this, ray.getPoint(t)));
     }
 }

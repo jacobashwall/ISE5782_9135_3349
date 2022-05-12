@@ -67,7 +67,6 @@ public class PointLight extends Light implements LightSource {
         return this.intensity.reduce(kC.add(kL.scale(d)).add(kQ.scale(d * d)));
     }
 
-
     @Override
     public Vector getL(Point p) {
         return p.subtract(this.position).normalize();

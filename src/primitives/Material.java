@@ -7,16 +7,25 @@ package primitives;
  */
 public class Material {
     //public fields
+    /**
+     * diffusive coefficient
+     */
     public Double3 kD = Double3.ZERO;
+    /**
+     * specular coefficient
+     */
     public Double3 kS = Double3.ZERO;
     /**
-     * transparency factor
+     * transparency coefficient
      */
     public Double3 kT = Double3.ZERO;
     /**
-     * reflection factor
+     * reflection coefficient
      */
     public Double3 kR = Double3.ZERO;
+    /**
+     * shininess coefficient
+     */
     public int nShininess = 0;
 
     /**

@@ -97,7 +97,7 @@ public class Polygon extends Geometry {
 
 
     public List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance) {
-        List<GeoPoint> intersection = this.plane.findGeoIntersectionsHelper(ray, maxDistance);
+        List<GeoPoint> intersection = this.plane.findGeoIntersections(ray, maxDistance);
         if (intersection == null)//checks if there is an intersection with the plane of the polygon
             return null;
 

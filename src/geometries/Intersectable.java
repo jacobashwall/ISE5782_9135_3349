@@ -76,9 +76,9 @@ public abstract class Intersectable {
     /**
      * Finds all intersection GeoPoints of a ray and a geometric entity within a given distance.
      *
-     * @param ray
-     * @param maxDistance
-     * @return
+     * @param ray         the ray that intersect with the geometric entity.
+     * @param maxDistance the maximal distance to find intersections points.
+     * @return list of intersection Geopoints.
      */
     public List<GeoPoint> findGeoIntersections(Ray ray, double maxDistance) {
         return findGeoIntersectionsHelper(ray, maxDistance);

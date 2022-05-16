@@ -125,35 +125,21 @@ public class RayTracerBasic extends RayTracerBase {
         Ray reflectedRay = constructReflectedRay(normal, gp.point, v);
         Ray refractedRay = constructRefractedRay(normal, gp.point, v);
         if(material.kDg!=0){
-            LinkedList<Ray> diffusedSampling=new LinkedList<>();
-            diffusedSampling.add(refractedRay);
-            Vector vUp;
-            Vector vRight;
-            Vector vTo= refractedRay.getDir();
-            //in order to determine Vup, we will find the intersection vector of two planes, the plane that Vto is represented
-            //as its normal, and the plane that includes the Y axis and the Vto vector (as demanded in the instructions).
-
-            //if the Vto is already on the Y axis, we will use the Z axis instead
-            if (vTo.equals(new Vector(0, 1, 0)) || vTo.equals(new Vector(0, -1, 0))) {
-                vUp = (vTo.crossProduct(new Vector(0, 0, 1))).crossProduct(vTo).normalize();
-            } else {
-                vUp = (vTo.crossProduct(new Vector(0, 1, 0))).crossProduct(vTo).normalize();
-            }
-            vRight = v.crossProduct(vUp).normalize();
-            for (int i=0;i<RESOLUTION;i++){
-                for (int j=0;j<RESOLUTION;j++){
-                  diffusedSampling.add(createRayBeam(i,j,refractedRay,vTo,vUp,vRight,material.kDg,RESOLUTION,DISTANCE,SMUDGE));
-                }
-            }
+            LinkedList<Ray> diffusedSampling=superSample(refractedRay, material.kDg, RESOLUTION,DISTANCE,SMUDGE);
             Double3 samplingSum = Double3.ZERO;
             for(var secondaryRay: diffusedSampling){
-                Color color=calcGlobalEffects(secondaryRay, level, k, material.kT);
-                boolean flag;
-                if(color.getRgb()!=Double3.ZERO)
-                    flag=true;
                 samplingSum = samplingSum.add(calcGlobalEffects(secondaryRay, level, k, material.kT).getRgb());
             }
             return calcGlobalEffects(reflectedRay, level, k, material.kR)
+                    .add(new Color(samplingSum.reduce(RESOLUTION*RESOLUTION)));
+        }
+        if(material.kSg!=0){
+            LinkedList<Ray> diffusedSampling=superSample(reflectedRay, material.kDg, RESOLUTION,DISTANCE,SMUDGE);
+            Double3 samplingSum = Double3.ZERO;
+            for(var secondaryRay: diffusedSampling){
+                samplingSum = samplingSum.add(calcGlobalEffects(secondaryRay, level, k, material.kR).getRgb());
+            }
+            return calcGlobalEffects(refractedRay, level, k, material.kT)
                     .add(new Color(samplingSum.reduce(RESOLUTION*RESOLUTION)));
         }
         return calcGlobalEffects(reflectedRay, level, k, material.kR)
@@ -310,8 +296,6 @@ public class RayTracerBasic extends RayTracerBase {
         double yI = -(i - ((double) (resolution - 1)) / 2) * rC;
         //horizontal distance of the required pixel from the center of the view plane
         double xJ = -(j - ((double) (resolution - 1)) / 2) * rC;
-
-
         //changing the position of the center point so that the ray will intersect the view plane in the right place
         if (xJ != 0) {
             pIJ = pIJ.add(vRight.scale(xJ));
@@ -319,10 +303,32 @@ public class RayTracerBasic extends RayTracerBase {
         if (yI != 0) {
             pIJ = pIJ.add(vUp.scale(yI));
         }
-
         //return the ray
         return new Ray(ray.getP0(), pIJ.subtract(ray.getP0()).normalize());
 
+    }
+
+    private LinkedList<Ray> superSample(Ray ray,double k,int resolution,double distance, double smudge){
+        LinkedList<Ray> diffusedSampling=new LinkedList<>();
+        Vector vUp;
+        Vector vRight;
+        Vector vTo = ray.getDir();
+        //in order to determine Vup, we will find the intersection vector of two planes, the plane that Vto is represented
+        //as its normal, and the plane that includes the Y axis and the Vto vector (as demanded in the instructions).
+
+        //if the Vto is already on the Y axis, we will use the Z axis instead
+        if (vTo.equals(new Vector(0, 1, 0)) || vTo.equals(new Vector(0, -1, 0))) {
+            vUp = (vTo.crossProduct(new Vector(0, 0, 1))).crossProduct(vTo).normalize();
+        } else {
+            vUp = (vTo.crossProduct(new Vector(0, 1, 0))).crossProduct(vTo).normalize();
+        }
+        vRight = vTo.crossProduct(vUp).normalize();
+        for (int i=0;i<resolution;i++){
+            for (int j=0;j<resolution;j++){
+                diffusedSampling.add(createRayBeam(i,j,ray,vTo,vUp,vRight,k,resolution,distance,smudge));
+            }
+        }
+        return diffusedSampling;
     }
 
 }

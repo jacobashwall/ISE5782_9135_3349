@@ -29,7 +29,7 @@ public class Material {
     /**
      * Glossy surface coefficient
      */
-    public Double3 kSg = Double3.ZERO;
+    public double kSg = 0;
     /**
      * shininess coefficient
      */
@@ -133,20 +133,11 @@ public class Material {
      * @param kSg parameter for the kS field
      * @return The object itself
      */
-    public Material setKsG(Double3 kSg) {
+    public Material setKsG(double kSg) {
         this.kSg = kSg;
         return this;
     }
 
-    /**
-     * Setter for the kSg field
-     * @param kSg double parameter for all three values in the kSg field
-     * @return The object itself
-     */
-    public Material setKsG(double kSg) {
-        this.kSg = new Double3(kSg);
-        return this;
-    }
 
     /**
      * Setter for the nShininess field

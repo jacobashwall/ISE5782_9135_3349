@@ -23,18 +23,16 @@ public class Material {
      */
     public Double3 kR = Double3.ZERO;
     /**
-     * shininess coefficient
-     */
-
-    /**
      * diffusive glass coefficient
      */
-    public Double3 kDg = Double3.ZERO;
+    public double kDg = 0;
     /**
      * Glossy surface coefficient
      */
     public Double3 kSg = Double3.ZERO;
-
+    /**
+     * shininess coefficient
+     */
     public int nShininess = 0;
 
     /**
@@ -118,15 +116,6 @@ public class Material {
         return this;
     }
 
-    /**
-     * Setter for the kDg field
-     * @param kDg parameter for the kDg field
-     * @return The object itself
-     */
-    public Material setKdG(Double3 kDg) {
-        this.kDg = kDg;
-        return this;
-    }
 
     /**
      * Setter for the kDg field
@@ -135,7 +124,7 @@ public class Material {
      * @return The object itself
      */
     public Material setKdG(double kDg) {
-        this.kDg = new Double3(kDg);
+        this.kDg = kDg;
         return this;
     }
 

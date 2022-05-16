@@ -3,7 +3,6 @@ package primitives;
 /**
  * Class that represents the material of a geometric object.
  * The class is PDS.
- * @author Yonatan Dahary
  */
 public class Material {
     //public fields
@@ -26,6 +25,16 @@ public class Material {
     /**
      * shininess coefficient
      */
+
+    /**
+     * diffusive glass coefficient
+     */
+    public Double3 kDg = Double3.ZERO;
+    /**
+     * Glossy surface coefficient
+     */
+    public Double3 kSg = Double3.ZERO;
+
     public int nShininess = 0;
 
     /**
@@ -41,7 +50,7 @@ public class Material {
     /**
      * Setter for the kD field
      *
-     * @param kD double parameter for all three values in the the kD field
+     * @param kD double parameter for all three values in the kD field
      * @return The object itself
      */
     public Material setKd(double kD) {
@@ -109,6 +118,46 @@ public class Material {
         return this;
     }
 
+    /**
+     * Setter for the kDg field
+     * @param kDg parameter for the kDg field
+     * @return The object itself
+     */
+    public Material setKdG(Double3 kDg) {
+        this.kDg = kDg;
+        return this;
+    }
+
+    /**
+     * Setter for the kDg field
+     *
+     * @param kDg double parameter for all three values in the kDg field
+     * @return The object itself
+     */
+    public Material setKdG(double kDg) {
+        this.kDg = new Double3(kDg);
+        return this;
+    }
+
+    /**
+     * Setter for the kSg field
+     * @param kSg parameter for the kS field
+     * @return The object itself
+     */
+    public Material setKsG(Double3 kSg) {
+        this.kSg = kSg;
+        return this;
+    }
+
+    /**
+     * Setter for the kSg field
+     * @param kSg double parameter for all three values in the kSg field
+     * @return The object itself
+     */
+    public Material setKsG(double kSg) {
+        this.kSg = new Double3(kSg);
+        return this;
+    }
 
     /**
      * Setter for the nShininess field
@@ -119,4 +168,6 @@ public class Material {
         this.nShininess = nShininess;
         return this;
     }
+
+
 }

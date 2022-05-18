@@ -70,8 +70,9 @@ public class bathroom {
 
         //region lighting
         //front wall light
-        scene.lights.add(new SpotLight(new Color(200,200,200), new Point(125,450,10),new Vector(0,-1,1)).setNarrowBeam(3));
-        //scene.lights.add(new PointLight(new Color(200,200,200),new Point(125,450,15)));
+        scene.lights.add(new SpotLight(new Color(100,100,100), new Point(125,450,10),new Vector(0,-1,1)).setNarrowBeam(3));
+        scene.lights.add(new SpotLight(new Color(100,100,100), new Point(-250,490,450),new Vector(0,-1,0)).setNarrowBeam(3));
+
         //endregion
 
         //region mirror
@@ -221,6 +222,26 @@ public class bathroom {
                 //new Color(143,188,143)
             }
         }
+
+        // background
+        Polygon floorBackgroundExtension = new Polygon(new Point(-500, -2, 300), new Point(-500, -2, 600), new Point(0, -2, 600), new Point(0, -2, 300));
+        floorBackgroundExtension.setMaterial(new Material());
+        floorBackgroundExtension.setEmission(new Color(122, 122, 122));
+        scene.geometries.add(floorBackgroundExtension);
+
+
+        //floor tiles extension
+        tileHeight = 50;
+        tileWidth = 50;
+        gap = 2;
+        for (int i = 0; i < 6; i++) {
+            for (int j = 0; j < 10; j++) {
+                Polygon polygon = new Polygon(new Point(-500 + j * tileWidth, -1, i * tileHeight+300), new Point(-500 + tileWidth + j * tileWidth - gap, -1, i * tileHeight+300), new Point(-500 + tileWidth + j * tileWidth - gap, -1, tileHeight + i * tileHeight - gap+300), new Point(-500 + j * tileWidth, -1, tileHeight + i * tileHeight - gap+300));
+                polygon.setEmission(new Color(143, 188, 143)).setMaterial(new Material().setKs(0).setKd(1));
+                scene.geometries.add(polygon);
+                //new Color(143,188,143)
+            }
+        }
         //endregion
 
         //region right wall
@@ -255,7 +276,7 @@ public class bathroom {
 
         //region left wall
         // back
-        Polygon leftWall = new Polygon(new Point(-501, 0, 0), new Point(-501, 0, 300), new Point(-501, 500, 300), new Point(-501, 500, 0));
+        Polygon leftWall = new Polygon(new Point(-501, 0, 0), new Point(-501, 0, 600), new Point(-501, 500, 600), new Point(-501, 500, 0));
         leftWall.setMaterial(new Material());
         leftWall.setEmission(new Color(122, 122, 122));
         scene.geometries.add(leftWall);
@@ -264,8 +285,8 @@ public class bathroom {
         tileHeight = 50;
         tileWidth = 100;
         gap = 2;
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 3; j++) {
+        for (int i = 0; i < 10; i++) {//height
+            for (int j = 0; j < 6; j++) {//width
                 Polygon polygon = new Polygon(new Point(-500, i * tileHeight, j * tileWidth), new Point(-500, i * tileHeight, tileWidth + j * tileWidth - gap), new Point(-500, tileHeight + i * tileHeight - gap, tileWidth + j * tileWidth - gap), new Point(-500, tileHeight + i * tileHeight - gap, j * tileWidth));
                 polygon.setEmission(new Color(220, 220, 220)).setMaterial(new Material().setKs(1).setKd(0.5));
                 scene.geometries.add(polygon);
@@ -276,22 +297,37 @@ public class bathroom {
         tileHeight = 50;
         tileWidth = 20;
         gap = 1;
-        for (int j = 0; j < 15; j++) {
+        for (int j = 0; j < 30; j++) {
             Polygon polygon = new Polygon(new Point(-499.9, 225, j * tileWidth), new Point(-499.9, 225, tileWidth + j * tileWidth - gap), new Point(-499.9, 225 + tileHeight, tileWidth + j * tileWidth - gap), new Point(-499.9, 225 + tileHeight, j * tileWidth));
             polygon.setEmission(colorPallet[j % 5]).setMaterial(new Material().setKs(0).setKd(0.5));
             scene.geometries.add(polygon);
         }
         //endregion
 
+        //region ceiling
+
+        // background
+        Polygon ceilingBackground = new Polygon(new Point(-500, 501, 0), new Point(-500, 501, 300), new Point(500, 501, 300), new Point(500, 501, 0));
+        ceilingBackground.setMaterial(new Material());
+        ceilingBackground.setEmission(new Color(200, 200, 200));
+        scene.geometries.add(ceilingBackground);
+
+        // ceiling extension
+        Polygon ceilingBackgroundExtension = new Polygon(new Point(-500, 501, 300), new Point(-500, 501, 600), new Point(0, 501, 600), new Point(0, 501, 300));
+        ceilingBackgroundExtension.setMaterial(new Material());
+        ceilingBackgroundExtension.setEmission(new Color(200, 200, 200));
+        scene.geometries.add(ceilingBackgroundExtension);
+        //endregion
+
         //region shower
         //right glass
         Polygon showerRight = new Polygon(new Point(-250, 0, 200), new Point(-250, 0, 0), new Point(-250, 450, 0), new Point(-250, 450, 200));
-        showerRight.setEmission(new Color(100, 100, 100)).setMaterial(new Material().setKs(0).setKd(0.5).setKt(1));
+        showerRight.setEmission(new Color(87, 164, 133)).setMaterial(new Material().setKs(0).setKd(0.5).setKt(0.5));
         scene.geometries.add(showerRight);
 
         //front glass
         Polygon showerFront = new Polygon(new Point(-250, 0, 200), new Point(-250, 450, 200), new Point(-500, 450, 200), new Point(-500, 0, 200));
-        showerFront.setEmission(new Color(100, 100, 100)).setMaterial(new Material().setKs(0).setKd(0.5).setKt(1));
+        showerFront.setEmission(new Color(87, 164, 133)).setMaterial(new Material().setKs(0).setKd(0.5).setKt(0.5));
         scene.geometries.add(showerFront);
 
         //surface

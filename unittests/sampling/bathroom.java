@@ -215,7 +215,7 @@ public class bathroom {
         gap = 2;
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 20; j++) {
-                Polygon polygon = new Polygon(new Point(-500 + j * tileWidth, 0, i * tileHeight), new Point(-500 + tileWidth + j * tileWidth - gap, 0, i * tileHeight), new Point(-500 + tileWidth + j * tileWidth - gap, 0, tileHeight + i * tileHeight - gap), new Point(-500 + j * tileWidth, 0, tileHeight + i * tileHeight - gap));
+                Polygon polygon = new Polygon(new Point(-500 + j * tileWidth, -1, i * tileHeight), new Point(-500 + tileWidth + j * tileWidth - gap, -1, i * tileHeight), new Point(-500 + tileWidth + j * tileWidth - gap, -1, tileHeight + i * tileHeight - gap), new Point(-500 + j * tileWidth, -1, tileHeight + i * tileHeight - gap));
                 polygon.setEmission(new Color(143, 188, 143)).setMaterial(new Material().setKs(0).setKd(1));
                 scene.geometries.add(polygon);
                 //new Color(143,188,143)
@@ -253,19 +253,66 @@ public class bathroom {
         }
         //endregion
 
+        //region left wall
+        // back
+        Polygon leftWall = new Polygon(new Point(-501, 0, 0), new Point(-501, 0, 300), new Point(-501, 500, 300), new Point(-501, 500, 0));
+        leftWall.setMaterial(new Material());
+        leftWall.setEmission(new Color(122, 122, 122));
+        scene.geometries.add(leftWall);
+
+        // wall tiles
+        tileHeight = 50;
+        tileWidth = 100;
+        gap = 2;
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 3; j++) {
+                Polygon polygon = new Polygon(new Point(-500, i * tileHeight, j * tileWidth), new Point(-500, i * tileHeight, tileWidth + j * tileWidth - gap), new Point(-500, tileHeight + i * tileHeight - gap, tileWidth + j * tileWidth - gap), new Point(-500, tileHeight + i * tileHeight - gap, j * tileWidth));
+                polygon.setEmission(new Color(220, 220, 220)).setMaterial(new Material().setKs(1).setKd(0.5));
+                scene.geometries.add(polygon);
+            }
+        }
+
+        // wall colored tile
+        tileHeight = 50;
+        tileWidth = 20;
+        gap = 1;
+        for (int j = 0; j < 15; j++) {
+            Polygon polygon = new Polygon(new Point(-499.9, 225, j * tileWidth), new Point(-499.9, 225, tileWidth + j * tileWidth - gap), new Point(-499.9, 225 + tileHeight, tileWidth + j * tileWidth - gap), new Point(-499.9, 225 + tileHeight, j * tileWidth));
+            polygon.setEmission(colorPallet[j % 5]).setMaterial(new Material().setKs(0).setKd(0.5));
+            scene.geometries.add(polygon);
+        }
+        //endregion
+
+        //region shower
+        //right glass
+        Polygon showerRight = new Polygon(new Point(-250, 0, 200), new Point(-250, 0, 0), new Point(-250, 450, 0), new Point(-250, 450, 200));
+        showerRight.setEmission(new Color(100, 100, 100)).setMaterial(new Material().setKs(0).setKd(0.5).setKt(1));
+        scene.geometries.add(showerRight);
+
+        //front glass
+        Polygon showerFront = new Polygon(new Point(-250, 0, 200), new Point(-250, 450, 200), new Point(-500, 450, 200), new Point(-500, 0, 200));
+        showerFront.setEmission(new Color(100, 100, 100)).setMaterial(new Material().setKs(0).setKd(0.5).setKt(1));
+        scene.geometries.add(showerFront);
+
+        //surface
+        Polygon showerSurface = new Polygon(new Point(-250, 0, 200), new Point(-500, 0, 200), new Point(-500, 0, 1.2), new Point(-250, 0, 1.2));
+        showerSurface.setEmission(new Color(143,188,143)).setMaterial(new Material().setKs(0).setKd(0.5).setKt(0));
+        scene.geometries.add(showerSurface);
+        //endregion
+
         //region taking picture
         //front always first!
         renderFront(scene,camera);
         //From left
-        renderSide(scene,camera);
+        //renderSide(scene,camera);
         //From top
-        renderTop(scene,camera);
+        //renderTop(scene,camera);
         //endregion
     }
 
     //region rendering positions
     private void renderFront(Scene scene,Camera camera){
-        camera.moveCamera(new Point(0, 300, 1000),new Point(0,250,50));
+       // camera.moveCamera(new Point(0, 300, 1000),new Point(0,250,50));
         ImageWriter imageWriter = new ImageWriter("zFront", 1000, 1000);
         camera.setImageWriter(imageWriter) //
                 .setRayTracer(new RayTracerBasic(scene)) //

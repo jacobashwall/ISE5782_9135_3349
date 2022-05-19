@@ -15,7 +15,7 @@ import renderer.Camera;
 import renderer.ImageWriter;
 import renderer.RayTracerBasic;
 import scene.Scene;
-
+//ctrl+shift+numpad-/+ in order to collapse or expand
 public class bathroom {
     /**
      * Produce an elaborate picture with several objects
@@ -149,23 +149,23 @@ public class bathroom {
         //region sink
         int depth = 60;
 
-        Polygon sinkDistant = new Polygon(new Point(50, 175, 20), new Point(120, 175 - depth, 40), new Point(155, 175 - depth, 40), new Point(225, 175, 20));
+        Polygon sinkDistant = new Polygon(new Point(50, 190, 20), new Point(120, 190 - depth, 40), new Point(155, 190 - depth, 40), new Point(225, 190, 20));
         sinkDistant.setEmission(new Color(225, 225, 225)).setMaterial(new Material().setKs(0).setKd(0.5));
         scene.geometries.add(sinkDistant);
 
-        Polygon sinkRight = new Polygon(new Point(225, 175, 20), new Point(155, 175 - depth, 40), new Point(155, 175 - depth, 60), new Point(225, 175, 80));
+        Polygon sinkRight = new Polygon(new Point(225, 190, 20), new Point(155, 190 - depth, 40), new Point(155, 190 - depth, 60), new Point(225, 190, 80));
         sinkRight.setEmission(new Color(225, 225, 225)).setMaterial(new Material().setKs(0).setKd(0.5));
         scene.geometries.add(sinkRight);
 
-        Polygon sinkLeft = new Polygon(new Point(50, 175, 20), new Point(120, 175 - depth, 40), new Point(120, 175 - depth, 60), new Point(50, 175, 80));
+        Polygon sinkLeft = new Polygon(new Point(50, 190, 20), new Point(120, 190 - depth, 40), new Point(120, 190 - depth, 60), new Point(50, 190, 80));
         sinkLeft.setEmission(new Color(225, 225, 225)).setMaterial(new Material().setKs(0).setKd(0.5));
         scene.geometries.add(sinkLeft);
 
-        Polygon sinkClose = new Polygon(new Point(50, 175, 80), new Point(120, 175 - depth, 60), new Point(155, 175 - depth, 60), new Point(225, 175, 80));
+        Polygon sinkClose = new Polygon(new Point(50, 190, 80), new Point(120, 190 - depth, 60), new Point(155, 190 - depth, 60), new Point(225, 190, 80));
         sinkClose.setEmission(new Color(225, 225, 225)).setMaterial(new Material().setKs(0).setKd(0.5));
         scene.geometries.add(sinkClose);
 
-        Polygon sinkBottom = new Polygon(new Point(120, 175 - depth, 60), new Point(155, 175 - depth, 60), new Point(155, 175 - depth, 40), new Point(120, 175 - depth, 40));
+        Polygon sinkBottom = new Polygon(new Point(120, 190 - depth, 60), new Point(155, 190 - depth, 60), new Point(155, 190 - depth, 40), new Point(120, 190 - depth, 40));
         sinkBottom.setEmission(new Color(225, 225, 225)).setMaterial(new Material().setKs(0).setKd(0.5));
         scene.geometries.add(sinkBottom);
         //endregion
@@ -430,13 +430,15 @@ public class bathroom {
 
         //region taking picture
         //front always first!
-        renderFront(scene,camera);
+        //renderFront(scene,camera);
         //From left
-        renderLeft(scene,camera);
+        //renderLeft(scene,camera);
         //From right
-        renderRight(scene,camera);
+        //renderRight(scene,camera);
         //From top
-        renderTop(scene,camera);
+        //renderTop(scene,camera);
+        //Final picture
+        renderFinal(scene,camera);
         //endregion
     }
 
@@ -471,6 +473,18 @@ public class bathroom {
     private void renderTop(Scene scene,Camera camera){
         camera.moveCamera(new Point(0, 1000, 500), new Point(0, 250, 50));
         ImageWriter imageWriter = new ImageWriter("zTop", 1000, 1000);
+        camera.setImageWriter(imageWriter) //
+                .setRayTracer(new RayTracerBasic(scene)) //
+                .renderImage(); //
+        camera.writeToImage();
+    }
+
+    private void renderFinal(Scene scene,Camera camera){
+        //camera.moveCamera(new Point(-500, 300, 500), new Point(0, 250, 50));//final
+        //camera.moveCamera(new Point(-499, 300, 599), new Point(-50, 250, 0));//final4
+        camera.moveCamera(new Point(-400, 350, 550), new Point(-100, 250, 0));//final5
+        camera.setVPDistance(700);
+        ImageWriter imageWriter = new ImageWriter("zFinal6", 1000, 1000);
         camera.setImageWriter(imageWriter) //
                 .setRayTracer(new RayTracerBasic(scene)) //
                 .renderImage(); //

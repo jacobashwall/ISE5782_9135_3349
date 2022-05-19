@@ -35,7 +35,7 @@ public class RayTracerBasic extends RayTracerBase {
     /**
      * distance of the target area
      */
-    private static final double DISTANCE = 1;
+    private static final double DISTANCE = 10;
     /**
      * distance of the target area
      */
@@ -124,7 +124,24 @@ public class RayTracerBasic extends RayTracerBase {
 
         Ray reflectedRay = constructReflectedRay(normal, gp.point, v);
         Ray refractedRay = constructRefractedRay(normal, gp.point, v);
+        Double3 diffSamplingSum = Double3.ZERO;
+        Double3 glossSamplingSum = Double3.ZERO;
+
         if(material.kDg!=0){
+            LinkedList<Ray> diffusedSampling=superSample(refractedRay, material.kDg, RESOLUTION,DISTANCE,SMUDGE);
+            for(var secondaryRay: diffusedSampling){
+                diffSamplingSum = diffSamplingSum.add(calcGlobalEffects(secondaryRay, level, k, material.kT).getRgb());
+            }
+           diffSamplingSum = diffSamplingSum.reduce(RESOLUTION*RESOLUTION);
+        }
+        if(material.kSg!=0){
+            LinkedList<Ray> diffusedSampling=superSample(reflectedRay, material.kSg, RESOLUTION,DISTANCE,SMUDGE);
+            for(var secondaryRay: diffusedSampling){
+                glossSamplingSum = glossSamplingSum.add(calcGlobalEffects(secondaryRay, level, k, material.kR).getRgb());
+            }
+            glossSamplingSum = glossSamplingSum.reduce(RESOLUTION*RESOLUTION);
+        }
+        /*if(material.kDg!=0){
             LinkedList<Ray> diffusedSampling=superSample(refractedRay, material.kDg, RESOLUTION,DISTANCE,SMUDGE);
             Double3 samplingSum = Double3.ZERO;
             for(var secondaryRay: diffusedSampling){
@@ -134,13 +151,22 @@ public class RayTracerBasic extends RayTracerBase {
                     .add(new Color(samplingSum.reduce(RESOLUTION*RESOLUTION)));
         }
         if(material.kSg!=0){
-            LinkedList<Ray> diffusedSampling=superSample(reflectedRay, material.kDg, RESOLUTION,DISTANCE,SMUDGE);
+            LinkedList<Ray> diffusedSampling=superSample(reflectedRay, material.kSg, RESOLUTION,DISTANCE,SMUDGE);
             Double3 samplingSum = Double3.ZERO;
             for(var secondaryRay: diffusedSampling){
                 samplingSum = samplingSum.add(calcGlobalEffects(secondaryRay, level, k, material.kR).getRgb());
             }
             return calcGlobalEffects(refractedRay, level, k, material.kT)
                     .add(new Color(samplingSum.reduce(RESOLUTION*RESOLUTION)));
+        }*/
+        if(material.kDg!=0 && material.kSg!=0){
+            return new Color(glossSamplingSum)
+                    .add(new Color(diffSamplingSum));
+        }
+        else if (material.kDg + material.kSg >0){
+            return material.kDg != 0? calcGlobalEffects(reflectedRay, level, k, material.kR).add(new Color(diffSamplingSum)):
+                    calcGlobalEffects(refractedRay, level, k, material.kT).add(new Color(glossSamplingSum));
+
         }
         return calcGlobalEffects(reflectedRay, level, k, material.kR)
                 .add(calcGlobalEffects(refractedRay, level, k, material.kT));

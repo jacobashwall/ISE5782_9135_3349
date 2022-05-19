@@ -232,4 +232,28 @@ public class LightsTests {
 				.renderImage(); //
 		camera3.writeToImage(); //
 	}
+
+	/**
+	 * Produce a picture of a sphere lighted by all three light sources
+	 */
+	@Test
+	public void CylinderTest5() {
+		Scene scene4 = new Scene("CylinderScene");
+		scene4.ambientLight = new AmbientLight(new Color(120,120,120),Double3.ONE);
+
+		Cylinder cylinder = new Cylinder(new Ray(new Point (1,2,3), new Vector(1,1,-1)), 50,100);
+		cylinder.setEmission(new Color(200,100,50));
+		Point trPL1 = new Point(50, -80, -80);
+		Point trPL2 = new Point(20, -20, 15);
+		scene4.geometries.add(cylinder);
+		scene4.lights.add(new DirectionalLight(trCL, trDL));
+		scene4.lights.add(new PointLight(trCL, trPL1).setKl(0.001).setKq(0.0002));
+		scene4.lights.add(new SpotLight(trCL, trPL2, trDL).setKl(0.001).setKq(0.0001));
+
+		ImageWriter imageWriter = new ImageWriter("CylinderTest5", 500, 500);
+		camera3.setImageWriter(imageWriter) //
+				.setRayTracer(new RayTracerBasic(scene4)) //
+				.renderImage(); //
+		camera3.writeToImage(); //
+	}
 }

@@ -42,7 +42,7 @@ public class bathroom {
         int tileWidth;
         int gap;
         //endregion
-/*
+
         //region front wall
         // back
         Polygon frontWall = new Polygon(new Point(-500, 0, 0), new Point(500, 0, 0), new Point(500, 500, 0), new Point(-500, 500, 0));
@@ -72,8 +72,6 @@ public class bathroom {
             scene.geometries.add(polygon);
         }
         //endregion
-
-
 
         //region lighting
         //front wall light
@@ -210,8 +208,6 @@ public class bathroom {
 
         }
         //endregion
-
- */
 
         //region floor
         // background
@@ -494,6 +490,17 @@ public class bathroom {
         doorTopFrameFront.setEmission(new Color(25,25,112));
         scene.geometries.add(doorTopFrameFront);
 
+        //door top and bottom
+        Polygon doorTop = new Polygon(new Point(200+1.5*frameGap, 400, 299.7), new Point(450-1.5*frameGap, 400, 299.7), new Point(450-1.5*frameGap, 400, 299.7-1.5*frameGap),new Point(200+1.5*frameGap, 400, 299.7-1.5*frameGap));
+        doorTop.setMaterial(new Material());
+        doorTop.setEmission(new Color(95,158,160));
+        scene.geometries.add(doorTop);
+
+        Polygon doorBottom = new Polygon(new Point(200+1.5*frameGap, 0, 299.7), new Point(450-1.5*frameGap, 0, 299.7), new Point(450-1.5*frameGap, 0, 299.7-1.5*frameGap),new Point(200+1.5*frameGap, 0, 299.7-1.5*frameGap));
+        doorBottom.setMaterial(new Material());
+        doorBottom.setEmission(new Color(95,158,160));
+        scene.geometries.add(doorBottom);
+
         //door right
         Polygon doorRightSideRight = new Polygon(new Point(450-1.5*frameGap, 400, 299.7), new Point(450-1.5*frameGap, 0, 299.7), new Point(450-1.5*frameGap, 0, 299.7-1.5*frameGap),new Point(450-1.5*frameGap, 400, 299.7-1.5*frameGap));
         doorRightSideRight.setMaterial(new Material());
@@ -526,6 +533,45 @@ public class bathroom {
         doorLeftSideFront.setEmission(new Color(95,158,160));
         scene.geometries.add(doorLeftSideFront);
 
+        //door bottom side
+        Polygon doorBottomFront = new Polygon(new Point(450-1.5*frameGap-50, 300, 299.7-1.5*frameGap), new Point(200+1.5*frameGap+100, 300, 299.7-1.5*frameGap), new Point(200+1.5*frameGap+100, 0, 299.7-1.5*frameGap),new Point(450-1.5*frameGap-50, 0, 299.7-1.5*frameGap));
+        doorBottomFront.setMaterial(new Material());
+        doorBottomFront.setEmission(new Color(95,158,160));
+        scene.geometries.add(doorBottomFront);
+
+        Polygon doorBottomRight = new Polygon(new Point(450-1.5*frameGap-50, 300, 299.7), new Point(450-1.5*frameGap-50, 0, 299.7), new Point(450-1.5*frameGap-50, 0, 299.7-1.5*frameGap),new Point(450-1.5*frameGap-50, 300, 299.7-1.5*frameGap));
+        doorBottomRight.setMaterial(new Material());
+        doorBottomRight.setEmission(new Color(95,158,160));
+        scene.geometries.add(doorBottomRight);
+
+        Polygon doorBottomLeft = new Polygon(new Point(200+1.5*frameGap+100, 300, 299.7), new Point(200+1.5*frameGap+100, 0, 299.7), new Point(200+1.5*frameGap+100, 0, 299.7-1.5*frameGap),new Point(200+1.5*frameGap+100, 300, 299.7-1.5*frameGap));
+        doorBottomLeft.setMaterial(new Material());
+        doorBottomLeft.setEmission(new Color(95,158,160));
+        scene.geometries.add(doorBottomLeft);
+
+        //door top side
+        Polygon doorTopFront = new Polygon(new Point(450-1.5*frameGap-50, 400, 299.7-1.5*frameGap), new Point(200+1.5*frameGap+100, 400, 299.7-1.5*frameGap), new Point(200+1.5*frameGap+100, 350, 299.7-1.5*frameGap),new Point(450-1.5*frameGap-50, 350, 299.7-1.5*frameGap));
+        doorTopFront.setMaterial(new Material());
+        doorTopFront.setEmission(new Color(95,158,160));
+        scene.geometries.add(doorTopFront);
+
+        Polygon doorTopRight = new Polygon(new Point(450-1.5*frameGap-50, 400, 299.7), new Point(450-1.5*frameGap-50, 350, 299.7), new Point(450-1.5*frameGap-50, 350, 299.7-1.5*frameGap),new Point(450-1.5*frameGap-50, 400, 299.7-1.5*frameGap));
+        doorTopRight.setMaterial(new Material());
+        doorTopRight.setEmission(new Color(95,158,160));
+        scene.geometries.add(doorTopRight);
+
+        Polygon doorTopLeft = new Polygon(new Point(200+1.5*frameGap+100, 400, 299.7), new Point(200+1.5*frameGap+100, 350, 299.7), new Point(200+1.5*frameGap+100, 350, 299.7-1.5*frameGap),new Point(200+1.5*frameGap+100, 400, 299.7-1.5*frameGap));
+        doorTopLeft.setMaterial(new Material());
+        doorTopLeft.setEmission(new Color(95,158,160));
+        scene.geometries.add(doorTopLeft);
+
+        //door window
+        Polygon doorWindow = new Polygon(new Point(450-1.5*frameGap-50, 300, 299.7-0.75*frameGap), new Point(200+1.5*frameGap+100, 300, 299.7-0.75*frameGap), new Point(200+1.5*frameGap+100, 350, 299.7-0.75*frameGap),new Point(450-1.5*frameGap-50, 350, 299.7-0.75*frameGap));
+        doorWindow.setMaterial(new Material().setKt(0.5));
+        doorWindow.setEmission(new Color(173,216,230));
+        scene.geometries.add(doorWindow);
+
+
         //endregion
 
         //region taking picture
@@ -538,9 +584,9 @@ public class bathroom {
         //From top
         //renderTop(scene,camera);
         //From back
-        renderBack(scene,camera);
+        //renderBack(scene,camera);
         //Final picture
-        //renderFinal(scene,camera);
+        renderFinal(scene,camera);
         //endregion
     }
 

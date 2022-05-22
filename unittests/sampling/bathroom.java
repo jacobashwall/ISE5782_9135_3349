@@ -1,16 +1,10 @@
 package sampling;
 
-import geometries.Geometries;
-import geometries.Plane;
-import geometries.Polygon;
-import geometries.Sphere;
+import geometries.*;
 import lighting.PointLight;
 import lighting.SpotLight;
 import org.junit.jupiter.api.Test;
-import primitives.Color;
-import primitives.Material;
-import primitives.Point;
-import primitives.Vector;
+import primitives.*;
 import renderer.Camera;
 import renderer.ImageWriter;
 import renderer.RayTracerBasic;
@@ -149,6 +143,12 @@ public class bathroom {
         Polygon marbleHeightClose = new Polygon(new Point(50, 175, 80), new Point(50, 200, 80), new Point(225, 200, 80), new Point(225, 175, 80));
         marbleHeightClose.setEmission(new Color(122, 122, 122)).setMaterial(new Material().setKs(0).setKd(0.5));
         scene.geometries.add(marbleHeightClose);
+
+        Cylinder marbleFrontEdge = new Cylinder(new Ray(new Point(500, 187.5, 100),new Vector(-1,0,0)),12.5,725);
+        marbleFrontEdge.setMaterial(new Material());
+        marbleFrontEdge.setEmission(new Color(122, 122, 122));
+        scene.geometries.add(marbleFrontEdge);
+
         //endregion
 
         //region sink
@@ -432,6 +432,54 @@ public class bathroom {
         Polygon showerSurface = new Polygon(new Point(-250, 0, 200), new Point(-500, 0, 200), new Point(-500, 0, 1.2), new Point(-250, 0, 1.2));
         showerSurface.setEmission(new Color(143,188,143)).setMaterial(new Material().setKs(0).setKd(0.5).setKt(0));
         scene.geometries.add(showerSurface);
+
+        //edges
+        Cylinder leftBottomShowerEdge = new Cylinder(new Ray(new Point(-250, 0, 100),new Vector(0,0,-1)),10,100);
+        leftBottomShowerEdge.setMaterial(new Material());
+        leftBottomShowerEdge.setEmission(new Color(122, 122, 122));
+        scene.geometries.add(leftBottomShowerEdge);
+
+        Cylinder leftTopShowerEdge = new Cylinder(new Ray(new Point(-250, 450, 100),new Vector(0,0,-1)),10,100);
+        leftTopShowerEdge.setMaterial(new Material());
+        leftTopShowerEdge.setEmission(new Color(122, 122, 122));
+        scene.geometries.add(leftTopShowerEdge);
+
+        Cylinder frontTopShowerEdge = new Cylinder(new Ray(new Point(-350, 450, 200),new Vector(-1,0,0)),10,150);
+        frontTopShowerEdge.setMaterial(new Material());
+        frontTopShowerEdge.setEmission(new Color(122, 122, 122));
+        scene.geometries.add(frontTopShowerEdge);
+
+        Cylinder frontBottomShowerEdge = new Cylinder(new Ray(new Point(-350, 0, 200),new Vector(-1,0,0)),10,150);
+        frontBottomShowerEdge.setMaterial(new Material());
+        frontBottomShowerEdge.setEmission(new Color(122, 122, 122));
+        scene.geometries.add(frontBottomShowerEdge);
+
+        Cylinder frontLeftShowerDoor = new Cylinder(new Ray(new Point(-250, 0, 97.5),new Vector(0,1,0)),5,450);
+        frontLeftShowerDoor.setMaterial(new Material());
+        frontLeftShowerDoor.setEmission(new Color(122, 122, 122));
+        scene.geometries.add(frontLeftShowerDoor);
+
+        Cylinder backLeftShowerDoor = new Cylinder(new Ray(new Point(-250, 0, 0),new Vector(0,1,0)),5,450);
+        backLeftShowerDoor.setMaterial(new Material());
+        backLeftShowerDoor.setEmission(new Color(122, 122, 122));
+        scene.geometries.add(backLeftShowerDoor);
+
+        Cylinder leftShowerDoorFront = new Cylinder(new Ray(new Point(-352.5, 0, 200),new Vector(0,1,0)),5,450);
+        leftShowerDoorFront.setMaterial(new Material());
+        leftShowerDoorFront.setEmission(new Color(122, 122, 122));
+        scene.geometries.add(leftShowerDoorFront);
+
+        Cylinder rightShowerDoorFront = new Cylinder(new Ray(new Point(-500, 0, 200),new Vector(0,1,0)),5,450);
+        rightShowerDoorFront.setMaterial(new Material());
+        rightShowerDoorFront.setEmission(new Color(122, 122, 122));
+        scene.geometries.add(rightShowerDoorFront);
+
+        Cylinder creek = new Cylinder(new Ray(new Point(-250, 0, 200),new Vector(0,1,0)),2,450);
+        creek.setMaterial(new Material());
+        creek.setEmission(new Color(122, 122, 122));
+        scene.geometries.add(creek);
+
+
         //endregion
 
         //region door
@@ -572,6 +620,106 @@ public class bathroom {
         scene.geometries.add(doorWindow);
 
 
+        //endregion
+
+        //region edges
+        //front edges
+        Cylinder frontTopEdge = new Cylinder(new Ray(new Point(-500, 500, 0),new Vector(1,0,0)),5,1000);
+        frontTopEdge.setMaterial(new Material());
+        frontTopEdge.setEmission(new Color(122, 122, 122));
+        scene.geometries.add(frontTopEdge);
+
+        Cylinder frontBotEdge = new Cylinder(new Ray(new Point(-500, 0, 0),new Vector(1,0,0)),5,1000);
+        frontBotEdge.setMaterial(new Material());
+        frontBotEdge.setEmission(new Color(122, 122, 122));
+        scene.geometries.add(frontBotEdge);
+
+        //left edge
+        Cylinder leftBotEdge = new Cylinder(new Ray(new Point(-500, 0, 0),new Vector(0,0,1)),5,600);
+        leftBotEdge.setMaterial(new Material());
+        leftBotEdge.setEmission(new Color(122, 122, 122));
+        scene.geometries.add(leftBotEdge);
+
+        Cylinder leftTopEdge = new Cylinder(new Ray(new Point(-500, 500, 0),new Vector(0,0,1)),5,600);
+        leftTopEdge.setMaterial(new Material());
+        leftTopEdge.setEmission(new Color(122, 122, 122));
+        scene.geometries.add(leftTopEdge);
+
+
+        //right edge
+        Cylinder rightBotEdge = new Cylinder(new Ray(new Point(500, 0, 0),new Vector(0,0,1)),5,300);
+        rightBotEdge.setMaterial(new Material());
+        rightBotEdge.setEmission(new Color(122, 122, 122));
+        scene.geometries.add(rightBotEdge);
+
+        Cylinder rightTopEdge = new Cylinder(new Ray(new Point(500, 500, 0),new Vector(0,0,1)),5,300);
+        rightTopEdge.setMaterial(new Material());
+        rightTopEdge.setEmission(new Color(122, 122, 122));
+        scene.geometries.add(rightTopEdge);
+
+        //back right edge
+        Cylinder rightBackBotEdge = new Cylinder(new Ray(new Point(500, 0, 300),new Vector(-1,0,0)),5,300);
+        rightBackBotEdge.setMaterial(new Material());
+        rightBackBotEdge.setEmission(new Color(122, 122, 122));
+        scene.geometries.add(rightBackBotEdge);
+
+        Cylinder rightBackTopEdge = new Cylinder(new Ray(new Point(500, 500, 300),new Vector(-1,0,0)),5,300);
+        rightBackTopEdge.setMaterial(new Material());
+        rightBackTopEdge.setEmission(new Color(122, 122, 122));
+        scene.geometries.add(rightBackTopEdge);
+
+        //back left edge
+        Cylinder leftBackBotEdge = new Cylinder(new Ray(new Point(-500, 0, 600),new Vector(1,0,0)),5,600);
+        leftBackBotEdge.setMaterial(new Material());
+        leftBackBotEdge.setEmission(new Color(122, 122, 122));
+        scene.geometries.add(leftBackBotEdge);
+
+        Cylinder leftBackTopEdge = new Cylinder(new Ray(new Point(-500, 500, 600),new Vector(1,0,0)),5,600);
+        leftBackTopEdge.setMaterial(new Material());
+        leftBackTopEdge.setEmission(new Color(122, 122, 122));
+        scene.geometries.add(leftBackTopEdge);
+
+        //back sided edge
+        Cylinder leftSideBotEdge = new Cylinder(new Ray(new Point(0, 0, 300),new Vector(0,0,1)),5,300);
+        leftSideBotEdge.setMaterial(new Material());
+        leftSideBotEdge.setEmission(new Color(122, 122, 122));
+        scene.geometries.add(leftSideBotEdge);
+
+        Cylinder leftSideTopEdge = new Cylinder(new Ray(new Point(0 ,500, 300),new Vector(0,0,1)),5,300);
+        leftSideTopEdge.setMaterial(new Material());
+        leftSideTopEdge.setEmission(new Color(122, 122, 122));
+        scene.geometries.add(leftSideTopEdge);
+
+        //vertical edges
+        Cylinder rightFrontEdge = new Cylinder(new Ray(new Point(500 ,0, 0),new Vector(0,1,0)),1,500);
+        rightFrontEdge.setMaterial(new Material());
+        rightFrontEdge.setEmission(new Color(122, 122, 122));
+        scene.geometries.add(rightFrontEdge);
+
+        Cylinder leftFrontEdge = new Cylinder(new Ray(new Point(-500 ,0, 0),new Vector(0,1,0)),1,500);
+        leftFrontEdge.setMaterial(new Material());
+        leftFrontEdge.setEmission(new Color(122, 122, 122));
+        scene.geometries.add(leftFrontEdge);
+
+        Cylinder leftBackEdge = new Cylinder(new Ray(new Point(-500 ,0, 600),new Vector(0,1,0)),1,500);
+        leftBackEdge.setMaterial(new Material());
+        leftBackEdge.setEmission(new Color(122, 122, 122));
+        scene.geometries.add(leftBackEdge);
+
+        Cylinder middleBackBackEdge = new Cylinder(new Ray(new Point(0 ,0, 600),new Vector(0,1,0)),1,500);
+        middleBackBackEdge.setMaterial(new Material());
+        middleBackBackEdge.setEmission(new Color(122, 122, 122));
+        scene.geometries.add(middleBackBackEdge);
+
+        Cylinder middleFrontBackEdge = new Cylinder(new Ray(new Point(0 ,0, 300),new Vector(0,1,0)),1,500);
+        middleFrontBackEdge.setMaterial(new Material());
+        middleFrontBackEdge.setEmission(new Color(122, 122, 122));
+        scene.geometries.add(middleFrontBackEdge);
+
+        Cylinder rightBackEdge = new Cylinder(new Ray(new Point(500 ,0, 300),new Vector(0,1,0)),1,500);
+        rightBackEdge.setMaterial(new Material());
+        rightBackEdge.setEmission(new Color(122, 122, 122));
+        scene.geometries.add(rightBackEdge);
         //endregion
 
         //region taking picture

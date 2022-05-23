@@ -120,7 +120,7 @@ public class Material {
     /**
      * Setter for the kDg field
      *
-     * @param kDg double parameter for all three values in the kDg field
+     * @param kDg double parameter value
      * @return The object itself
      */
     public Material setKdG(double kDg) {
@@ -130,7 +130,7 @@ public class Material {
 
     /**
      * Setter for the kSg field
-     * @param kSg parameter for the kS field
+     * @param kSg double parameter value
      * @return The object itself
      */
     public Material setKsG(double kSg) {

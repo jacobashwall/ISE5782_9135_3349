@@ -94,11 +94,10 @@ public class Cylinder extends Tube {
         if(temp.size()==2){
             boolean cond1 = onCylinder(temp.get(0),baseCenter,secondBaseCenter,dir);
             boolean cond2 = onCylinder(temp.get(1),baseCenter,secondBaseCenter,dir);
-            if(cond1 && cond2) return temp;
-            if(!cond1 && !cond2) return null;
+            if(cond1 && cond2)return temp;
+            if(!cond1 && !cond2)return null;
             if(cond1) return List.of(temp.get(0),gpBase);
             if(cond2) return List.of(gpBase,temp.get(1));
-
         }
 
         if(!(onCylinder(temp.get(0),baseCenter,secondBaseCenter,dir))){//לשים לב שזה ממש בתוך

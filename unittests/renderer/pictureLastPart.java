@@ -15,7 +15,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class pictureLastPart {
-    @Test
+    /*@Test
     void myPictureLastPart() {
         Scene scene = new Scene("Targil 7.3");
         scene.background = new Color(255,255,255);
@@ -70,11 +70,11 @@ public class pictureLastPart {
         //pln.setEmission(new Color(255,255,255));
         pln.setMaterial(material);//.setEmission(new Color(0, 0, 0));
 
-        scene.geometries.add(/*sqr1, sqrt2, sqrt3, sqrt4, sqrt5,pln*/ sphere/*,sphere2*/,sphere3,sphere4);
+        scene.geometries.add(/*sqr1, sqrt2, sqrt3, sqrt4, sqrt5,pln*/ /*sphere/*,sphere2*//*,sphere3,sphere4);
 
         camera.setImageWriter(new ImageWriter("Targil 7.3", 1000, 1000))
                 .setRayTracer(new RayTracerBasic(scene))
                 .renderImage();
         camera.writeToImage();
-    }
+    }*/
 }

@@ -123,7 +123,8 @@ public class Tube extends Geometry {
             return t2 <= 0 ? null : List.of(new GeoPoint(this, ray.getPoint(t2)));
         } else {
             //Check if there are one or two intersection points.
-            return t2 <= 0 ? List.of(new GeoPoint(this, ray.getPoint(t1))) : List.of(new GeoPoint(this, ray.getPoint(t2)), new GeoPoint(this, ray.getPoint(t1)));
+            return t2 <= 0 ? List.of(new GeoPoint(this, ray.getPoint(t1))) :
+                             List.of(new GeoPoint(this, ray.getPoint(t2)), new GeoPoint(this, ray.getPoint(t1)));
         }
     }
 }

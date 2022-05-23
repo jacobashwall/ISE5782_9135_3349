@@ -31,15 +31,15 @@ public class RayTracerBasic extends RayTracerBase {
     /**
      * resolution of the target area
      */
-    private static final int RESOLUTION = 9;
+    private static final int TARGET_AREA_RESOLUTION = 9;
     /**
-     * distance of the target area
+     * distance of the target area from the main ray head
      */
-    private static final double DISTANCE = 10;
+    private static final double TARGET_AREA_DISTANCE = 10;
     /**
-     * distance of the target area
+     * length of the target area edge
      */
-    private static final double SMUDGE = 1;
+    private static final double TARGET_AREA_EDGE = 5;
 
     /**
      * construction the class with the given scene.
@@ -108,8 +108,8 @@ public class RayTracerBasic extends RayTracerBase {
     }
 
     /**
-     * calculating the color in the global scene, tells what more points we need to
-     * check for the color calculations.
+     * calculating the color by checking for global effects,
+     * finds the next intersection points to calculate for the  recursion.
      *
      * @param gp    the point of the intersection.
      * @param ray   the ray that intersects with the geometry.
@@ -118,6 +118,7 @@ public class RayTracerBasic extends RayTracerBase {
      * @return the calculated color.
      */
     private Color calcGlobalEffects(GeoPoint gp, Ray ray, int level, Double3 k) {
+        //Variables for the function
         Vector v = ray.getDir();
         Vector normal = gp.geometry.getNormal(gp.point);
         Material material = gp.geometry.getMaterial();
@@ -127,50 +128,42 @@ public class RayTracerBasic extends RayTracerBase {
         Double3 diffSamplingSum = Double3.ZERO;
         Double3 glossSamplingSum = Double3.ZERO;
 
-        if(material.kDg!=0){
-            LinkedList<Ray> diffusedSampling=superSample(refractedRay, material.kDg, RESOLUTION,DISTANCE,SMUDGE);
-            for(var secondaryRay: diffusedSampling){
+        //If diffusive glass
+        if (material.kDg != 0) {
+            //super sample the refracted ray
+            LinkedList<Ray> diffusedSampling = superSample(refractedRay, material.kDg, normal);
+            //for each sampling ray calculate the global effect
+            for (var secondaryRay : diffusedSampling) {
                 diffSamplingSum = diffSamplingSum.add(calcGlobalEffects(secondaryRay, level, k, material.kT).getRgb());
             }
-           diffSamplingSum = diffSamplingSum.reduce(RESOLUTION*RESOLUTION);
+            //take the average of the calculation for all sample rays
+            diffSamplingSum = diffSamplingSum.reduce(TARGET_AREA_RESOLUTION * TARGET_AREA_RESOLUTION);
         }
-        if(material.kSg!=0){
-            LinkedList<Ray> diffusedSampling=superSample(reflectedRay, material.kSg, RESOLUTION,DISTANCE,SMUDGE);
-            for(var secondaryRay: diffusedSampling){
+        //If glossy surface
+        if (material.kSg != 0) {
+            //super sample the reflected ray
+            LinkedList<Ray> diffusedSampling = superSample(reflectedRay, material.kSg, normal);
+            //for each sampling ray calculate the global effect
+            for (var secondaryRay : diffusedSampling) {
                 glossSamplingSum = glossSamplingSum.add(calcGlobalEffects(secondaryRay, level, k, material.kR).getRgb());
             }
-            glossSamplingSum = glossSamplingSum.reduce(RESOLUTION*RESOLUTION);
+            //take the average of the calculation for all sample rays
+            glossSamplingSum = glossSamplingSum.reduce(TARGET_AREA_RESOLUTION * TARGET_AREA_RESOLUTION);
         }
-        /*if(material.kDg!=0){
-            LinkedList<Ray> diffusedSampling=superSample(refractedRay, material.kDg, RESOLUTION,DISTANCE,SMUDGE);
-            Double3 samplingSum = Double3.ZERO;
-            for(var secondaryRay: diffusedSampling){
-                samplingSum = samplingSum.add(calcGlobalEffects(secondaryRay, level, k, material.kT).getRgb());
-            }
-            return calcGlobalEffects(reflectedRay, level, k, material.kR)
-                    .add(new Color(samplingSum.reduce(RESOLUTION*RESOLUTION)));
-        }
-        if(material.kSg!=0){
-            LinkedList<Ray> diffusedSampling=superSample(reflectedRay, material.kSg, RESOLUTION,DISTANCE,SMUDGE);
-            Double3 samplingSum = Double3.ZERO;
-            for(var secondaryRay: diffusedSampling){
-                samplingSum = samplingSum.add(calcGlobalEffects(secondaryRay, level, k, material.kR).getRgb());
-            }
-            return calcGlobalEffects(refractedRay, level, k, material.kT)
-                    .add(new Color(samplingSum.reduce(RESOLUTION*RESOLUTION)));
-        }*/
-        if(material.kDg!=0 && material.kSg!=0){
+
+        //If diffusive and glossy return both of the results above
+        if (material.kDg != 0 && material.kSg != 0) {
             return new Color(glossSamplingSum)
                     .add(new Color(diffSamplingSum));
         }
-        else if (material.kDg + material.kSg >0){
-            return material.kDg != 0? calcGlobalEffects(reflectedRay, level, k, material.kR).add(new Color(diffSamplingSum)):
-                    calcGlobalEffects(refractedRay, level, k, material.kT).add(new Color(glossSamplingSum));
-
+        //else return the matching result
+        else if (material.kDg + material.kSg > 0) {
+            return material.kDg != 0 ? calcGlobalEffects(reflectedRay, level, k, material.kR).add(new Color(diffSamplingSum)) :
+                                       calcGlobalEffects(refractedRay, level, k, material.kT).add(new Color(glossSamplingSum));
         }
+
         return calcGlobalEffects(reflectedRay, level, k, material.kR)
                 .add(calcGlobalEffects(refractedRay, level, k, material.kT));
-
     }
 
     /**
@@ -313,29 +306,54 @@ public class RayTracerBasic extends RayTracerBase {
         return ray.findClosestGeoPoint(scene.geometries.findGeoIntersections(ray));
     }
 
-    private Ray createRayBeam(int i, int j, Ray ray,Vector vTo, Vector vUp, Vector vRight, double k, int resolution, double distance, double smudge){
-        //Center of the view plane
-        Point pIJ = ray.getP0().add(vTo.scale(distance));
-        //height and width of each pixel
-        double rC =k*smudge/resolution;
-        //vertical distance of the required pixel from the center of the view plane
-        double yI = -(i - ((double) (resolution - 1)) / 2) * rC;
-        //horizontal distance of the required pixel from the center of the view plane
-        double xJ = -(j - ((double) (resolution - 1)) / 2) * rC;
+    /**
+     * A method that generates a ray, starting at the point and going through
+     * specific square in the grid.
+     *
+     * @param j  The horizontal index of the square
+     * @param i  The vertical index of the square
+     * @param ray The main ray which we built the grid around
+     * @param vTo The direction of the main ray
+     * @param vUp Orthogonal to vTo, decides the angle
+     * @param vRight Orthogonal to vTo, decides the angle
+     * @param k glossy/diffusive attenuation coefficient
+     * @param n normal to the head of the main ray
+     * @return Vector that goes through the requested square in the grid
+     */
+    private Vector createVectorBeam(int i, int j, Ray ray, Vector vTo, Vector vUp, Vector vRight, double k, Vector n) {
+        //Center of the grid
+        Point pIj = ray.getP0().add(vTo.scale(TARGET_AREA_DISTANCE));
+        //height and width of each square
+        double rC = k * TARGET_AREA_EDGE / TARGET_AREA_RESOLUTION;
+        //vertical distance of the required square from the center of the grid
+        double yI = -(i - ((double) (TARGET_AREA_RESOLUTION - 1)) / 2) * rC;
+        //horizontal distance of the required square from the center of the grid
+        double xJ = -(j - ((double) (TARGET_AREA_RESOLUTION - 1)) / 2) * rC;
         //changing the position of the center point so that the ray will intersect the view plane in the right place
         if (xJ != 0) {
-            pIJ = pIJ.add(vRight.scale(xJ));
+            pIj = pIj.add(vRight.scale(xJ));
         }
         if (yI != 0) {
-            pIJ = pIJ.add(vUp.scale(yI));
+            pIj = pIj.add(vUp.scale(yI));
         }
         //return the ray
-        return new Ray(ray.getP0(), pIJ.subtract(ray.getP0()).normalize());
+        double sign = pIj.subtract(ray.getP0()).dotProduct(n);
+        //Checking that the secondary ray doesn't go the other side of the normal plane
+        if (vTo.dotProduct(n)*sign < 0) return null;
+
+        return pIj.subtract(ray.getP0()).normalize();
 
     }
 
-    private LinkedList<Ray> superSample(Ray ray,double k,int resolution,double distance, double smudge){
-        LinkedList<Ray> diffusedSampling=new LinkedList<>();
+    /**
+     * Creates a sample ray for each square in the target area
+     * @param ray The main ray
+     * @param k glossy/diffusive attenuation coefficient
+     * @param n normal to the head of the main ray
+     * @return List of sample rays
+     */
+    private LinkedList<Ray> superSample(Ray ray, double k, Vector n) {
+        LinkedList<Ray> sampling = new LinkedList<>();
         Vector vUp;
         Vector vRight;
         Vector vTo = ray.getDir();
@@ -348,13 +366,18 @@ public class RayTracerBasic extends RayTracerBase {
         } else {
             vUp = (vTo.crossProduct(new Vector(0, 1, 0))).crossProduct(vTo).normalize();
         }
+
+        //for square in the grid create a secondary ray
         vRight = vTo.crossProduct(vUp).normalize();
-        for (int i=0;i<resolution;i++){
-            for (int j=0;j<resolution;j++){
-                diffusedSampling.add(createRayBeam(i,j,ray,vTo,vUp,vRight,k,resolution,distance,smudge));
+        for (int i = 0; i < TARGET_AREA_RESOLUTION; i++) {
+            for (int j = 0; j < TARGET_AREA_RESOLUTION; j++) {
+                Vector sampleDir = createVectorBeam(i, j, ray, vTo, vUp, vRight, k, n);
+                if(sampleDir!=null) {
+                    sampling.add(new Ray(ray.getP0(), sampleDir));
+                }
             }
         }
-        return diffusedSampling;
+        return sampling;
     }
 
 }

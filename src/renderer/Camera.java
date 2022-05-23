@@ -165,7 +165,7 @@ public class Camera {
      */
     public Ray constructRay(int nX, int nY, int j, int i) {
         //Center of the view plane
-        Point pIJ = p0.add(vTo.scale(distance));
+        Point pIj = p0.add(vTo.scale(distance));
         //height of each pixel
         double rY = height / nY;
         //width of each pixel
@@ -177,14 +177,14 @@ public class Camera {
 
         //changing the position of the center point so that the ray will intersect the view plane in the right place
         if (xJ != 0) {
-            pIJ = pIJ.add(vRight.scale(xJ));
+            pIj = pIj.add(vRight.scale(xJ));
         }
         if (yI != 0) {
-            pIJ = pIJ.add(vUp.scale(yI));
+            pIj = pIj.add(vUp.scale(yI));
         }
 
         //return the ray
-        return new Ray(p0, pIJ.subtract(p0).normalize());
+        return new Ray(p0, pIj.subtract(p0).normalize());
     }
 
 

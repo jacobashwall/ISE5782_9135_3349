@@ -67,7 +67,7 @@ public class ReflectionRefractionTests {
                 new Triangle(new Point(1500, -1500, -1500), new Point(-1500, 1500, -1500),
                         new Point(-1500, -1500, -2000)) //
                         .setEmission(new Color(20, 20, 20)) //
-                        .setMaterial(new Material().setKr(0.5)));
+                        .setMaterial(new Material().setKr(0.5).setKsG(0.5)));
 
         scene.lights.add(new SpotLight(new Color(1020, 400, 400), new Point(-750, -750, -150), new Vector(-1, -1, -4)) //
                 .setKl(0.00001).setKq(0.000005));

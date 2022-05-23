@@ -70,7 +70,17 @@ public class bathroom {
         //region lighting
         //front wall light
         scene.lights.add(new SpotLight(new Color(100,100,100), new Point(125,450,10),new Vector(0,-1,1)).setNarrowBeam(3));
+        Cylinder frontLight = new Cylinder(new Ray(new Point(75,450,0),new Vector(1,0,0)),20,100);
+        frontLight.setMaterial(new Material().setKt(0.9));
+        frontLight.setEmission(new Color(255, 255, 255));
+        scene.geometries.add(frontLight);
+
+        //extension light
         scene.lights.add(new SpotLight(new Color(100,100,100), new Point(-250,490,450),new Vector(0,-1,0)).setNarrowBeam(3));
+        Cylinder backLight = new Cylinder(new Ray(new Point(-250,500,450),new Vector(0,-1,0)),20,15);
+        backLight.setMaterial(new Material().setKt(0.9));
+        backLight.setEmission(new Color(255, 255, 255));
+        scene.geometries.add(backLight);
 
         //endregion
 
@@ -173,6 +183,42 @@ public class bathroom {
         Polygon sinkBottom = new Polygon(new Point(120, 190 - depth, 60), new Point(155, 190 - depth, 60), new Point(155, 190 - depth, 40), new Point(120, 190 - depth, 40));
         sinkBottom.setEmission(new Color(225, 225, 225)).setMaterial(new Material().setKs(0).setKd(0.5));
         scene.geometries.add(sinkBottom);
+
+        Cylinder sinkHoleEdge = new Cylinder(new Ray(new Point(137.5, 190 - depth, 50),new Vector(0,1,0)),3,0.1);
+        sinkHoleEdge.setMaterial(new Material());
+        sinkHoleEdge.setEmission(new Color(122, 122, 122));
+        scene.geometries.add(sinkHoleEdge);
+
+        Cylinder sinkHole = new Cylinder(new Ray(new Point(137.5, 190 - depth, 50),new Vector(0,1,0)),2.5,0.11);
+        sinkHole.setMaterial(new Material());
+        sinkHole.setEmission(new Color(255, 255, 255));
+        scene.geometries.add(sinkHole);
+
+        //sink tap
+        Cylinder sinkTapBase = new Cylinder(new Ray(new Point(235, 200, 40),new Vector(0,1,0)),5,20);
+        sinkTapBase.setMaterial(new Material());
+        sinkTapBase.setEmission(new Color(122, 122, 122));
+        scene.geometries.add(sinkTapBase);
+
+        Cylinder sinkTapSpine = new Cylinder(new Ray(new Point(235, 220, 40),new Vector(-1,1,0.5)),3,60);
+        sinkTapSpine.setMaterial(new Material());
+        sinkTapSpine.setEmission(new Color(122, 122, 122));
+        scene.geometries.add(sinkTapSpine);
+
+        Cylinder sinkTapHead = new Cylinder(new Ray((new Point(235, 220, 40).add(new Vector(-1,1,0.5).scale(40))),new Vector(-1,0,0.5)),3,40);
+        sinkTapHead.setMaterial(new Material());
+        sinkTapHead.setEmission(new Color(122, 122, 122));
+        scene.geometries.add(sinkTapHead);
+
+        Cylinder sinkTapOpening = new Cylinder(new Ray(((new Point(235, 223, 40).add(new Vector(-1,1,0.5).scale(40))).add(new Vector(-1,0,0.5).scale(30))),new Vector(0,-1,0)),3,8);
+        sinkTapOpening.setMaterial(new Material());
+        sinkTapOpening.setEmission(new Color(122, 122, 122));
+        scene.geometries.add(sinkTapOpening);
+
+        Cylinder sinkTapHandle = new Cylinder(new Ray(new Point(230, 215, 40),new Vector(-1,-0.5,0)),2,15);
+        sinkTapHandle.setMaterial(new Material());
+        sinkTapHandle.setEmission(new Color(122, 122, 122));
+        scene.geometries.add(sinkTapHandle);
         //endregion
 
         //region closets
@@ -277,6 +323,25 @@ public class bathroom {
             Polygon polygon = new Polygon(new Point(499.9, 225, j * tileWidth), new Point(499.9, 225, tileWidth + j * tileWidth - gap), new Point(499.9, 225 + tileHeight, tileWidth + j * tileWidth - gap), new Point(499.9, 225 + tileHeight, j * tileWidth));
             polygon.setEmission(colorPallet[j % 5]).setMaterial(new Material().setKs(0).setKd(0.5));
             scene.geometries.add(polygon);
+        }
+
+        //towels rack
+        Cylinder rackSpine = new Cylinder(new Ray(new Point(500, 350, 100),new Vector(0,0,1)),10,100);
+        rackSpine.setMaterial(new Material());
+        rackSpine.setEmission(new Color(122, 122, 122));
+        scene.geometries.add(rackSpine);
+
+
+        for (int i=1;i<4;i++) {
+            Cylinder hookBase = new Cylinder(new Ray(new Point(490, 350, 100+i*25), new Vector(-1, 0, 0)), 2, 25);
+            hookBase.setMaterial(new Material());
+            hookBase.setEmission(new Color(122, 122, 122));
+            scene.geometries.add(hookBase);
+
+            Cylinder hook = new Cylinder(new Ray(new Point(490-25, 350, 100+i*25), new Vector(-1, 0, 0)), 5, 3);
+            hook.setMaterial(new Material());
+            hook.setEmission(new Color(122, 122, 122));
+            scene.geometries.add(hook);
         }
         //endregion
 
@@ -479,6 +544,69 @@ public class bathroom {
         creek.setEmission(new Color(122, 122, 122));
         scene.geometries.add(creek);
 
+        //spheres
+        Sphere frontTopShowerSphere = new Sphere(new Point(-350, 450, 200),10);
+        frontTopShowerSphere.setMaterial(new Material());
+        frontTopShowerSphere.setEmission(new Color(122, 122, 122));
+        scene.geometries.add(frontTopShowerSphere);
+
+        Sphere frontBottomShowerSphere = new Sphere(new Point(-350, 0, 200),10);
+        frontBottomShowerSphere.setMaterial(new Material());
+        frontBottomShowerSphere.setEmission(new Color(122, 122, 122));
+        scene.geometries.add(frontBottomShowerSphere);
+
+        Sphere leftBottomShowerSphere = new Sphere(new Point(-250, 0, 100),10);
+        leftBottomShowerSphere.setMaterial(new Material());
+        leftBottomShowerSphere.setEmission(new Color(122, 122, 122));
+        scene.geometries.add(leftBottomShowerSphere);
+
+        Sphere leftTopShowerSphere = new Sphere(new Point(-250, 450, 100),10);
+        leftTopShowerSphere.setMaterial(new Material());
+        leftTopShowerSphere.setEmission(new Color(122, 122, 122));
+        scene.geometries.add(leftTopShowerSphere);
+
+        //shower tap
+        Cylinder showerTapBase = new Cylinder(new Ray(new Point(-500, 450, 100),new Vector(1,0,0)),10,20);
+        showerTapBase.setMaterial(new Material());
+        showerTapBase.setEmission(new Color(122, 122, 122));
+        scene.geometries.add(showerTapBase);
+
+        Sphere showerTapSpineSphere = new Sphere(new Point(-480, 450, 100),10);
+        showerTapSpineSphere.setMaterial(new Material());
+        showerTapSpineSphere.setEmission(new Color(122, 122, 122));
+        scene.geometries.add(showerTapSpineSphere);
+
+        Cylinder showerTapSpine = new Cylinder(new Ray(new Point(-480, 450, 100),new Vector(1,0,0)),5,80);
+        showerTapSpine.setMaterial(new Material());
+        showerTapSpine.setEmission(new Color(122, 122, 122));
+        scene.geometries.add(showerTapSpine);
+
+        Sphere showerTapVerticalSphere = new Sphere(new Point(-400, 450, 100),5);
+        showerTapVerticalSphere.setMaterial(new Material());
+        showerTapVerticalSphere.setEmission(new Color(122, 122, 122));
+        scene.geometries.add(showerTapVerticalSphere);
+
+        Cylinder showerTapVertical = new Cylinder(new Ray(new Point(-400, 450, 100),new Vector(0,-1,0)),3,40);
+        showerTapVertical.setMaterial(new Material());
+        showerTapVertical.setEmission(new Color(122, 122, 122));
+        scene.geometries.add(showerTapVertical);
+
+
+        Cylinder showerTapHead = new Cylinder(new Ray(new Point(-400, 410, 100),new Vector(0,-1,0)),30,4);
+        showerTapHead.setMaterial(new Material());
+        showerTapHead.setEmission(new Color(122, 122, 122));
+        scene.geometries.add(showerTapHead);
+
+        Cylinder showerTapHandleBase = new Cylinder(new Ray(new Point(-500, 250, 100),new Vector(1,0,0)),15,10);
+        showerTapHandleBase.setMaterial(new Material());
+        showerTapHandleBase.setEmission(new Color(122, 122, 122));
+        scene.geometries.add(showerTapHandleBase);
+
+        Cylinder showerTapHandle = new Cylinder(new Ray(new Point(-495, 240, 100),new Vector(0,-1,0)),2.5,20);
+        showerTapHandle.setMaterial(new Material());
+        showerTapHandle.setEmission(new Color(122, 122, 122));
+        scene.geometries.add(showerTapHandle);
+
 
         //endregion
 
@@ -618,6 +746,27 @@ public class bathroom {
         doorWindow.setMaterial(new Material().setKt(0.5));
         doorWindow.setEmission(new Color(173,216,230));
         scene.geometries.add(doorWindow);
+
+        //door window frame
+        Cylinder rightWindowFrame = new Cylinder(new Ray(new Point(450-1.5*frameGap-50, 300, 299.7-0.75*frameGap),new Vector(0,1,0)),4,50);
+        rightWindowFrame.setMaterial(new Material());
+        rightWindowFrame.setEmission(new Color(222,184,135));
+        scene.geometries.add(rightWindowFrame);
+
+        Cylinder bottomWindowFrame = new Cylinder(new Ray(new Point(450-1.5*frameGap-50, 300, 299.7-0.75*frameGap),new Vector(-1,0,0)),4,450-(200+1.5*frameGap+100));
+        bottomWindowFrame.setMaterial(new Material());
+        bottomWindowFrame.setEmission(new Color(222,184,135));
+        scene.geometries.add(bottomWindowFrame);
+
+        Cylinder leftWindowFrame = new Cylinder(new Ray(new Point(200+1.5*frameGap+100, 300, 299.7-0.75*frameGap),new Vector(0,1,0)),4,50);
+        leftWindowFrame.setMaterial(new Material());
+        leftWindowFrame.setEmission(new Color(222,184,135));
+        scene.geometries.add(leftWindowFrame);
+
+        Cylinder topWindowFrame = new Cylinder(new Ray(new Point(450-1.5*frameGap-50, 350, 299.7-0.75*frameGap),new Vector(-1,0,0)),4,450-(200+1.5*frameGap+100));
+        topWindowFrame.setMaterial(new Material());
+        topWindowFrame.setEmission(new Color(222,184,135));
+        scene.geometries.add(topWindowFrame);
 
 
         //endregion
@@ -785,11 +934,9 @@ public class bathroom {
     }
 
     private void renderFinal(Scene scene,Camera camera){
-        //camera.moveCamera(new Point(-500, 300, 500), new Point(0, 250, 50));//final
-        //camera.moveCamera(new Point(-499, 300, 599), new Point(-50, 250, 0));//final4
-        camera.moveCamera(new Point(-400, 350, 550), new Point(-100, 250, 0));//final5
+        camera.moveCamera(new Point(-400, 350, 550), new Point(-100, 250, 0));
         camera.setVPDistance(700);
-        ImageWriter imageWriter = new ImageWriter("zFinal6", 1000, 1000);
+        ImageWriter imageWriter = new ImageWriter("zFinal", 1000, 1000);
         camera.setImageWriter(imageWriter) //
                 .setRayTracer(new RayTracerBasic(scene)) //
                 .renderImage(); //

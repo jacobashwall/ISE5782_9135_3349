@@ -48,7 +48,7 @@ public class Color {
      *
      * @param rgb triad of Red/Green/Blue components
      */
-    public Color(Double3 rgb) {
+    private Color(Double3 rgb) {
         if (rgb.d1 < 0 || rgb.d2 < 0 || rgb.d3 < 0)
             throw new IllegalArgumentException("Negative color component is illegal");
         this.rgb = rgb;
@@ -63,13 +63,6 @@ public class Color {
         rgb = new Double3(other.getRed(), other.getGreen(), other.getBlue());
     }
 
-    /**
-     * rgb field getter
-     * @return rgb field
-     */
-    public Double3 getRgb(){
-        return rgb;
-    }
     /**
      * Color getter - returns the color after converting it into java.awt.Color
      * object During the conversion any component bigger than 255 is set to 255

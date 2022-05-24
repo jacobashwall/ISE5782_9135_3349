@@ -125,8 +125,8 @@ public class RayTracerBasic extends RayTracerBase {
 
         Ray reflectedRay = constructReflectedRay(normal, gp.point, v);
         Ray refractedRay = constructRefractedRay(normal, gp.point, v);
-        Double3 diffSamplingSum = Double3.ZERO;
-        Double3 glossSamplingSum = Double3.ZERO;
+        Color diffSamplingSum =  Color.BLACK;
+        Color glossSamplingSum = Color.BLACK;
 
         //If diffusive glass
         if (material.kDg != 0) {
@@ -134,7 +134,7 @@ public class RayTracerBasic extends RayTracerBase {
             LinkedList<Ray> diffusedSampling = superSample(refractedRay, material.kDg, normal);
             //for each sampling ray calculate the global effect
             for (var secondaryRay : diffusedSampling) {
-                diffSamplingSum = diffSamplingSum.add(calcGlobalEffect(secondaryRay, level, k, material.kT).getRgb());
+                diffSamplingSum = diffSamplingSum.add(calcGlobalEffect(secondaryRay, level, k, material.kT));
             }
             //take the average of the calculation for all sample rays
             diffSamplingSum = diffSamplingSum.reduce(TARGET_AREA_RESOLUTION * TARGET_AREA_RESOLUTION);
@@ -145,7 +145,7 @@ public class RayTracerBasic extends RayTracerBase {
             LinkedList<Ray> diffusedSampling = superSample(reflectedRay, material.kSg, normal);
             //for each sampling ray calculate the global effect
             for (var secondaryRay : diffusedSampling) {
-                glossSamplingSum = glossSamplingSum.add(calcGlobalEffect(secondaryRay, level, k, material.kR).getRgb());
+                glossSamplingSum = glossSamplingSum.add(calcGlobalEffect(secondaryRay, level, k, material.kR));
             }
             //take the average of the calculation for all sample rays
             glossSamplingSum = glossSamplingSum.reduce(TARGET_AREA_RESOLUTION * TARGET_AREA_RESOLUTION);
@@ -153,13 +153,13 @@ public class RayTracerBasic extends RayTracerBase {
 
         //If diffusive and glossy return both of the results above
         if (material.kDg != 0 && material.kSg != 0) {
-            return new Color(glossSamplingSum)
-                    .add(new Color(diffSamplingSum));
+            return glossSamplingSum
+                    .add(diffSamplingSum);
         }
         //else return the matching result
         else if (material.kDg + material.kSg > 0) {
-            return material.kDg != 0 ? calcGlobalEffect(reflectedRay, level, k, material.kR).add(new Color(diffSamplingSum)) :
-                    calcGlobalEffect(refractedRay, level, k, material.kT).add(new Color(glossSamplingSum));
+            return material.kDg != 0 ? calcGlobalEffect(reflectedRay, level, k, material.kR).add(diffSamplingSum) :
+                    calcGlobalEffect(refractedRay, level, k, material.kT).add(glossSamplingSum);
         }
 
         return calcGlobalEffect(reflectedRay, level, k, material.kR)

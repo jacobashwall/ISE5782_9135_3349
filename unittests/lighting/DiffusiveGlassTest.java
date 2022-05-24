@@ -26,9 +26,9 @@ public class DiffusiveGlassTest {
                 .setVPSize(150, 150).setVPDistance(1000);
 
         scene.geometries.add( //
-                new Sphere(new Point(0, 0, -50), 50d).setEmission(new Color(BLUE)) //
+                new Sphere(new Point(0, 0, -200), 50d).setEmission(new Color(BLUE)) //
                         .setMaterial(new Material().setKd(0.4).setKs(0.3).setnShininess(100).setKt(0.3)),
-                new Sphere(new Point(0, 0, -50), 25d).setEmission(new Color(RED)) //
+                new Sphere(new Point(0, 0, -200), 25d).setEmission(new Color(RED)) //
                         .setMaterial(new Material().setKd(0.5).setKs(0.5).setnShininess(100)));
 
         scene.lights.add( //

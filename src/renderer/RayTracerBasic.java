@@ -39,7 +39,7 @@ public class RayTracerBasic extends RayTracerBase {
     /**
      * length of the target area edge
      */
-    private static final double TARGET_AREA_EDGE = 5;
+    private static final double TARGET_AREA_EDGE = 2;
 
     /**
      * construction the class with the given scene.
@@ -159,7 +159,7 @@ public class RayTracerBasic extends RayTracerBase {
         //else return the matching result
         else if (material.kDg + material.kSg > 0) {
             return material.kDg != 0 ? calcGlobalEffects(reflectedRay, level, k, material.kR).add(new Color(diffSamplingSum)) :
-                                       calcGlobalEffects(refractedRay, level, k, material.kT).add(new Color(glossSamplingSum));
+                    calcGlobalEffects(refractedRay, level, k, material.kT).add(new Color(glossSamplingSum));
         }
 
         return calcGlobalEffects(reflectedRay, level, k, material.kR)
@@ -223,11 +223,11 @@ public class RayTracerBasic extends RayTracerBase {
     private Double3 calcSpecular(Material material, Vector n, Vector l, double nl, Vector v) {
         //the reflection of the light source vector (l)
         Vector r = l.subtract(n.scale(2 * nl));
-        double minusVR = alignZero(-v.dotProduct(r));
-        if (minusVR <= 0) return Double3.ZERO;
+        double minusVr = alignZero(-v.dotProduct(r));
+        if (minusVr <= 0) return Double3.ZERO;
 
         //Calculation of the effect according to phong model
-        return material.kS.scale(Math.pow(minusVR, material.nShininess));
+        return material.kS.scale(Math.pow(minusVr, material.nShininess));
     }
 
     /**
@@ -310,14 +310,14 @@ public class RayTracerBasic extends RayTracerBase {
      * A method that generates a ray, starting at the point and going through
      * specific square in the grid.
      *
-     * @param j  The horizontal index of the square
-     * @param i  The vertical index of the square
-     * @param ray The main ray which we built the grid around
-     * @param vTo The direction of the main ray
-     * @param vUp Orthogonal to vTo, decides the angle
+     * @param j      The horizontal index of the square
+     * @param i      The vertical index of the square
+     * @param ray    The main ray which we built the grid around
+     * @param vTo    The direction of the main ray
+     * @param vUp    Orthogonal to vTo, decides the angle
      * @param vRight Orthogonal to vTo, decides the angle
-     * @param k glossy/diffusive attenuation coefficient
-     * @param n normal to the head of the main ray
+     * @param k      glossy/diffusive attenuation coefficient
+     * @param n      normal to the head of the main ray
      * @return Vector that goes through the requested square in the grid
      */
     private Vector createVectorBeam(int i, int j, Ray ray, Vector vTo, Vector vUp, Vector vRight, double k, Vector n) {
@@ -339,7 +339,7 @@ public class RayTracerBasic extends RayTracerBase {
         //return the ray
         double sign = pIj.subtract(ray.getP0()).dotProduct(n);
         //Checking that the secondary ray doesn't go the other side of the normal plane
-        if (vTo.dotProduct(n)*sign < 0) return null;
+        if (vTo.dotProduct(n) * sign < 0) return null;
 
         return pIj.subtract(ray.getP0()).normalize();
 
@@ -347,9 +347,10 @@ public class RayTracerBasic extends RayTracerBase {
 
     /**
      * Creates a sample ray for each square in the target area
+     *
      * @param ray The main ray
-     * @param k glossy/diffusive attenuation coefficient
-     * @param n normal to the head of the main ray
+     * @param k   glossy/diffusive attenuation coefficient
+     * @param n   normal to the head of the main ray
      * @return List of sample rays
      */
     private LinkedList<Ray> superSample(Ray ray, double k, Vector n) {
@@ -372,7 +373,7 @@ public class RayTracerBasic extends RayTracerBase {
         for (int i = 0; i < TARGET_AREA_RESOLUTION; i++) {
             for (int j = 0; j < TARGET_AREA_RESOLUTION; j++) {
                 Vector sampleDir = createVectorBeam(i, j, ray, vTo, vUp, vRight, k, n);
-                if(sampleDir!=null) {
+                if (sampleDir != null) {
                     sampling.add(new Ray(ray.getP0(), sampleDir));
                 }
             }

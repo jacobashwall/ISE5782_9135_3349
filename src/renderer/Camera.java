@@ -221,10 +221,10 @@ public class Camera {
         //as its normal, and the plane that includes the Y axis and the Vto vector (as demanded in the instructions).
 
         //if the Vto is already on the Y axis, we will use the Z axis instead
-        if (this.vTo.equals(new Vector(0, 1, 0)) || this.vTo.equals(new Vector(0, -1, 0))) {
-            this.vUp = (vTo.crossProduct(new Vector(0, 0, 1))).crossProduct(vTo).normalize();
+        if (this.vTo.equals(Vector.Y) || this.vTo.equals(Vector.Y.scale(-1))) {
+            this.vUp = (vTo.crossProduct(Vector.Z)).crossProduct(vTo).normalize();
         } else {
-            this.vUp = (vTo.crossProduct(new Vector(0, 1, 0))).crossProduct(vTo).normalize();
+            this.vUp = (vTo.crossProduct(Vector.Y)).crossProduct(vTo).normalize();
         }
         this.vRight = vTo.crossProduct(vUp).normalize();
         return this;

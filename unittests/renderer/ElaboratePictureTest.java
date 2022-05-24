@@ -21,7 +21,7 @@ public class ElaboratePictureTest {
     /**
      * Produce an elaborate picture with several objects
      */
-    /*
+
     @Test
     public void createElaboratePicture() {
         //settings
@@ -120,7 +120,7 @@ public class ElaboratePictureTest {
 
         //choose one of those:
 
-
+/*
         //taking picture for images without the wall
         camera.moveCamera(new Point(0, 0, 0), new Point(0, 1000, -6000)).setVPDistance(2500);
         ImageWriter imageWriter = new ImageWriter("elaboratePictureWallNewLight", 5000, 5000);
@@ -129,7 +129,7 @@ public class ElaboratePictureTest {
                 .renderImage(); //
         camera.writeToImage();
 
-        /*
+
         //taking picture for images with the wall
         camera.moveCamera(new Point(0, 0, 0),new Point(0, 1000,-6000)).setVPDistance(2500);
         ImageWriter imageWriter = new ImageWriter("elaboratePicture", 10000, 10000);
@@ -137,8 +137,8 @@ public class ElaboratePictureTest {
                 .setRayTracer(new RayTracerBasic(scene)) //
                 .renderImage(); //
         camera.writeToImage();
-*/
-/*
+
+
 
         //taking pictures for the gif using move camera and rotate camera
         double movingFactor = 10;
@@ -147,13 +147,17 @@ public class ElaboratePictureTest {
             camera.moveCamera(new Point(camera.getP0().getX(), camera.getP0().getY(), camera.getP0().getZ() - (i * movingFactor)),
                             new Point(0, 1000, -6000))
                     .turnCamera(i * rotatingFactor)
-                    .setImageWriter(new ImageWriter("gif\\image" + i, 500, 500))
+                    .setImageWriter(new ImageWriter("gif\\image" + i, 100, 100))
                     .setRayTracer(new RayTracerBasic(scene))
                     .renderImage();
             camera.writeToImage();
+
+
         }
+
+ */
 
     }
 
-        */
+
 }

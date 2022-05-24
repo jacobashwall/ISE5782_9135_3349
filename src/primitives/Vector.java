@@ -7,6 +7,15 @@ import static primitives.Util.alignZero;
  * Vector in our cartesian coordinate system
  */
 public class Vector extends Point {
+
+    /**
+     * y vector
+     */
+    public static final Vector Y=new Vector(0,1,0);
+    /**
+     * z vector
+     */
+    public static final Vector Z=new Vector(0,0,1);
     /**
      * Creates a new vector
      *

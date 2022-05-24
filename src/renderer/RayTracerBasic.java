@@ -125,7 +125,7 @@ public class RayTracerBasic extends RayTracerBase {
 
         Ray reflectedRay = constructReflectedRay(normal, gp.point, v);
         Ray refractedRay = constructRefractedRay(normal, gp.point, v);
-        Color diffSamplingSum =  Color.BLACK;
+        Color diffSamplingSum = Color.BLACK;
         Color glossSamplingSum = Color.BLACK;
 
         //If diffusive glass
@@ -321,7 +321,7 @@ public class RayTracerBasic extends RayTracerBase {
      * @return Vector that goes through the requested square in the grid
      */
     private Vector createVectorBeam(int i, int j, Ray ray, Vector vTo, Vector vUp, Vector vRight, double k, Vector n) {
-        Point p0=ray.getP0();
+        Point p0 = ray.getP0();
         //Center of the grid
         Point pIj = p0.add(vTo.scale(TARGET_AREA_DISTANCE));
         //height and width of each square
@@ -359,20 +359,14 @@ public class RayTracerBasic extends RayTracerBase {
         Vector vUp;
         Vector vRight;
         Vector vTo = ray.getDir();
-        //in order to determine Vup, we will find the intersection vector of two planes, the plane that Vto is represented
-        //as its normal, and the plane that includes the Y axis and the Vto vector (as demanded in the instructions).
 
-        //if the Vto is already on the Y axis, we will use the Z axis instead
-        if (vTo.equals(new Vector(0, 1, 0)) || vTo.equals(new Vector(0, -1, 0))) {
-            vUp = (vTo.crossProduct(new Vector(0, 0, 1)));
+        if (vTo.getX() != 1) {//if y and z are not equal to zero
+            vUp = new Vector(0, -1 * vTo.getZ(), vTo.getY()).normalize();
         } else {
-            vUp = (vTo.crossProduct(new Vector(0, 1, 0)));
+            vUp = Vector.Y;
         }
-        vUp = vUp.crossProduct(vTo).normalize();
-
-        //for square in the grid create a secondary ray
         vRight = vTo.crossProduct(vUp).normalize();
-        Point p0=ray.getP0();
+        Point p0 = ray.getP0();
         for (int i = 0; i < TARGET_AREA_RESOLUTION; i++) {
             for (int j = 0; j < TARGET_AREA_RESOLUTION; j++) {
                 Vector sampleDir = createVectorBeam(i, j, ray, vTo, vUp, vRight, k, n);

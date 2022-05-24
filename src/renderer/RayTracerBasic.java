@@ -359,19 +359,14 @@ public class RayTracerBasic extends RayTracerBase {
         Vector vUp;
         Vector vRight;
         Vector vTo = ray.getDir();
-
-        if (vTo.getX() != 1) {//if y and z are not equal to zero
-            vUp = new Vector(0, -1 * vTo.getZ(), vTo.getY()).normalize();
-        } else {
-            vUp = Vector.Y;
-        }
+        vUp = Vector.createOrthogonal(vTo);
         vRight = vTo.crossProduct(vUp).normalize();
         Point p0 = ray.getP0();
         for (int i = 0; i < TARGET_AREA_RESOLUTION; i++) {
             for (int j = 0; j < TARGET_AREA_RESOLUTION; j++) {
                 Vector sampleDir = createVectorBeam(i, j, ray, vTo, vUp, vRight, k, n);
                 if (sampleDir != null) {
-                    sampling.add(new Ray(p0, sampleDir));
+                    sampling.add(new Ray(p0, sampleDir, n));
                 }
             }
         }

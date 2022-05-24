@@ -87,7 +87,7 @@ public class RayTracerBasic extends RayTracerBase {
      */
     private Color calcColor(GeoPoint gp, Ray ray, int level, Double3 k) {
         Color color = calcLocalEffects(gp, ray, k);
-        return level == 1 ? color : color.add(calcGlobalEffects(gp, ray, level, k));
+        return level == 1 ? color : color.add(calcGlobalEffect(gp, ray, level, k));
     }
 
     /**
@@ -99,7 +99,7 @@ public class RayTracerBasic extends RayTracerBase {
      * @param kx    the attenuation factor of reflection or transparency
      * @return the calculated color.
      */
-    private Color calcGlobalEffects(Ray ray, int level, Double3 k, Double3 kx) {
+    private Color calcGlobalEffect(Ray ray, int level, Double3 k, Double3 kx) {
         Double3 kkx = kx.product(k);
         //calculate the reflected ray, and the color contribution to the point.
         GeoPoint gp = findClosestIntersection(ray);
@@ -117,7 +117,7 @@ public class RayTracerBasic extends RayTracerBase {
      * @param k     the level of insignificance for the k.
      * @return the calculated color.
      */
-    private Color calcGlobalEffects(GeoPoint gp, Ray ray, int level, Double3 k) {
+    private Color calcGlobalEffect(GeoPoint gp, Ray ray, int level, Double3 k) {
         //Variables for the function
         Vector v = ray.getDir();
         Vector normal = gp.geometry.getNormal(gp.point);
@@ -134,7 +134,7 @@ public class RayTracerBasic extends RayTracerBase {
             LinkedList<Ray> diffusedSampling = superSample(refractedRay, material.kDg, normal);
             //for each sampling ray calculate the global effect
             for (var secondaryRay : diffusedSampling) {
-                diffSamplingSum = diffSamplingSum.add(calcGlobalEffects(secondaryRay, level, k, material.kT).getRgb());
+                diffSamplingSum = diffSamplingSum.add(calcGlobalEffect(secondaryRay, level, k, material.kT).getRgb());
             }
             //take the average of the calculation for all sample rays
             diffSamplingSum = diffSamplingSum.reduce(TARGET_AREA_RESOLUTION * TARGET_AREA_RESOLUTION);
@@ -145,7 +145,7 @@ public class RayTracerBasic extends RayTracerBase {
             LinkedList<Ray> diffusedSampling = superSample(reflectedRay, material.kSg, normal);
             //for each sampling ray calculate the global effect
             for (var secondaryRay : diffusedSampling) {
-                glossSamplingSum = glossSamplingSum.add(calcGlobalEffects(secondaryRay, level, k, material.kR).getRgb());
+                glossSamplingSum = glossSamplingSum.add(calcGlobalEffect(secondaryRay, level, k, material.kR).getRgb());
             }
             //take the average of the calculation for all sample rays
             glossSamplingSum = glossSamplingSum.reduce(TARGET_AREA_RESOLUTION * TARGET_AREA_RESOLUTION);
@@ -158,12 +158,12 @@ public class RayTracerBasic extends RayTracerBase {
         }
         //else return the matching result
         else if (material.kDg + material.kSg > 0) {
-            return material.kDg != 0 ? calcGlobalEffects(reflectedRay, level, k, material.kR).add(new Color(diffSamplingSum)) :
-                    calcGlobalEffects(refractedRay, level, k, material.kT).add(new Color(glossSamplingSum));
+            return material.kDg != 0 ? calcGlobalEffect(reflectedRay, level, k, material.kR).add(new Color(diffSamplingSum)) :
+                    calcGlobalEffect(refractedRay, level, k, material.kT).add(new Color(glossSamplingSum));
         }
 
-        return calcGlobalEffects(reflectedRay, level, k, material.kR)
-                .add(calcGlobalEffects(refractedRay, level, k, material.kT));
+        return calcGlobalEffect(reflectedRay, level, k, material.kR)
+                .add(calcGlobalEffect(refractedRay, level, k, material.kT));
     }
 
     /**
@@ -363,10 +363,11 @@ public class RayTracerBasic extends RayTracerBase {
 
         //if the Vto is already on the Y axis, we will use the Z axis instead
         if (vTo.equals(new Vector(0, 1, 0)) || vTo.equals(new Vector(0, -1, 0))) {
-            vUp = (vTo.crossProduct(new Vector(0, 0, 1))).crossProduct(vTo).normalize();
+            vUp = (vTo.crossProduct(new Vector(0, 0, 1)));
         } else {
-            vUp = (vTo.crossProduct(new Vector(0, 1, 0))).crossProduct(vTo).normalize();
+            vUp = (vTo.crossProduct(new Vector(0, 1, 0)));
         }
+        vUp = vUp.crossProduct(vTo).normalize();
 
         //for square in the grid create a secondary ray
         vRight = vTo.crossProduct(vUp).normalize();

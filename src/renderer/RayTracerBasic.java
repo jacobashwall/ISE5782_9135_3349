@@ -131,7 +131,7 @@ public class RayTracerBasic extends RayTracerBase {
         //If diffusive glass
         if (material.kDg != 0) {
             //super sample the refracted ray
-            LinkedList<Ray> diffusedSampling = superSample(refractedRay, material.kDg, normal);
+            LinkedList<Ray> diffusedSampling = superSample(refractedRay, material.kDg, normal,TARGET_AREA_RESOLUTION);
             //for each sampling ray calculate the global effect
             for (var secondaryRay : diffusedSampling) {
                 diffSamplingSum = diffSamplingSum.add(calcGlobalEffect(secondaryRay, level, k, material.kT));
@@ -142,7 +142,7 @@ public class RayTracerBasic extends RayTracerBase {
         //If glossy surface
         if (material.kSg != 0) {
             //super sample the reflected ray
-            LinkedList<Ray> glossySampling = superSample(reflectedRay, material.kSg, normal);
+            LinkedList<Ray> glossySampling = superSample(reflectedRay, material.kSg, normal,TARGET_AREA_RESOLUTION);
             //for each sampling ray calculate the global effect
             for (var secondaryRay : glossySampling) {
                 glossSamplingSum = glossSamplingSum.add(calcGlobalEffect(secondaryRay, level, k, material.kR));
@@ -320,16 +320,16 @@ public class RayTracerBasic extends RayTracerBase {
      * @param n      normal to the head of the main ray
      * @return Vector that goes through the requested square in the grid
      */
-    private Vector createVectorBeam(int i, int j, Ray ray, Vector vTo, Vector vUp, Vector vRight, double k, Vector n) {
+    private Vector createVectorBeam(int i, int j, Ray ray, Vector vTo, Vector vUp, Vector vRight, double k, Vector n,int resolution) {
         Point p0 = ray.getP0();
         //Center of the grid
         Point pIj = p0.add(vTo.scale(TARGET_AREA_DISTANCE));
         //height and width of each square
-        double rC = k * TARGET_AREA_EDGE / TARGET_AREA_RESOLUTION;
+        double rC = k * TARGET_AREA_EDGE / resolution;
         //vertical distance of the required square from the center of the grid
-        double yI = -(i - ((double) (TARGET_AREA_RESOLUTION - 1)) / 2) * rC;
+        double yI = -(i - ((double) (resolution - 1)) / 2) * rC;
         //horizontal distance of the required square from the center of the grid
-        double xJ = -(j - ((double) (TARGET_AREA_RESOLUTION - 1)) / 2) * rC;
+        double xJ = -(j - ((double) (resolution - 1)) / 2) * rC;
         //changing the position of the center point so that the ray will intersect the view plane in the right place
         if (xJ != 0) {
             pIj = pIj.add(vRight.scale(xJ));
@@ -354,7 +354,7 @@ public class RayTracerBasic extends RayTracerBase {
      * @param n   normal to the head of the main ray
      * @return List of sample rays
      */
-    private LinkedList<Ray> superSample(Ray ray, double k, Vector n) {
+    private LinkedList<Ray> superSample(Ray ray, double k, Vector n,int resolution) {
         LinkedList<Ray> sampling = new LinkedList<>();
         Vector vUp;
         Vector vRight;
@@ -362,9 +362,9 @@ public class RayTracerBasic extends RayTracerBase {
         vUp = Vector.createOrthogonal(vTo);
         vRight = vTo.crossProduct(vUp).normalize();
         Point p0 = ray.getP0();
-        for (int i = 0; i < TARGET_AREA_RESOLUTION; i++) {
-            for (int j = 0; j < TARGET_AREA_RESOLUTION; j++) {
-                Vector sampleDir = createVectorBeam(i, j, ray, vTo, vUp, vRight, k, n);
+        for (int i = 0; i < resolution; i++) {
+            for (int j = 0; j < resolution; j++) {
+                Vector sampleDir = createVectorBeam(i, j, ray, vTo, vUp, vRight, k, n,resolution);
                 if (sampleDir != null) {
                     sampling.add(new Ray(p0, sampleDir, n));
                 }

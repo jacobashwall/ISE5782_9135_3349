@@ -137,18 +137,18 @@ public class RayTracerBasic extends RayTracerBase {
                 diffSamplingSum = diffSamplingSum.add(calcGlobalEffect(secondaryRay, level, k, material.kT));
             }
             //take the average of the calculation for all sample rays
-            diffSamplingSum = diffSamplingSum.reduce(TARGET_AREA_RESOLUTION * TARGET_AREA_RESOLUTION);
+            diffSamplingSum = diffSamplingSum.reduce(diffusedSampling.size());
         }
         //If glossy surface
         if (material.kSg != 0) {
             //super sample the reflected ray
-            LinkedList<Ray> diffusedSampling = superSample(reflectedRay, material.kSg, normal);
+            LinkedList<Ray> glossySampling = superSample(reflectedRay, material.kSg, normal);
             //for each sampling ray calculate the global effect
-            for (var secondaryRay : diffusedSampling) {
+            for (var secondaryRay : glossySampling) {
                 glossSamplingSum = glossSamplingSum.add(calcGlobalEffect(secondaryRay, level, k, material.kR));
             }
             //take the average of the calculation for all sample rays
-            glossSamplingSum = glossSamplingSum.reduce(TARGET_AREA_RESOLUTION * TARGET_AREA_RESOLUTION);
+            glossSamplingSum = glossSamplingSum.reduce(glossySampling.size());
         }
 
         //If diffusive and glossy return both of the results above
@@ -321,8 +321,9 @@ public class RayTracerBasic extends RayTracerBase {
      * @return Vector that goes through the requested square in the grid
      */
     private Vector createVectorBeam(int i, int j, Ray ray, Vector vTo, Vector vUp, Vector vRight, double k, Vector n) {
+        Point p0=ray.getP0();
         //Center of the grid
-        Point pIj = ray.getP0().add(vTo.scale(TARGET_AREA_DISTANCE));
+        Point pIj = p0.add(vTo.scale(TARGET_AREA_DISTANCE));
         //height and width of each square
         double rC = k * TARGET_AREA_EDGE / TARGET_AREA_RESOLUTION;
         //vertical distance of the required square from the center of the grid
@@ -341,7 +342,7 @@ public class RayTracerBasic extends RayTracerBase {
         //Checking that the secondary ray doesn't go the other side of the normal plane
         if (vTo.dotProduct(n) * sign < 0) return null;
 
-        return pIj.subtract(ray.getP0()).normalize();
+        return pIj.subtract(p0).normalize();
 
     }
 
@@ -371,11 +372,12 @@ public class RayTracerBasic extends RayTracerBase {
 
         //for square in the grid create a secondary ray
         vRight = vTo.crossProduct(vUp).normalize();
+        Point p0=ray.getP0();
         for (int i = 0; i < TARGET_AREA_RESOLUTION; i++) {
             for (int j = 0; j < TARGET_AREA_RESOLUTION; j++) {
                 Vector sampleDir = createVectorBeam(i, j, ray, vTo, vUp, vRight, k, n);
                 if (sampleDir != null) {
-                    sampling.add(new Ray(ray.getP0(), sampleDir));
+                    sampling.add(new Ray(p0, sampleDir));
                 }
             }
         }

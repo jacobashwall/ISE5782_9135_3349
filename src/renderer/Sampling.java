@@ -7,13 +7,13 @@ import primitives.Vector;
 import java.util.LinkedList;
 
 /**
- * A class that creates sampling rays
+ * A utility class that creates sampling rays
  */
 public class Sampling {
     /**
      * resolution of the target area
      */
-    private static int TARGET_AREA_RESOLUTION = 9;
+    private static int TARGET_AREA_RESOLUTION = 1;
     /**
      * distance of the target area from the main ray head
      */

@@ -24,6 +24,30 @@ public class Sampling {
     private static double TARGET_AREA_EDGE = 2;
 
     /**
+     * TARGET_AREA_RESOLUTION setter
+     * @param targetAreaResolution the target area resolution (how many rays on each column and row)
+     */
+    public static void setTargetAreaResolution(int targetAreaResolution) {
+        TARGET_AREA_RESOLUTION = targetAreaResolution;
+    }
+
+    /**
+     * TARGET_AREA_DISTANCE setter
+     * @param targetAreaDistance the target area distance from the beginning of the ray
+     */
+    public static void setTargetAreaDistance(double targetAreaDistance) {
+        TARGET_AREA_DISTANCE = targetAreaDistance;
+    }
+
+    /**
+     * TARGET_AREA_EDGE setter
+     * @param targetAreaEdge the size of the edge of the target area
+     */
+    public static void setTargetAreaEdge(double targetAreaEdge) {
+        TARGET_AREA_EDGE = targetAreaEdge;
+    }
+
+    /**
      * Creates a sample ray for each square in the target area
      *
      * @param ray The main ray

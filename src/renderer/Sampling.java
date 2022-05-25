@@ -13,7 +13,7 @@ public class Sampling {
     /**
      * resolution of the target area
      */
-    private static int TARGET_AREA_RESOLUTION = 1;
+    private static int TARGET_AREA_RESOLUTION = 1;//by default do not super sample
     /**
      * distance of the target area from the main ray head
      */

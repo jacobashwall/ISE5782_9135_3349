@@ -8,6 +8,7 @@ import primitives.*;
 import renderer.Camera;
 import renderer.ImageWriter;
 import renderer.RayTracerBasic;
+import renderer.Sampling;
 import scene.Scene;
 //ctrl+shift+numpad-/+ in order to collapse or expand
 public class bathroom {
@@ -18,6 +19,7 @@ public class bathroom {
     public void createPicture() {
 
         //region settings
+        Sampling.setTargetAreaResolution(1);
         Scene scene = new Scene("Test scene");
         Camera camera = new Camera(new Point(0, 300, 1000), new Vector(0, 0, -1), new Vector(0, 1, 0)) //
                 .setVPSize(2000, 2000).setVPDistance(1500);

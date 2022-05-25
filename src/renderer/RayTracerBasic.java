@@ -29,19 +29,6 @@ public class RayTracerBasic extends RayTracerBase {
      */
     private static final double INITIAL_K = 1.0;
     /**
-     * resolution of the target area
-     */
-    private static final int TARGET_AREA_RESOLUTION = 9;
-    /**
-     * distance of the target area from the main ray head
-     */
-    private static final double TARGET_AREA_DISTANCE = 10;
-    /**
-     * length of the target area edge
-     */
-    private static final double TARGET_AREA_EDGE = 2;
-
-    /**
      * construction the class with the given scene.
      *
      * @param scene the scene to pass on to the superclass.
@@ -131,7 +118,7 @@ public class RayTracerBasic extends RayTracerBase {
         //If diffusive glass
         if (material.kDg != 0) {
             //super sample the refracted ray
-            LinkedList<Ray> diffusedSampling = superSample(refractedRay, material.kDg, normal,TARGET_AREA_RESOLUTION);
+            LinkedList<Ray> diffusedSampling = Sampling.superSample(refractedRay, material.kDg, normal);
             //for each sampling ray calculate the global effect
             for (var secondaryRay : diffusedSampling) {
                 diffSamplingSum = diffSamplingSum.add(calcGlobalEffect(secondaryRay, level, k, material.kT));
@@ -142,7 +129,7 @@ public class RayTracerBasic extends RayTracerBase {
         //If glossy surface
         if (material.kSg != 0) {
             //super sample the reflected ray
-            LinkedList<Ray> glossySampling = superSample(reflectedRay, material.kSg, normal,TARGET_AREA_RESOLUTION);
+            LinkedList<Ray> glossySampling = Sampling.superSample(reflectedRay, material.kSg, normal);
             //for each sampling ray calculate the global effect
             for (var secondaryRay : glossySampling) {
                 glossSamplingSum = glossSamplingSum.add(calcGlobalEffect(secondaryRay, level, k, material.kR));
@@ -304,73 +291,6 @@ public class RayTracerBasic extends RayTracerBase {
      */
     private GeoPoint findClosestIntersection(Ray ray) {
         return ray.findClosestGeoPoint(scene.geometries.findGeoIntersections(ray));
-    }
-
-    /**
-     * A method that generates a ray, starting at the point and going through
-     * specific square in the grid.
-     *
-     * @param j      The horizontal index of the square
-     * @param i      The vertical index of the square
-     * @param ray    The main ray which we built the grid around
-     * @param vTo    The direction of the main ray
-     * @param vUp    Orthogonal to vTo, decides the angle
-     * @param vRight Orthogonal to vTo, decides the angle
-     * @param k      glossy/diffusive attenuation coefficient
-     * @param n      normal to the head of the main ray
-     * @return Vector that goes through the requested square in the grid
-     */
-    private Vector createVectorBeam(int i, int j, Ray ray, Vector vTo, Vector vUp, Vector vRight, double k, Vector n,int resolution) {
-        Point p0 = ray.getP0();
-        //Center of the grid
-        Point pIj = p0.add(vTo.scale(TARGET_AREA_DISTANCE));
-        //height and width of each square
-        double rC = k * TARGET_AREA_EDGE / resolution;
-        //vertical distance of the required square from the center of the grid
-        double yI = -(i - ((double) (resolution - 1)) / 2) * rC;
-        //horizontal distance of the required square from the center of the grid
-        double xJ = -(j - ((double) (resolution - 1)) / 2) * rC;
-        //changing the position of the center point so that the ray will intersect the view plane in the right place
-        if (xJ != 0) {
-            pIj = pIj.add(vRight.scale(xJ));
-        }
-        if (yI != 0) {
-            pIj = pIj.add(vUp.scale(yI));
-        }
-        //return the ray
-        double sign = pIj.subtract(ray.getP0()).dotProduct(n);
-        //Checking that the secondary ray doesn't go the other side of the normal plane
-        if (vTo.dotProduct(n) * sign < 0) return null;
-
-        return pIj.subtract(p0).normalize();
-
-    }
-
-    /**
-     * Creates a sample ray for each square in the target area
-     *
-     * @param ray The main ray
-     * @param k   glossy/diffusive attenuation coefficient
-     * @param n   normal to the head of the main ray
-     * @return List of sample rays
-     */
-    private LinkedList<Ray> superSample(Ray ray, double k, Vector n,int resolution) {
-        LinkedList<Ray> sampling = new LinkedList<>();
-        Vector vUp;
-        Vector vRight;
-        Vector vTo = ray.getDir();
-        vUp = Vector.createOrthogonal(vTo);
-        vRight = vTo.crossProduct(vUp).normalize();
-        Point p0 = ray.getP0();
-        for (int i = 0; i < resolution; i++) {
-            for (int j = 0; j < resolution; j++) {
-                Vector sampleDir = createVectorBeam(i, j, ray, vTo, vUp, vRight, k, n,resolution);
-                if (sampleDir != null) {
-                    sampling.add(new Ray(p0, sampleDir, n));
-                }
-            }
-        }
-        return sampling;
     }
 
 }

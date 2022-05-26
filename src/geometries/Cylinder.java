@@ -1,5 +1,6 @@
 package geometries;
 
+import lighting.PointLight;
 import primitives.*;
 
 import java.util.List;
@@ -74,10 +75,10 @@ public class Cylinder extends Tube {
         boolean cond = ray.getDir().equals(dir) || ray.getDir().scale(-1).equals(dir);
 
         temp = base.findGeoIntersections(ray, maxDistance);
-        GeoPoint gp1 = temp == null || onBase(temp.get(0),baseCenter,rdSqr,cond)? null : temp.get(0);
+        GeoPoint gp1 = temp == null || onBase(temp.get(0),baseCenter,rdSqr,cond)? null : new GeoPoint(this,temp.get(0).point);
 
         temp = secondBase.findGeoIntersections(ray, maxDistance);
-        GeoPoint gp2 = temp == null || onBase(temp.get(0),secondBaseCenter,rdSqr,cond) ? null : temp.get(0);
+        GeoPoint gp2 = temp == null || onBase(temp.get(0),secondBaseCenter,rdSqr,cond) ? null : new GeoPoint(this,temp.get(0).point);
 
         if (gp1 != null && gp2 != null) {
             if (ray.getP0().distanceSquared(gp1.point) < ray.getP0().distanceSquared(gp2.point)) {
@@ -90,8 +91,11 @@ public class Cylinder extends Tube {
         GeoPoint gpBase = gp1!=null?gp1:gp2;
         temp = super.findGeoIntersectionsHelper(ray, maxDistance);
 
+        //No intersections with the casing
         if(temp == null) return gpBase == null? null:List.of(gpBase);
+        //Two intersections with the casing
         if(temp.size()==2){
+            //Between the planes
             boolean cond1 = onCylinder(temp.get(0),baseCenter,secondBaseCenter,dir);
             boolean cond2 = onCylinder(temp.get(1),baseCenter,secondBaseCenter,dir);
             if(cond1 && cond2)return temp;
@@ -120,4 +124,5 @@ public class Cylinder extends Tube {
         return (check.point.distanceSquared(center) == rdSqr &&cond) ||
                 (check.point.distanceSquared(center) > rdSqr );
     }
+
 }

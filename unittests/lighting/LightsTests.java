@@ -241,16 +241,19 @@ public class LightsTests {
 		Scene scene4 = new Scene("CylinderScene");
 		scene4.ambientLight = new AmbientLight(new Color(120,120,120),Double3.ONE);
 
-		Cylinder cylinder = new Cylinder(new Ray(new Point (0,0,3), new Vector(1,1,-1)), 50,100);
+		Cylinder cylinder = new Cylinder(new Ray(new Point (0,0,0), new Vector(0,1,-0.5)), 50,100);
+		Material material = new Material();
+		material.setKd(0.5).setKs(0.5).setnShininess(300);
+		cylinder.setMaterial(material);
 		cylinder.setEmission(new Color(255,0,0));
 		Point trPL1 = new Point(50, -80, -80);
 		Point trPL2 = new Point(20, -20, 15);
 		scene4.geometries.add(cylinder);
-		scene4.lights.add(new DirectionalLight(trCL, new Vector(0,0,-1)));
-		scene4.lights.add(new PointLight(trCL, trPL1).setKl(0.001).setKq(0.0002));
-		scene4.lights.add(new SpotLight(trCL, trPL2, trDL).setKl(0.001).setKq(0.0001));
+		//scene4.lights.add(new DirectionalLight(trCL, new Vector(0,0,-1)));
+		scene4.lights.add(new PointLight(trCL,new Point(0,0,75)).setKl(0.01).setKq(0.002));
+	//	scene4.lights.add(new SpotLight(trCL, new Point(0,100,50), new Vector(0,-1,-1)).setKl(0.001).setKq(0.0001));
 
-		ImageWriter imageWriter = new ImageWriter("CylinderTest5", 3, 3);
+		ImageWriter imageWriter = new ImageWriter("CylinderTest5", 500, 500);
 		camera3.setImageWriter(imageWriter) //
 				.setRayTracer(new RayTracerBasic(scene4)) //
 				.renderImage(); //

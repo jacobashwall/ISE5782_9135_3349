@@ -4,9 +4,13 @@ import lighting.AmbientLight;
 import geometries.Geometries;
 import lighting.LightSource;
 import primitives.Color;
+import primitives.Double3;
+import primitives.Voxel;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The class Scene is a passive data structure (PDS)
@@ -27,6 +31,23 @@ public class Scene {
     public Geometries geometries = new Geometries();
     //List of light sources
     public List<LightSource> lights = new LinkedList<>();
+    /**
+     * boundary of the geometric entity represented by the array [x[min,max],y[min,max],z[min,max]]
+     */
+    public int[][] boundary;
+    /**
+     * hash map of all voxels in the scene
+     */
+    public Map<Double3, Voxel> VoxelMap=new HashMap<>();
+
+    /**
+     * finds the boundary values of the geometric entity
+     *
+     * @return the geometry boundary
+     */
+    public void calcBoundary() {
+        boundary = null;
+    }
 
     /**
      * Constructor that sets the scene name and sets the other fields to their default values

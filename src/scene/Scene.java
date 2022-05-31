@@ -28,7 +28,7 @@ public class Scene {
     public Geometries geometries = new Geometries();
     //List of light sources
     public List<LightSource> lights = new LinkedList<>();
-    public Double3 resolution;
+    double[] resolutions;
     /**
      * hash map of all voxels in the scene
      */
@@ -100,8 +100,21 @@ public class Scene {
     }
 
     public Scene setResolution(){
-        double v = this.geometries.volume;
+        double geometriesVolume = this.geometries.volume;
         double size = this.geometries.getObjectsSize();
+
+        int xEdge = (int)(this.geometries.boundary[0][1]-this.geometries.boundary[0][0]);
+        int yEdge = (int)(this.geometries.boundary[1][1]-this.geometries.boundary[1][0]);
+        int zEdge = (int)(this.geometries.boundary[2][1]-this.geometries.boundary[2][0]);
+
+        double bigCbrVolume = xEdge*yEdge*zEdge;
+        double density = geometriesVolume/bigCbrVolume;
+
+        int xResolution = (int)Math.ceil(xEdge*Math.pow(density*size/bigCbrVolume,1.0/3));
+        int yResolution = (int)Math.ceil(yEdge*Math.pow(density*size/bigCbrVolume,1.0/3));
+        int zResolution = (int)Math.ceil(zEdge*Math.pow(density*size/bigCbrVolume,1.0/3));
+
+        this.resolutions = new double[]{xResolution,yResolution,zResolution};
 
         return this;
     }

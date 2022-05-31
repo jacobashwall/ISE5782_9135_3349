@@ -28,6 +28,7 @@ public class Sphere extends Geometry {
         this.radius = radius;
         this.radiusSqr = radius * radius;
         this.boundary=calcBoundary();
+        calcVolume();
     }
 
 

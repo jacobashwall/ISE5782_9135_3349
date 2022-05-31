@@ -60,6 +60,7 @@ public abstract class Intersectable {
      * @return the geometry boundary
      */
     protected abstract double[][] calcBoundary();
+
     protected void calcVolume(){
         if(getBoundary()!=null) {
             double x = boundary[0][1] - boundary[0][0];

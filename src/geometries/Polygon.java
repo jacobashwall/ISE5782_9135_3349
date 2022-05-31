@@ -91,6 +91,7 @@ public class Polygon extends Geometry {
                 throw new IllegalArgumentException("All vertices must be ordered and the polygon must be convex");
         }
         this.boundary = calcBoundary();
+        calcVolume();
     }
 
 

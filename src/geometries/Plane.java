@@ -109,7 +109,7 @@ public class Plane extends Geometry {
                 : List.of(new GeoPoint(this, ray.getPoint(t)));
     }
     @Override
-    public double[][] calcBoundary() {//there is no boundary to infinite geometric entity
+    public int[][] calcBoundary() {//there is no boundary to infinite geometric entity
         return null;
     }
 }

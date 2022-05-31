@@ -148,7 +148,7 @@ public class Polygon extends Geometry {
     }
 
     @Override
-    public double[][] calcBoundary() {
+    public int[][] calcBoundary() {
         double minX = Double.POSITIVE_INFINITY;
         double maxX = Double.NEGATIVE_INFINITY;
         double minY = Double.POSITIVE_INFINITY;
@@ -176,7 +176,9 @@ public class Polygon extends Geometry {
                 maxZ = z;
         }
 
-        return new double[][]{{minX, maxX}, {minY, maxY}, {minZ, maxZ}};
+        return new int[][]{{(int) minX, (int) Math.ceil(maxX)},
+                {(int) minY, (int) Math.ceil(maxY)},
+                {(int) minZ, (int) Math.ceil(maxZ)}};
     }
 
 }

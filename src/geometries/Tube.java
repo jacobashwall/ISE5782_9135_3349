@@ -23,6 +23,7 @@ public class Tube extends Geometry {
     public Tube(Ray axisRay, double radius) {
         this.axisRay = axisRay;
         this.radius = radius;
+        this.boundary=calcBoundary();
     }
 
     /**
@@ -124,7 +125,12 @@ public class Tube extends Geometry {
         } else {
             //Check if there are one or two intersection points.
             return t2 <= 0 ? List.of(new GeoPoint(this, ray.getPoint(t1))) :
-                             List.of(new GeoPoint(this, ray.getPoint(t2)), new GeoPoint(this, ray.getPoint(t1)));
+                    List.of(new GeoPoint(this, ray.getPoint(t2)), new GeoPoint(this, ray.getPoint(t1)));
         }
+    }
+
+    @Override
+    public double[][] calcBoundary() {//there is no boundary to infinite geometric entity
+        return null;
     }
 }

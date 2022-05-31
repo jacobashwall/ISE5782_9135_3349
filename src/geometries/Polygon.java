@@ -53,12 +53,15 @@ public class Polygon extends Geometry {
             throw new IllegalArgumentException("A polygon can't have less than 3 vertices");
         this.vertices = List.of(vertices);
 
+
         // Generate the plane according to the first three vertices and associate the
         // polygon with this plane.
         // The plane holds the invariant normal (orthogonal unit) vector to the polygon
         plane = new Plane(vertices[0], vertices[1], vertices[2]);
-        if (size == 3)
+        if (size == 3) {
+            this.boundary=calcBoundary();
             return; // no need for more tests for a Triangle
+        }
 
         Vector n = plane.getNormal();
 
@@ -87,6 +90,7 @@ public class Polygon extends Geometry {
             if (positive != (edge1.crossProduct(edge2).dotProduct(n) > 0))
                 throw new IllegalArgumentException("All vertices must be ordered and the polygon must be convex");
         }
+        this.boundary=calcBoundary();
     }
 
 
@@ -141,6 +145,46 @@ public class Polygon extends Geometry {
         }
         return null;//if the first sign is zero
 
+    }
+
+    @Override
+    public double[][] calcBoundary() {
+        double minX = 0;
+        double maxX = 0;
+        double minY = 0;
+        double maxY = 0;
+        double minZ = 0;
+        double maxZ = 0;
+        double x;
+        double y;
+        double z;
+        for (var point : vertices) {
+            if (vertices.get(0).equals(point)) {//if it's the first point in order to compare
+                minX = point.getX();
+                maxX = minX;
+                minY = point.getY();
+                maxY = minY;
+                minZ = point.getZ();
+                maxZ = minZ;
+            } else {
+                x = point.getX();
+                y = point.getY();
+                z = point.getZ();
+                if (x < minX)
+                    minX = x;
+                if (x > maxX)
+                    maxX = x;
+                if (y < minY)
+                    minY = y;
+                if (y > maxY)
+                    maxY = y;
+                if (z < minZ)
+                    minZ = z;
+                if (z > maxZ)
+                    maxZ = z;
+            }
+        }
+        return new double[][]{{minX, maxX}, {minY, maxY}, {minZ, maxZ}};
     }
 
 }

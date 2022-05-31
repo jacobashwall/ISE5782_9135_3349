@@ -24,6 +24,7 @@ public class Plane extends Geometry {
     public Plane(Point q0, Vector normal) {
         this.q0 = q0;
         this.normal = normal.normalize();
+        this.boundary=calcBoundary();
     }
 
     /**
@@ -41,6 +42,7 @@ public class Plane extends Geometry {
         Vector v1 = p2.subtract(p1);
         Vector v2 = p3.subtract(p1);
         normal = (v1.crossProduct(v2)).normalize();
+        this.boundary=calcBoundary();
     }
 
     @Override
@@ -105,5 +107,9 @@ public class Plane extends Geometry {
         double t = alignZero(this.normal.dotProduct(u) / denominator);
         return alignZero(t - maxDistance) > 0 || t <= 0 ? null
                 : List.of(new GeoPoint(this, ray.getPoint(t)));
+    }
+    @Override
+    public double[][] calcBoundary() {//there is no boundary to infinite geometric entity
+        return null;
     }
 }

@@ -9,16 +9,6 @@ public abstract class Geometry extends Intersectable {
     private Color emission = Color.BLACK;
     private Material material = new Material();
     /**
-     * boundary of the geometric entity represented by the array [x[min,max],y[min,max],z[min,max]]
-     */
-    public final int[][] boundary;
-    /**
-     * finds the boundary values of the geometric entity
-     * @return the geometry boundary
-     */
-    protected abstract int[][] calcBoundary();
-
-    /**
      * Emission getter
      *
      * @return the emission

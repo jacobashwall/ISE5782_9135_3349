@@ -9,7 +9,7 @@ public class Voxel {
     /**
      * the voxel index
      */
-    public final Double3 index;
+    public Double3 index;
     /**
      * all geometric entities that intersects with the voxel
      */

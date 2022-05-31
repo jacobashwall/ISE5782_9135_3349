@@ -13,7 +13,7 @@ import static primitives.Util.alignZero;
 /**
  * Ray tracer that using the regular grid
  */
-public class RayTracerRegular extends RayTracerBase{
+public class RayTracerRegular extends RayTracerBase {
     /**
      * the max number of times that the recursion is going to happen.
      */
@@ -26,6 +26,7 @@ public class RayTracerRegular extends RayTracerBase{
      * the initial value of k factor
      */
     private static final double INITIAL_K = 1.0;
+
     /**
      * construction the class with the given scene.
      *
@@ -33,7 +34,7 @@ public class RayTracerRegular extends RayTracerBase{
      */
     public RayTracerRegular(Scene scene) {
         super(scene);
-        scene.calcBoundary();
+        scene.setBoundary();
     }
 
     /**

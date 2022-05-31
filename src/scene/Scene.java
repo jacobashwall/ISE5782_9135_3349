@@ -32,22 +32,9 @@ public class Scene {
     //List of light sources
     public List<LightSource> lights = new LinkedList<>();
     /**
-     * boundary of the geometric entity represented by the array [x[min,max],y[min,max],z[min,max]]
-     */
-    public int[][] boundary;
-    /**
      * hash map of all voxels in the scene
      */
-    public Map<Double3, Voxel> VoxelMap=new HashMap<>();
-
-    /**
-     * finds the boundary values of the geometric entity
-     *
-     * @return the geometry boundary
-     */
-    public void calcBoundary() {
-        boundary = null;
-    }
+    public Map<Double3, Voxel> VoxelMap = new HashMap<>();
 
     /**
      * Constructor that sets the scene name and sets the other fields to their default values
@@ -56,7 +43,6 @@ public class Scene {
      */
     public Scene(String name) {
         this.name = name;
-
     }
 
     //Since this class is just a PDS, it is essential
@@ -105,5 +91,12 @@ public class Scene {
     public Scene setLights(List<LightSource> lights) {
         this.lights = lights;
         return this;
+    }
+
+    /**
+     * sets teh boundary of the geometries in the scene
+     */
+    public void setBoundary() {
+        this.geometries.boundary = this.geometries.calcBoundary();
     }
 }

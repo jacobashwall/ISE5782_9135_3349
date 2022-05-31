@@ -25,6 +25,7 @@ public class Cylinder extends Tube {
     public Cylinder(Ray axisRay, double radius, double height) {
         super(axisRay, radius);
         this.height = height;
+        this.boundary=calcBoundary();
     }
 
     /**
@@ -75,10 +76,10 @@ public class Cylinder extends Tube {
         boolean cond = ray.getDir().equals(dir) || ray.getDir().scale(-1).equals(dir);
 
         temp = base.findGeoIntersections(ray, maxDistance);
-        GeoPoint gp1 = temp == null || onBase(temp.get(0),baseCenter,rdSqr,cond)? null : new GeoPoint(this,temp.get(0).point);
+        GeoPoint gp1 = temp == null || onBase(temp.get(0), baseCenter, rdSqr, cond) ? null : new GeoPoint(this, temp.get(0).point);
 
         temp = secondBase.findGeoIntersections(ray, maxDistance);
-        GeoPoint gp2 = temp == null || onBase(temp.get(0),secondBaseCenter,rdSqr,cond) ? null : new GeoPoint(this,temp.get(0).point);
+        GeoPoint gp2 = temp == null || onBase(temp.get(0), secondBaseCenter, rdSqr, cond) ? null : new GeoPoint(this, temp.get(0).point);
 
         if (gp1 != null && gp2 != null) {
             if (ray.getP0().distanceSquared(gp1.point) < ray.getP0().distanceSquared(gp2.point)) {
@@ -88,41 +89,60 @@ public class Cylinder extends Tube {
             }
         }
 
-        GeoPoint gpBase = gp1!=null?gp1:gp2;
+        GeoPoint gpBase = gp1 != null ? gp1 : gp2;
         temp = super.findGeoIntersectionsHelper(ray, maxDistance);
 
         //No intersections with the casing
-        if(temp == null) return gpBase == null? null:List.of(gpBase);
+        if (temp == null) return gpBase == null ? null : List.of(gpBase);
         //Two intersections with the casing
-        if(temp.size()==2){
+        if (temp.size() == 2) {
             //Between the planes
-            boolean cond1 = onCylinder(temp.get(0),baseCenter,secondBaseCenter,dir);
-            boolean cond2 = onCylinder(temp.get(1),baseCenter,secondBaseCenter,dir);
-            if(cond1 && cond2)return temp;
-            if(!cond1 && !cond2)return null;
-            if(cond1) return List.of(temp.get(0),gpBase);
-            if(cond2) return List.of(gpBase,temp.get(1));
+            boolean cond1 = onCylinder(temp.get(0), baseCenter, secondBaseCenter, dir);
+            boolean cond2 = onCylinder(temp.get(1), baseCenter, secondBaseCenter, dir);
+            if (cond1 && cond2) return temp;
+            if (!cond1 && !cond2) return null;
+            if (cond1) return List.of(temp.get(0), gpBase);
+            if (cond2) return List.of(gpBase, temp.get(1));
         }
 
-        if(!(onCylinder(temp.get(0),baseCenter,secondBaseCenter,dir))){//לשים לב שזה ממש בתוך
-            return gpBase == null? null:List.of(gpBase);
-        }else if(gpBase == null){
+        if (!(onCylinder(temp.get(0), baseCenter, secondBaseCenter, dir))) {//לשים לב שזה ממש בתוך
+            return gpBase == null ? null : List.of(gpBase);
+        } else if (gpBase == null) {
             return temp;
         }
         double d1 = temp.get(0).point.distanceSquared(ray.getP0());
         double d2 = gpBase.point.distanceSquared(ray.getP0());
 
-        return d1 < d2? List.of(temp.get(0),gpBase) : List.of(gpBase,temp.get(0));
+        return d1 < d2 ? List.of(temp.get(0), gpBase) : List.of(gpBase, temp.get(0));
     }
 
-    private boolean onCylinder(GeoPoint geoPoint,Point b1, Point b2, Vector dir){
-        return geoPoint.point.subtract(b1).dotProduct(dir)> 0 &&
-                geoPoint.point.subtract(b2).dotProduct(dir.scale(-1))> 0;
+    private boolean onCylinder(GeoPoint geoPoint, Point b1, Point b2, Vector dir) {
+        return geoPoint.point.subtract(b1).dotProduct(dir) > 0 &&
+                geoPoint.point.subtract(b2).dotProduct(dir.scale(-1)) > 0;
     }
 
-    private boolean onBase(GeoPoint check, Point center ,double rdSqr, boolean cond){
-        return (check.point.distanceSquared(center) == rdSqr &&cond) ||
-                (check.point.distanceSquared(center) > rdSqr );
+    private boolean onBase(GeoPoint check, Point center, double rdSqr, boolean cond) {
+        return (check.point.distanceSquared(center) == rdSqr && cond) ||
+                (check.point.distanceSquared(center) > rdSqr);
+    }
+
+    @Override
+    public double[][] calcBoundary() {
+        Point firstBaseCenter = axisRay.getP0();
+        Point secondBaseCenter = axisRay.getPoint(height);
+        double xFirst = firstBaseCenter.getX();
+        double yFirst = firstBaseCenter.getY();
+        double zFirst = firstBaseCenter.getZ();
+        double xSecond = secondBaseCenter.getX();
+        double ySecond = secondBaseCenter.getY();
+        double zSecond = secondBaseCenter.getZ();
+        double minX = xFirst < xSecond ? xFirst - radius : xSecond - radius;
+        double maxX = xFirst > xSecond ? xFirst + radius : xSecond + radius;
+        double minY = yFirst < ySecond ? yFirst - radius : ySecond - radius;
+        double maxY = yFirst > ySecond ? yFirst + radius : ySecond + radius;
+        double minZ = zFirst < zSecond ? zFirst - radius : zSecond - radius;
+        double maxZ = zFirst > zSecond ? zFirst + radius : zSecond + radius;
+        return new double[][]{{minX, maxX}, {minY, maxY}, {minZ, maxZ}};
     }
 
 }

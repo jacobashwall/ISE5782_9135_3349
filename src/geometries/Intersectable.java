@@ -49,6 +49,15 @@ public abstract class Intersectable {
                     '}';
         }
     }
+    /**
+     * boundary of the entity represented by the array [x[min,max],y[min,max],z[min,max]]
+     */
+    public double[][] boundary;
+    /**
+     * finds the boundary values of the geometric entity or a group of geometric entities
+     * @return the geometry boundary
+     */
+    protected abstract double[][] calcBoundary();
 
     /**
      * Finds all intersection points of a ray and a geometric entity.
@@ -93,4 +102,11 @@ public abstract class Intersectable {
      */
     protected abstract List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance);
 
+    /**
+     * boundary getter
+     * @return the boundary
+     */
+    public double[][] getBoundary() {
+        return boundary;
+    }
 }

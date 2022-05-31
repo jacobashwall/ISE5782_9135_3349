@@ -27,6 +27,7 @@ public class Sphere extends Geometry {
         this.center = center;
         this.radius = radius;
         this.radiusSqr = radius * radius;
+        this.boundary=calcBoundary();
     }
 
 
@@ -92,5 +93,19 @@ public class Sphere extends Geometry {
         if (t2 - maxDistance > 0)
             return t1 <= 0 ? null : List.of(new GeoPoint(this, ray.getPoint(t1)));
         return t1 <= 0 ? List.of(new GeoPoint(this, ray.getPoint(t2))) : List.of(new GeoPoint(this, ray.getPoint(t1)), new GeoPoint(this, ray.getPoint(t2)));
+    }
+
+    @Override
+    public double[][] calcBoundary() {
+        double x = center.getX();
+        double y = center.getY();
+        double z = center.getZ();
+        double minX = x - radius;
+        double maxX = x + radius;
+        double minY = y - radius;
+        double maxY = y + radius;
+        double minZ = z - radius;
+        double maxZ = z + radius;
+        return new double[][]{{minX, maxX}, {minY, maxY}, {minZ, maxZ}};
     }
 }

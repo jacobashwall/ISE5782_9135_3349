@@ -49,4 +49,38 @@ public class Geometries extends Intersectable {
         }
         return intersections;
     }
+
+    @Override
+    public double[][] calcBoundary() {
+        double minX = 0;
+        double maxX = 0;
+        double minY = 0;
+        double maxY = 0;
+        double minZ = 0;
+        double maxZ = 0;
+        for (var geometry : objects) {
+            if (objects.get(0).equals(geometry)) {//if it's the first geometry in order to compare
+                minX = geometry.boundary[0][0];
+                maxX = geometry.boundary[0][1];
+                minY = geometry.boundary[1][0];
+                maxY = geometry.boundary[1][1];
+                minZ = geometry.boundary[2][0];
+                maxZ = geometry.boundary[2][1];
+            } else {
+                if (geometry.boundary[0][0] < minX)
+                    minX = geometry.boundary[0][0];
+                if (geometry.boundary[0][1] > maxX)
+                    maxX = geometry.boundary[0][1];
+                if (geometry.boundary[1][0] < minY)
+                    minY = geometry.boundary[1][0];
+                if (geometry.boundary[1][1] > maxY)
+                    maxY = geometry.boundary[1][1];
+                if (geometry.boundary[2][0] < minZ)
+                    minZ = geometry.boundary[2][0];
+                if (geometry.boundary[2][1] > maxZ)
+                    maxZ = geometry.boundary[2][1];
+            }
+        }
+        return new double[][]{{minX, maxX}, {minY, maxY}, {minZ, maxZ}};
+    }
 }

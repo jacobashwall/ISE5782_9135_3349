@@ -59,7 +59,7 @@ public class Polygon extends Geometry {
         // The plane holds the invariant normal (orthogonal unit) vector to the polygon
         plane = new Plane(vertices[0], vertices[1], vertices[2]);
         if (size == 3) {
-            this.boundary=calcBoundary();
+            this.boundary = calcBoundary();
             return; // no need for more tests for a Triangle
         }
 
@@ -90,7 +90,7 @@ public class Polygon extends Geometry {
             if (positive != (edge1.crossProduct(edge2).dotProduct(n) > 0))
                 throw new IllegalArgumentException("All vertices must be ordered and the polygon must be convex");
         }
-        this.boundary=calcBoundary();
+        this.boundary = calcBoundary();
     }
 
 
@@ -149,41 +149,33 @@ public class Polygon extends Geometry {
 
     @Override
     public double[][] calcBoundary() {
-        double minX = 0;
-        double maxX = 0;
-        double minY = 0;
-        double maxY = 0;
-        double minZ = 0;
-        double maxZ = 0;
+        double minX = Double.POSITIVE_INFINITY;
+        double maxX = Double.NEGATIVE_INFINITY;
+        double minY = Double.POSITIVE_INFINITY;
+        double maxY = Double.NEGATIVE_INFINITY;
+        double minZ = Double.POSITIVE_INFINITY;
+        double maxZ = Double.NEGATIVE_INFINITY;
         double x;
         double y;
         double z;
         for (var point : vertices) {
-            if (vertices.get(0).equals(point)) {//if it's the first point in order to compare
-                minX = point.getX();
-                maxX = minX;
-                minY = point.getY();
-                maxY = minY;
-                minZ = point.getZ();
-                maxZ = minZ;
-            } else {
-                x = point.getX();
-                y = point.getY();
-                z = point.getZ();
-                if (x < minX)
-                    minX = x;
-                if (x > maxX)
-                    maxX = x;
-                if (y < minY)
-                    minY = y;
-                if (y > maxY)
-                    maxY = y;
-                if (z < minZ)
-                    minZ = z;
-                if (z > maxZ)
-                    maxZ = z;
-            }
+            x = point.getX();
+            y = point.getY();
+            z = point.getZ();
+            if (x < minX)
+                minX = x;
+            if (x > maxX)
+                maxX = x;
+            if (y < minY)
+                minY = y;
+            if (y > maxY)
+                maxY = y;
+            if (z < minZ)
+                minZ = z;
+            if (z > maxZ)
+                maxZ = z;
         }
+
         return new double[][]{{minX, maxX}, {minY, maxY}, {minZ, maxZ}};
     }
 

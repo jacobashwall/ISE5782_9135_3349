@@ -26,6 +26,7 @@ public class Cylinder extends Tube {
         super(axisRay, radius);
         this.height = height;
         this.boundary=calcBoundary();
+        calcVolume();
     }
 
     /**
@@ -126,23 +127,22 @@ public class Cylinder extends Tube {
                 (check.point.distanceSquared(center) > rdSqr);
     }
 
+
     @Override
     public double[][] calcBoundary() {
         Point firstBaseCenter = axisRay.getP0();
         Point secondBaseCenter = axisRay.getPoint(height);
-        double xFirst = firstBaseCenter.getX();
-        double yFirst = firstBaseCenter.getY();
-        double zFirst = firstBaseCenter.getZ();
-        double xSecond = secondBaseCenter.getX();
-        double ySecond = secondBaseCenter.getY();
-        double zSecond = secondBaseCenter.getZ();
-        double minX = xFirst < xSecond ? xFirst - radius : xSecond - radius;
-        double maxX = xFirst > xSecond ? xFirst + radius : xSecond + radius;
-        double minY = yFirst < ySecond ? yFirst - radius : ySecond - radius;
-        double maxY = yFirst > ySecond ? yFirst + radius : ySecond + radius;
-        double minZ = zFirst < zSecond ? zFirst - radius : zSecond - radius;
-        double maxZ = zFirst > zSecond ? zFirst + radius : zSecond + radius;
-        return new double[][]{{minX, maxX}, {minY, maxY}, {minZ, maxZ}};
+
+        return new double[][]{minMax(firstBaseCenter.getX(),secondBaseCenter.getX()),
+                minMax(firstBaseCenter.getY(), secondBaseCenter.getY()),
+                minMax(firstBaseCenter.getZ(), secondBaseCenter.getZ())};
     }
+
+    private double[] minMax(double first,double second){
+        return first < second? new double[]{first-radius,second+radius}:
+                                new double[]{second-radius,first+radius};
+    }
+
+
 
 }

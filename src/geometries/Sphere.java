@@ -100,12 +100,9 @@ public class Sphere extends Geometry {
         double x = center.getX();
         double y = center.getY();
         double z = center.getZ();
-        double minX = x - radius;
-        double maxX = x + radius;
-        double minY = y - radius;
-        double maxY = y + radius;
-        double minZ = z - radius;
-        double maxZ = z + radius;
-        return new double[][]{{minX, maxX}, {minY, maxY}, {minZ, maxZ}};
+
+        return new double[][]{{x-radius,x+radius},
+                {y-radius, y+radius},
+                {z-radius, z+radius}};
     }
 }

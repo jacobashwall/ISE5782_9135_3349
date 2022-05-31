@@ -1,11 +1,8 @@
 package scene;
 
-import lighting.AmbientLight;
+import lighting.*;
 import geometries.Geometries;
-import lighting.LightSource;
-import primitives.Color;
-import primitives.Double3;
-import primitives.Voxel;
+import primitives.*;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -31,6 +28,7 @@ public class Scene {
     public Geometries geometries = new Geometries();
     //List of light sources
     public List<LightSource> lights = new LinkedList<>();
+    public Double3 resolution;
     /**
      * hash map of all voxels in the scene
      */
@@ -96,7 +94,15 @@ public class Scene {
     /**
      * sets teh boundary of the geometries in the scene
      */
-    public void setBoundary() {
+    public Scene setBoundary() {
         this.geometries.boundary = this.geometries.calcBoundary();
+        return this;
+    }
+
+    public Scene setResolution(){
+        double v = this.geometries.volume;
+        double size = this.geometries.getObjectsSize();
+
+        return this;
     }
 }

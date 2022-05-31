@@ -4,6 +4,8 @@ package geometries;
 import primitives.Ray;
 
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -50,7 +52,7 @@ public class Geometries extends Intersectable {
         return intersections;
     }
 
-    @Override
+    /*@Override
     public double[][] calcBoundary() {
         double minX = 0;
         double maxX = 0;
@@ -82,5 +84,43 @@ public class Geometries extends Intersectable {
             }
         }
         return new double[][]{{minX, maxX}, {minY, maxY}, {minZ, maxZ}};
+    }*/
+
+    @Override
+    public double[][] calcBoundary() {
+        double minX = Double.POSITIVE_INFINITY;
+        double maxX = Double.NEGATIVE_INFINITY;
+        double minY = Double.POSITIVE_INFINITY;
+        double maxY = Double.NEGATIVE_INFINITY;
+        double minZ = Double.POSITIVE_INFINITY;
+        double maxZ = Double.NEGATIVE_INFINITY;
+        for (var geometry : objects) {
+                if (geometry.boundary[0][0] < minX)
+                    minX = geometry.boundary[0][0];
+                if (geometry.boundary[0][1] > maxX)
+                    maxX = geometry.boundary[0][1];
+                if (geometry.boundary[1][0] < minY)
+                    minY = geometry.boundary[1][0];
+                if (geometry.boundary[1][1] > maxY)
+                    maxY = geometry.boundary[1][1];
+                if (geometry.boundary[2][0] < minZ)
+                    minZ = geometry.boundary[2][0];
+                if (geometry.boundary[2][1] > maxZ)
+                    maxZ = geometry.boundary[2][1];
+            }
+        return new double[][]{{minX, maxX}, {minY, maxY}, {minZ, maxZ}};
+
+
+    }
+
+    public int getObjectsSize(){
+        return this.objects.size();
+    }
+
+    @Override
+    protected void calcVolume() {
+        for(var geometry:objects){
+            this.volume+=geometry.getVolume();
+        }
     }
 }

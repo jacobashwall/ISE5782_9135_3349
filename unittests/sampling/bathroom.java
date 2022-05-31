@@ -19,8 +19,9 @@ public class bathroom {
     @Test
     public void createPicture() {
 
+
         //region settings
-        Sampling.setTargetAreaResolution(1);
+        Sampling.setTargetAreaResolution(9);
         Scene scene = new Scene("Test scene");
         Camera camera = new Camera(new Point(0, 300, 1000), new Vector(0, 0, -1), new Vector(0, 1, 0)) //
                 .setVPSize(2000, 2000).setVPDistance(1500);
@@ -246,7 +247,7 @@ public class bathroom {
                 fixLeft = 80;
             }
             Polygon closetDoorFront = new Polygon(new Point(-225 + j * tileWidth, 0, 100), new Point(-225 + tileWidth + j * tileWidth - gap, 0, 100), new Point(-225 + +tileWidth + j * tileWidth - gap, tileHeight, 100), new Point(-225 + j * tileWidth, tileHeight, 100));
-            closetDoorFront.setEmission(new Color(127, 255, 0)).setMaterial(new Material().setKs(0).setKd(0.5));
+            closetDoorFront.setEmission(new Color(164,116,73)).setMaterial(new Material().setKs(0.5).setKd(0.5).setnShininess(300).setKr(0.01).setKsG(0.5));
             scene.geometries.add(closetDoorFront);
             Polygon closetDoorLeft = new Polygon(new Point(-225 + j * tileWidth, 0, 100), new Point(-225 + j * tileWidth, 0, fixLeft), new Point(-225 + j * tileWidth, tileHeight, fixLeft), new Point(-225 + j * tileWidth, tileHeight, 100));
             closetDoorLeft.setEmission(new Color(100, 100, 100)).setMaterial(new Material().setKs(0).setKd(0.5));
@@ -260,6 +261,7 @@ public class bathroom {
         //endregion
 
         //region floor
+
         // background
         Polygon floorBackground = new Polygon(new Point(-500, -2, 0), new Point(-500, -2, 300), new Point(500, -2, 300), new Point(500, -2, 0));
         floorBackground.setMaterial(new Material());
@@ -273,7 +275,7 @@ public class bathroom {
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 20; j++) {
                 Polygon polygon = new Polygon(new Point(-500 + j * tileWidth, -1, i * tileHeight), new Point(-500 + tileWidth + j * tileWidth - gap, -1, i * tileHeight), new Point(-500 + tileWidth + j * tileWidth - gap, -1, tileHeight + i * tileHeight - gap), new Point(-500 + j * tileWidth, -1, tileHeight + i * tileHeight - gap));
-                polygon.setEmission(new Color(143, 188, 143)).setMaterial(new Material().setKs(0).setKd(1));
+                polygon.setEmission(new Color(143, 188, 143)).setMaterial(new Material().setKr(0.3).setKd(1).setKsG(0.5));
                 scene.geometries.add(polygon);
                 //new Color(143,188,143)
             }

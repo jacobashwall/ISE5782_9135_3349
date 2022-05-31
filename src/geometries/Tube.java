@@ -133,4 +133,7 @@ public class Tube extends Geometry {
     public double[][] calcBoundary() {//there is no boundary to infinite geometric entity
         return null;
     }
+
+    @Override
+    protected void calcVolume() { }
 }

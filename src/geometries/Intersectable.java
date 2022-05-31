@@ -1,5 +1,6 @@
 package geometries;
 
+import primitives.Double3;
 import primitives.Point;
 import primitives.Ray;
 
@@ -53,11 +54,20 @@ public abstract class Intersectable {
      * boundary of the entity represented by the array [x[min,max],y[min,max],z[min,max]]
      */
     public double[][] boundary;
+    public double volume = 0;
     /**
      * finds the boundary values of the geometric entity or a group of geometric entities
      * @return the geometry boundary
      */
     protected abstract double[][] calcBoundary();
+    protected void calcVolume(){
+        if(getBoundary()!=null) {
+            double x = boundary[0][1] - boundary[0][0];
+            double y = boundary[1][1] - boundary[1][0];
+            double z = boundary[2][1] - boundary[2][0];
+            this.volume = x*y*z;
+        }
+    };
 
     /**
      * Finds all intersection points of a ray and a geometric entity.
@@ -69,6 +79,7 @@ public abstract class Intersectable {
         var geoList = findGeoIntersections(ray);
         return geoList == null ? null
                 : geoList.stream().map(gp -> gp.point).toList();
+
     }
 
 
@@ -109,4 +120,6 @@ public abstract class Intersectable {
     public double[][] getBoundary() {
         return boundary;
     }
+
+    public double getVolume(){return volume;}
 }

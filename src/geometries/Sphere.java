@@ -97,13 +97,13 @@ public class Sphere extends Geometry {
     }
 
     @Override
-    public double[][] calcBoundary() {
+    public int[][] calcBoundary() {
         double x = center.getX();
         double y = center.getY();
         double z = center.getZ();
 
-        return new double[][]{{x-radius,x+radius},
-                {y-radius, y+radius},
-                {z-radius, z+radius}};
+        return new int[][]{{(int) (x - radius), (int) Math.ceil(x + radius)},
+                {(int) (y - radius), (int) Math.ceil(y + radius)},
+                {(int) (z - radius), (int) Math.ceil(z + radius)}};
     }
 }

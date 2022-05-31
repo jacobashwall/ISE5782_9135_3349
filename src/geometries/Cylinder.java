@@ -129,18 +129,18 @@ public class Cylinder extends Tube {
 
 
     @Override
-    public double[][] calcBoundary() {
+    public int[][] calcBoundary() {
         Point firstBaseCenter = axisRay.getP0();
         Point secondBaseCenter = axisRay.getPoint(height);
 
-        return new double[][]{minMax(firstBaseCenter.getX(),secondBaseCenter.getX()),
+        return new int[][]{minMax(firstBaseCenter.getX(),secondBaseCenter.getX()),
                 minMax(firstBaseCenter.getY(), secondBaseCenter.getY()),
                 minMax(firstBaseCenter.getZ(), secondBaseCenter.getZ())};
     }
 
-    private double[] minMax(double first,double second){
-        return first < second? new double[]{first-radius,second+radius}:
-                                new double[]{second-radius,first+radius};
+    private int[] minMax(double first,double second){
+        return first < second? new int[]{(int)(first-radius),(int)Math.ceil(second+radius)}:
+                                new int[]{(int)(second-radius),(int)Math.ceil(first+radius)};
     }
 
 

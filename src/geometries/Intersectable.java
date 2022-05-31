@@ -53,14 +53,13 @@ public abstract class Intersectable {
     /**
      * boundary of the entity represented by the array [x[min,max],y[min,max],z[min,max]]
      */
-    public double[][] boundary;
+    public int[][] boundary;
     public double volume = 0;
     /**
      * finds the boundary values of the geometric entity or a group of geometric entities
      * @return the geometry boundary
      */
-    protected abstract double[][] calcBoundary();
-
+    protected abstract int[][] calcBoundary();
     protected void calcVolume(){
         if(getBoundary()!=null) {
             double x = boundary[0][1] - boundary[0][0];
@@ -118,7 +117,7 @@ public abstract class Intersectable {
      * boundary getter
      * @return the boundary
      */
-    public double[][] getBoundary() {
+    public int[][] getBoundary() {
         return boundary;
     }
 

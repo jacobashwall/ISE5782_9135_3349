@@ -34,7 +34,7 @@ public class RayTracerRegular extends RayTracerBase {
      */
     public RayTracerRegular(Scene scene) {
         super(scene);
-        scene.setBoundary().setResolution();
+        scene.setBoundary().setResolution().attachVoxels();
     }
 
     /**

@@ -1,13 +1,12 @@
 package geometries;
 
 
+import primitives.Double3;
 import primitives.Ray;
+import scene.Scene;
 
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Class the represents a group of geometric entities
@@ -89,4 +88,27 @@ public class Geometries extends Intersectable {
             this.volume += geometry.getVolume();
         }
     }
+
+    /**
+     * move over all geometric entities of a scene and return a hashmap of all the none empty voxels
+     * @param scene the scene
+     * @return the hash map of voxels
+     */
+    public HashMap<Double3, Scene.Voxel> attachVoxel(Scene scene) {
+        HashMap<Double3, Scene.Voxel> voxels=new HashMap<>();
+        List<Double3> voxelIndexes;
+        for (var geometry : objects) {
+            voxelIndexes = geometry.findVoxels(scene);
+            for (var index : voxelIndexes) {
+                if (voxels.containsKey(index))//the voxel is already exists in thr map
+                    voxels.put(index, new Scene.Voxel(geometry));
+                else {
+                    voxels.get(index).geometries.add(geometry);
+                }
+            }
+        }
+        return voxels;
+    }
+
 }
+

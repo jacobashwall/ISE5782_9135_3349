@@ -1,5 +1,6 @@
 package scene;
 
+import geometries.Intersectable;
 import lighting.*;
 import geometries.Geometries;
 import primitives.*;
@@ -32,7 +33,26 @@ public class Scene {
     /**
      * hash map of all voxels in the scene
      */
-    public Map<Double3, Voxel> VoxelMap = new HashMap<>();
+    public HashMap<Double3, Voxel> VoxelMap = new HashMap<>();
+    int xEdge;
+    int yEdge;
+    int zEdge;
+
+    public static class Voxel {
+
+        /**
+         * all geometric entities that intersects with the voxel
+         */
+        public Geometries geometries = new Geometries();
+        public static double xEdge;
+        public static double yEdge;
+        public static double zEdge;
+
+        public Voxel(Intersectable geometry) {
+            geometries.add(geometry);
+        }
+
+    }
 
     /**
      * Constructor that sets the scene name and sets the other fields to their default values
@@ -99,23 +119,35 @@ public class Scene {
         return this;
     }
 
-    public Scene setResolution(){
+    public Scene setResolution() {
         double geometriesVolume = this.geometries.volume;
         double size = this.geometries.getObjectsSize();
 
-        int xEdge = (int)(this.geometries.boundary[0][1]-this.geometries.boundary[0][0]);
-        int yEdge = (int)(this.geometries.boundary[1][1]-this.geometries.boundary[1][0]);
-        int zEdge = (int)(this.geometries.boundary[2][1]-this.geometries.boundary[2][0]);
+        int xEdge = (int) (this.geometries.boundary[0][1] - this.geometries.boundary[0][0]);
+        int yEdge = (int) (this.geometries.boundary[1][1] - this.geometries.boundary[1][0]);
+        int zEdge = (int) (this.geometries.boundary[2][1] - this.geometries.boundary[2][0]);
 
-        double bigCbrVolume = xEdge*yEdge*zEdge;
-        double density = geometriesVolume/bigCbrVolume;
+        double bigCbrVolume = xEdge * yEdge * zEdge;
+        double density = geometriesVolume / bigCbrVolume;
 
-        int xResolution = (int)Math.ceil(xEdge*Math.pow(density*size/bigCbrVolume,1.0/3));
-        int yResolution = (int)Math.ceil(yEdge*Math.pow(density*size/bigCbrVolume,1.0/3));
-        int zResolution = (int)Math.ceil(zEdge*Math.pow(density*size/bigCbrVolume,1.0/3));
+        int xResolution = (int) Math.ceil(xEdge * Math.pow(density * size / bigCbrVolume, 1.0 / 3));
+        int yResolution = (int) Math.ceil(yEdge * Math.pow(density * size / bigCbrVolume, 1.0 / 3));
+        int zResolution = (int) Math.ceil(zEdge * Math.pow(density * size / bigCbrVolume, 1.0 / 3));
 
-        this.resolutions = new double[]{xResolution,yResolution,zResolution};
+        this.resolutions = new double[]{xResolution, yResolution, zResolution};
 
+        return this;
+    }
+
+    public Scene setVoxels() {
+        Voxel.xEdge = ((double) this.xEdge) / resolutions[0];
+        Voxel.yEdge = ((double) this.yEdge) / resolutions[1];
+        Voxel.zEdge = ((double) this.zEdge) / resolutions[2];
+        return this;
+    }
+
+    public Scene attachVoxels() {
+        VoxelMap = this.geometries.attachVoxel(this);
         return this;
     }
 }

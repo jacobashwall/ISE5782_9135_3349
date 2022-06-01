@@ -3,13 +3,17 @@ package geometries;
 import primitives.Double3;
 import primitives.Point;
 import primitives.Ray;
+import scene.Scene;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
  * Interface of all the intersectable by rays geometries apply.
  */
 public abstract class Intersectable {
+
     /**
      * PDS that includes a point and the geometric entity its on
      */
@@ -50,24 +54,29 @@ public abstract class Intersectable {
                     '}';
         }
     }
+
     /**
      * boundary of the entity represented by the array [x[min,max],y[min,max],z[min,max]]
      */
     public int[][] boundary;
     public double volume = 0;
+
     /**
      * finds the boundary values of the geometric entity or a group of geometric entities
+     *
      * @return the geometry boundary
      */
     protected abstract int[][] calcBoundary();
-    protected void calcVolume(){
-        if(getBoundary()!=null) {
+
+    protected void calcVolume() {
+        if (getBoundary() != null) {
             double x = boundary[0][1] - boundary[0][0];
             double y = boundary[1][1] - boundary[1][0];
             double z = boundary[2][1] - boundary[2][0];
-            this.volume = x*y*z;
+            this.volume = x * y * z;
         }
-    };
+    }
+
 
     /**
      * Finds all intersection points of a ray and a geometric entity.
@@ -115,11 +124,39 @@ public abstract class Intersectable {
 
     /**
      * boundary getter
+     *
      * @return the boundary
      */
     public int[][] getBoundary() {
         return boundary;
     }
 
-    public double getVolume(){return volume;}
+    public double getVolume() {
+        return volume;
+    }
+
+    /**
+     * return the indexes of all voxels that the geometric entity intersects with
+     * @param scene the scene that we would use its voxels
+     * @return the indexes of the voxels intersected with this
+     */
+    protected List<Double3> findVoxels(Scene scene) {
+        List<Double3> indexes = new LinkedList<>();//since we won't remove any voxel but only add we will use linked list
+        int xMinIndex = (int) (this.boundary[0][0] - scene.geometries.boundary[0][0] / Scene.Voxel.xEdge);
+        int xMaxIndex = (int) (this.boundary[0][1] - scene.geometries.boundary[0][0] / Scene.Voxel.xEdge);
+        int yMinIndex = (int) (this.boundary[1][0] - scene.geometries.boundary[1][0] / Scene.Voxel.yEdge);
+        int yMaxIndex = (int) (this.boundary[1][1] - scene.geometries.boundary[1][0] / Scene.Voxel.yEdge);
+        int zMinIndex = (int) (this.boundary[2][0] - scene.geometries.boundary[2][0] / Scene.Voxel.zEdge);
+        int zMaxIndex = (int) (this.boundary[2][1] - scene.geometries.boundary[2][0] / Scene.Voxel.zEdge);
+        //move over all the voxels in the range of indexes
+        for (int i = xMinIndex; i <= xMaxIndex; i++) {
+            for (int j = yMinIndex; j <= yMaxIndex; j++) {
+                for (int k = zMinIndex; k <= zMaxIndex; k++) {
+                    indexes.add(new Double3(i, j, k));
+                }
+            }
+        }
+        return indexes;
+    }
+
 }

@@ -27,7 +27,7 @@ public class ElaboratePictureTest {
         //settings
         Scene scene = new Scene("Test scene");
         Camera camera = new Camera(new Point(0, 100, 10000), new Vector(0, 0, -1), new Vector(0, 1, 0)) //
-                .setVPSize(2500, 2500).setVPDistance(8500);
+                .setVPSize(2500, 2500).setVPDistance(8500);//.setBaseOrRegular(true);
 
         Color[] rainbow = {new Color(3, 0, 152),
                 new Color(1, 10, 152),
@@ -104,7 +104,7 @@ public class ElaboratePictureTest {
         Plane pl = new Plane(new Point(-3000, -400, 0), new Point(3000, -400, 0), new Point(0, -400, -8000));
         pl.setEmission(new Color(0, 0, 0));
         pl.setMaterial(new Material().setKs(1).setKr(0.4));
-        scene.geometries.add(pl);
+        //scene.geometries.add(pl);
 
         //mirror balls
         Sphere sphere = new Sphere(new Point(-6500, 1000, -7000), 5000);
@@ -120,17 +120,18 @@ public class ElaboratePictureTest {
 
         //choose one of those:
 
-/*
+
         //taking picture for images without the wall
         camera.moveCamera(new Point(0, 0, 0), new Point(0, 1000, -6000)).setVPDistance(2500);
-        ImageWriter imageWriter = new ImageWriter("elaboratePictureWallNewLight", 5000, 5000);
-        camera.setImageWriter(imageWriter) //
+        ImageWriter imageWriter = new ImageWriter("newElaboratePictureWallNewLight", 500, 500);
+        camera.setImageWriter(imageWriter)//
                 .setRayTracer(new RayTracerBasic(scene)) //
+                .setBaseOrRegular(true)
                 .renderImage(); //
         camera.writeToImage();
 
 
-        //taking picture for images with the wall
+ /*       //taking picture for images with the wall
         camera.moveCamera(new Point(0, 0, 0),new Point(0, 1000,-6000)).setVPDistance(2500);
         ImageWriter imageWriter = new ImageWriter("elaboratePicture", 10000, 10000);
         camera.setImageWriter(imageWriter) //

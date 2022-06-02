@@ -5,6 +5,7 @@ import primitives.Point;
 import primitives.Ray;
 import scene.Scene;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -144,12 +145,12 @@ public abstract class Intersectable {
         double xEdgeVoxel=scene.getXEdgeVoxel();
         double yEdgeVoxel=scene.getYEdgeVoxel();
         double zEdgeVoxel=scene.getZEdgeVoxel();
-        int xMinIndex = (int) (this.boundary[0][0] - scene.geometries.boundary[0][0] / xEdgeVoxel);
-        int xMaxIndex = (int) (this.boundary[0][1] - scene.geometries.boundary[0][0] / xEdgeVoxel);
-        int yMinIndex = (int) (this.boundary[1][0] - scene.geometries.boundary[1][0] / yEdgeVoxel);
-        int yMaxIndex = (int) (this.boundary[1][1] - scene.geometries.boundary[1][0] / yEdgeVoxel);
-        int zMinIndex = (int) (this.boundary[2][0] - scene.geometries.boundary[2][0] / zEdgeVoxel);
-        int zMaxIndex = (int) (this.boundary[2][1] - scene.geometries.boundary[2][0] / zEdgeVoxel);
+        int xMinIndex = (int) ((this.boundary[0][0] - scene.geometries.boundary[0][0]) / xEdgeVoxel);
+        int xMaxIndex = (int) ((this.boundary[0][1] - scene.geometries.boundary[0][0]) / xEdgeVoxel);
+        int yMinIndex = (int) ((this.boundary[1][0] - scene.geometries.boundary[1][0]) / yEdgeVoxel);
+        int yMaxIndex = (int) ((this.boundary[1][1] - scene.geometries.boundary[1][0]) / yEdgeVoxel);
+        int zMinIndex = (int) ((this.boundary[2][0] - scene.geometries.boundary[2][0]) / zEdgeVoxel);
+        int zMaxIndex = (int) ((this.boundary[2][1] - scene.geometries.boundary[2][0]) / zEdgeVoxel);
         //move over all the voxels in the range of indexes
         for (int i = xMinIndex; i <= xMaxIndex; i++) {
             for (int j = yMinIndex; j <= yMaxIndex; j++) {

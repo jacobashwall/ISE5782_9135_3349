@@ -44,14 +44,14 @@ public class Scene {
     /**
      * the resolution of the voxels that divide the scene
      */
-    private double[] resolutions;
+    public double[] resolutions;
 
     //voxel attributes
     /**
      * hash map of all voxels in the scene- their index as the key and the list of geometric entities that intersects
      * with the voxel as the value.
      */
-    public HashMap<Double3, Geometries> voxels = new HashMap<>();
+    public HashMap<Double3, Geometries> voxels = new HashMap<Double3,Geometries>();
     /**
      * the size of the edge of the voxel on the X axis
      */
@@ -181,7 +181,7 @@ public class Scene {
         double bigCbrVolume = xEdgeScene * yEdgeScene * zEdgeScene;
         if (bigCbrVolume == 0)
             bigCbrVolume = 1;//if the scene is not 3 dimensional
-        double density = geometriesVolume / bigCbrVolume;
+        double density = ((geometriesVolume / xEdgeScene)/yEdgeScene)/zEdgeScene;
         double factor = Math.pow(density * size / bigCbrVolume, 1.0 / 3);
 
         int xResolution = (int) Math.ceil(xEdgeScene * factor);

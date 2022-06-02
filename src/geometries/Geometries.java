@@ -24,6 +24,7 @@ public class Geometries extends Intersectable {
      */
     public Geometries(Intersectable... geometries) {
         this.add(geometries);
+        this.calcVolume();
     }
 
     /**
@@ -33,6 +34,9 @@ public class Geometries extends Intersectable {
      */
     public void add(Intersectable... geometries) {
         if (geometries.length > 0) this.objects.addAll(List.of(geometries));
+        for (var geometry:geometries) {
+            this.volume+=geometry.getVolume();
+        }
     }
 
 
@@ -100,7 +104,7 @@ public class Geometries extends Intersectable {
         for (var geometry : objects) {
             voxelIndexes = geometry.findVoxels(scene);
             for (var index : voxelIndexes) {
-                if (voxels.containsKey(index))//the voxel is already exists in thr map
+                if (!voxels.containsKey(index))//the voxel is already exists in thr map
                     voxels.put(index, new Geometries(geometry));
                 else {
                     voxels.get(index).add(geometry);

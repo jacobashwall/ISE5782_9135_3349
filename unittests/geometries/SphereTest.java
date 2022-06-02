@@ -137,9 +137,11 @@ class SphereTest {
         //EP2:maxDistance=t2
         assertEquals(List.of(p1,p2),sphere.findGeoIntersectionsHelper(ray,3),"EP2: Bad intersection");
 
+ }
 
-
-
-
+    @Test
+    public void calcBoundaryTest(){
+        Sphere sphere = new Sphere(new Point(0,0,0),1);
+        int[][]boundary = sphere.boundary;
     }
 }

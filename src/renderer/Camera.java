@@ -26,6 +26,16 @@ public class Camera {
     private ImageWriter imageWriter;
     private RayTracerBase rayTracerBase;
 
+    private boolean baseOrRegular;
+
+    public Camera setBaseOrRegular(boolean baseOrRegular) {
+        this.baseOrRegular = baseOrRegular;
+        if(baseOrRegular){
+            this.rayTracerBase = new RayTracerRegular(this.rayTracerBase.scene);
+        }
+        return this;
+    }
+
     /**
      * Constructor to camera
      *
@@ -251,6 +261,8 @@ public class Camera {
             System.out.println(i+"/"+nX);
             for (int j = 0; j < nY; j++) {
                 //get the ray through the pixel
+                if(i==3 && j==1)
+                    System.out.println(100);
                 Ray ray = this.constructRay(nX, nY, j, i);
                 imageWriter.writePixel(j, i, rayTracerBase.traceRay(ray));
             }

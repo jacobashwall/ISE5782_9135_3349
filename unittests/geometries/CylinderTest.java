@@ -61,12 +61,14 @@ class CylinderTest {
      * Test method for{@link Cylinder#findIntersections(Ray)}
      */
 
+    Point p1 = new Point(-1, 0, 0);
+    Vector vec1 = new Vector(1, 0, 0);
+    Ray axisRay = new Ray(p1, vec1);
+    Cylinder cylinder = new Cylinder(axisRay, 1, 2);
+
     @Test
     void findIntersections() {
-        Point p1 = new Point(-1, 0, 0);
-        Vector vec1 = new Vector(1, 0, 0);
-        Ray axisRay = new Ray(p1, vec1);
-        Cylinder cylinder = new Cylinder(axisRay, 1, 2);
+
 
        //============ Equivalence Partitions Tests ==============//
         //EP1: ray intersects with both bases
@@ -369,6 +371,10 @@ class CylinderTest {
         assertNull(cylinder.findIntersections(new Ray(new Point(2,2,-2), new Vector(-1,-2,3))), "BVA1.5: Bad intersection");
 */
 
+    }
+    @Test
+    public void calcBoundaryTest(){
+        int[][]boundary = cylinder.calcBoundary();
     }
 
 }

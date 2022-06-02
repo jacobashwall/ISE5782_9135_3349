@@ -1,6 +1,5 @@
 package scene;
 
-import geometries.Intersectable;
 import lighting.*;
 import geometries.Geometries;
 import primitives.*;
@@ -8,7 +7,6 @@ import primitives.*;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * The class Scene is a passive data structure (PDS)
@@ -29,30 +27,43 @@ public class Scene {
     public Geometries geometries = new Geometries();
     //List of light sources
     public List<LightSource> lights = new LinkedList<>();
-    double[] resolutions;
+
+    //scene geometric attributes
     /**
-     * hash map of all voxels in the scene
+     * the size of the edge of the scene boundary on the X axis
      */
-    public HashMap<Double3, Voxel> VoxelMap = new HashMap<>();
-    int xEdge;
-    int yEdge;
-    int zEdge;
+    private int xEdgeScene;
+    /**
+     * the size of the edge of the scene boundary on the Y axis
+     */
+    private int yEdgeScene;
+    /**
+     * the size of the edge of the scene boundary on the Z axis
+     */
+    private int zEdgeScene;
+    /**
+     * the resolution of the voxels that divide the scene
+     */
+    private double[] resolutions;
 
-    public static class Voxel {
-
-        /**
-         * all geometric entities that intersects with the voxel
-         */
-        public Geometries geometries = new Geometries();
-        public static double xEdge;
-        public static double yEdge;
-        public static double zEdge;
-
-        public Voxel(Intersectable geometry) {
-            geometries.add(geometry);
-        }
-
-    }
+    //voxel attributes
+    /**
+     * hash map of all voxels in the scene- their index as the key and the list of geometric entities that intersects
+     * with the voxel as the value.
+     */
+    public HashMap<Double3, Geometries> voxels = new HashMap<>();
+    /**
+     * the size of the edge of the voxel on the X axis
+     */
+    private double xEdgeVoxel;
+    /**
+     * the size of the edge of the voxel on the Y axis
+     */
+    private double yEdgeVoxel;
+    /**
+     * the size of the edge of the voxel on the Z axis
+     */
+    private double zEdgeVoxel;
 
     /**
      * Constructor that sets the scene name and sets the other fields to their default values
@@ -62,6 +73,34 @@ public class Scene {
     public Scene(String name) {
         this.name = name;
     }
+
+    /**
+     * xEdgeVoxel getter
+     *
+     * @return the size of the edge of the voxel on the X axis
+     */
+    public double getXEdgeVoxel() {
+        return xEdgeVoxel;
+    }
+
+    /**
+     * yEdgeVoxel getter
+     *
+     * @return the size of the edge of the voxel on the Y axis
+     */
+    public double getYEdgeVoxel() {
+        return yEdgeVoxel;
+    }
+
+    /**
+     * zEdgeVoxel getter
+     *
+     * @return the size of the edge of the voxel on the Z axis
+     */
+    public double getZEdgeVoxel() {
+        return zEdgeVoxel;
+    }
+
 
     //Since this class is just a PDS, it is essential
     //that it will include setters. In each setter we return 'this'
@@ -112,42 +151,59 @@ public class Scene {
     }
 
     /**
-     * sets teh boundary of the geometries in the scene
+     * calculates what voxels the scene has and the attributes of the voxels
      */
-    public Scene setBoundary() {
-        this.geometries.boundary = this.geometries.calcBoundary();
-        return this;
+    public void calcVoxels() {
+        this.setBoundary();
+        this.setResolution();
+        this.setVoxelsEdges();
+        this.setVoxelsGeometries();
     }
 
-    public Scene setResolution() {
+    /**
+     * sets the boundary of the geometries in the scene
+     */
+    private void setBoundary() {
+        this.geometries.boundary = this.geometries.calcBoundary();
+    }
+
+    /**
+     * sets the resolution of the scene to divide to voxels
+     */
+    private void setResolution() {
         double geometriesVolume = this.geometries.volume;
         double size = this.geometries.getObjectsSize();
 
-        int xEdge = (int) (this.geometries.boundary[0][1] - this.geometries.boundary[0][0]);
-        int yEdge = (int) (this.geometries.boundary[1][1] - this.geometries.boundary[1][0]);
-        int zEdge = (int) (this.geometries.boundary[2][1] - this.geometries.boundary[2][0]);
+        this.xEdgeScene = this.geometries.boundary[0][1] - this.geometries.boundary[0][0];
+        this.yEdgeScene = this.geometries.boundary[1][1] - this.geometries.boundary[1][0];
+        this.zEdgeScene = this.geometries.boundary[2][1] - this.geometries.boundary[2][0];
 
-        double bigCbrVolume = xEdge * yEdge * zEdge;
+        double bigCbrVolume = xEdgeScene * yEdgeScene * zEdgeScene;
+        if (bigCbrVolume == 0)
+            bigCbrVolume = 1;//if the scene is not 3 dimensional
         double density = geometriesVolume / bigCbrVolume;
+        double factor = Math.pow(density * size / bigCbrVolume, 1.0 / 3);
 
-        int xResolution = (int) Math.ceil(xEdge * Math.pow(density * size / bigCbrVolume, 1.0 / 3));
-        int yResolution = (int) Math.ceil(yEdge * Math.pow(density * size / bigCbrVolume, 1.0 / 3));
-        int zResolution = (int) Math.ceil(zEdge * Math.pow(density * size / bigCbrVolume, 1.0 / 3));
+        int xResolution = (int) Math.ceil(xEdgeScene * factor);
+        int yResolution = (int) Math.ceil(yEdgeScene * factor);
+        int zResolution = (int) Math.ceil(zEdgeScene * factor);
 
         this.resolutions = new double[]{xResolution, yResolution, zResolution};
-
-        return this;
     }
 
-    public Scene setVoxels() {
-        Voxel.xEdge = ((double) this.xEdge) / resolutions[0];
-        Voxel.yEdge = ((double) this.yEdge) / resolutions[1];
-        Voxel.zEdge = ((double) this.zEdge) / resolutions[2];
-        return this;
+    /**
+     * sets the attributes of the voxels
+     */
+    private void setVoxelsEdges() {
+        this.xEdgeVoxel = ((double) this.xEdgeScene) / resolutions[0];
+        this.yEdgeVoxel = ((double) this.yEdgeScene) / resolutions[1];
+        this.zEdgeVoxel = ((double) this.zEdgeScene) / resolutions[2];
     }
 
-    public Scene attachVoxels() {
-        VoxelMap = this.geometries.attachVoxel(this);
-        return this;
+    /**
+     * attaches the voxels to each geometric entity in the scene
+     */
+    private void setVoxelsGeometries() {
+        this.voxels = this.geometries.attachVoxel(this);
     }
 }

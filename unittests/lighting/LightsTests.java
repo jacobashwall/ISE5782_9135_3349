@@ -256,7 +256,6 @@ public class LightsTests {
 		ImageWriter imageWriter = new ImageWriter("CylinderTest5", 500, 500);
 		camera3.setImageWriter(imageWriter) //
 				.setRayTracer(new RayTracerBasic(scene4)) //
-				.setBaseOrRegular(true)
 				.renderImage(); //
 		camera3.writeToImage(); //
 	}

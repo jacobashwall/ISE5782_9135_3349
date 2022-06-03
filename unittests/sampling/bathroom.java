@@ -5,10 +5,7 @@ import lighting.PointLight;
 import lighting.SpotLight;
 import org.junit.jupiter.api.Test;
 import primitives.*;
-import renderer.Camera;
-import renderer.ImageWriter;
-import renderer.RayTracerBasic;
-import renderer.Sampling;
+import renderer.*;
 import scene.Scene;
 
 //ctrl+shift+numpad-/+ in order to collapse or expand
@@ -896,7 +893,8 @@ public class bathroom {
         //From back
         //renderBack(scene,camera);
         //Final picture
-        renderFinal(scene, camera);
+        //renderFinal(scene, camera);
+        renderFinalRegular(scene, camera);
         //endregion
     }
 
@@ -949,9 +947,20 @@ public class bathroom {
     private void renderFinal(Scene scene, Camera camera) {
         camera.moveCamera(new Point(-920, 420, 1100), new Point(0, 200, 0))
                 .setVPDistance(4000);
-        ImageWriter imageWriter = new ImageWriter("zFinal", 500, 500);
+        ImageWriter imageWriter = new ImageWriter("zFinalNoRegular", 500, 500);
         camera.setImageWriter(imageWriter) //
                 .setRayTracer(new RayTracerBasic(scene)) //
+                .renderImage(); //
+        camera.writeToImage();
+        // camera.moveCamera(new Point(-900, 400, 1100), new Point(0, 200, 0))
+        //                .setVPDistance(4000);
+    }
+    private void renderFinalRegular(Scene scene, Camera camera) {
+        camera.moveCamera(new Point(-920, 420, 1100), new Point(0, 200, 0))
+                .setVPDistance(4000);
+        ImageWriter imageWriter = new ImageWriter("zFinalRegular", 500, 500);
+        camera.setImageWriter(imageWriter) //
+                .setRayTracer(new RayTracerRegular(scene))//
                 .renderImage(); //
         camera.writeToImage();
         // camera.moveCamera(new Point(-900, 400, 1100), new Point(0, 200, 0))

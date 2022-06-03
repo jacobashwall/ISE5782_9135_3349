@@ -26,15 +26,7 @@ public class Camera {
     private ImageWriter imageWriter;
     private RayTracerBase rayTracerBase;
 
-    private boolean baseOrRegular;
 
-    public Camera setBaseOrRegular(boolean baseOrRegular) {
-        this.baseOrRegular = baseOrRegular;
-        if(baseOrRegular){
-            this.rayTracerBase = new RayTracerRegular(this.rayTracerBase.scene);
-        }
-        return this;
-    }
 
     /**
      * Constructor to camera
@@ -70,7 +62,7 @@ public class Camera {
      * @param rayTracerBase a Ray Tracer Base
      * @return the camera with modified Ray Tracer Base
      */
-    public Camera setRayTracer(RayTracerBasic rayTracerBase) {
+    public Camera setRayTracer(RayTracerBase rayTracerBase) {
         this.rayTracerBase = rayTracerBase;
         return this;
     }

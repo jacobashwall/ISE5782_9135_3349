@@ -126,7 +126,6 @@ public class ElaboratePictureTest {
         ImageWriter imageWriter = new ImageWriter("newElaboratePictureWallNewLight", 500, 500);
         camera.setImageWriter(imageWriter)//
                 .setRayTracer(new RayTracerBasic(scene)) //
-                .setBaseOrRegular(true)
                 .renderImage(); //
         camera.writeToImage();
 

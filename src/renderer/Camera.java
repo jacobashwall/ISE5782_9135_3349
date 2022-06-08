@@ -7,6 +7,7 @@ import primitives.Vector;
 
 import java.io.Console;
 import java.util.MissingResourceException;
+import java.util.stream.IntStream;
 
 /**
  * Camera to take the picture
@@ -26,6 +27,7 @@ public class Camera {
     private ImageWriter imageWriter;
     private RayTracerBase rayTracerBase;
 
+    private double printInterval;
 
 
     /**
@@ -43,6 +45,7 @@ public class Camera {
         this.vUp = vUp.normalize();
         this.vTo = vTo.normalize();
         this.vRight = (vUp.crossProduct(vTo)).normalize();
+        printInterval = 1;
     }
 
     /**
@@ -66,6 +69,18 @@ public class Camera {
         this.rayTracerBase = rayTracerBase;
         return this;
     }
+
+    /**
+     * PrintInterval setter
+     *
+     * @param printInterval
+     * @return the object itself
+     */
+    public Camera setPrintInterval(double printInterval) {
+        this.printInterval = printInterval;
+        return this;
+    }
+
 
     /**
      * V up getter
@@ -249,26 +264,16 @@ public class Camera {
         //move over the coordinates of the grid
         int nX = imageWriter.getNx();
         int nY = imageWriter.getNy();
-        for (int i = 0; i < nX; i++) {
-            System.out.println(i+"/"+nX);
-            for (int j = 0; j < nY; j++) {
-                //get the ray through the pixel
-
-                if(i==12&&j==23){
-                    int u = 5;
-                    //color=new Color(255,0,0);
-                }
-
-                Ray ray = this.constructRay(nX, nY, j, i);
-                Color color = rayTracerBase.traceRay(ray);
-
-
-
-
-
-                imageWriter.writePixel(j, i, color);
-            }
-        }
+        Pixel.initialize(nY, nX, printInterval);
+        IntStream.range(0,nY).parallel().forEach(i-> {
+                    IntStream.range(0, nX).parallel().forEach(j -> {
+                        Ray ray = this.constructRay(nX, nY, j, i);
+                        Color pixelColor = rayTracerBase.traceRay(ray);
+                        imageWriter.writePixel(j, i, pixelColor);
+                        Pixel.pixelDone();
+                        Pixel.printPixel();
+                    });
+                });
     }
 
 

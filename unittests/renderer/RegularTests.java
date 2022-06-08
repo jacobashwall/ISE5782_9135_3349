@@ -33,7 +33,6 @@ public class RegularTests {
         scene.setResolution(10);
         camera.setImageWriter(new ImageWriter("RegularRefractionTwoSpheres", 500, 500)) //
                 .setRayTracer(new RayTracerBasic(scene)) //
-                .setBaseOrRegular(true)
                 .renderImage(); //
         camera.writeToImage();
     }

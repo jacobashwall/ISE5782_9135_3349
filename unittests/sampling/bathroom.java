@@ -5,10 +5,7 @@ import lighting.PointLight;
 import lighting.SpotLight;
 import org.junit.jupiter.api.Test;
 import primitives.*;
-import renderer.Camera;
-import renderer.ImageWriter;
-import renderer.RayTracerBasic;
-import renderer.Sampling;
+import renderer.*;
 import scene.Scene;
 
 //ctrl+shift+numpad-/+ in order to collapse or expand
@@ -247,7 +244,7 @@ public class bathroom {
                 fixLeft = 80;
             }
             Polygon closetDoorFront = new Polygon(new Point(-225 + j * tileWidth, 0, 100), new Point(-225 + tileWidth + j * tileWidth - gap, 0, 100), new Point(-225 + +tileWidth + j * tileWidth - gap, tileHeight, 100), new Point(-225 + j * tileWidth, tileHeight, 100));
-            closetDoorFront.setEmission(new Color(164,116,73)).setMaterial(new Material().setKs(0.5).setKd(0.5).setnShininess(300).setKr(0.01).setKsG(0.5));
+            closetDoorFront.setEmission(new Color(173,255,47)).setMaterial(new Material().setKs(0.5).setKd(0.5).setnShininess(300).setKr(0.01).setKsG(0));
             scene.geometries.add(closetDoorFront);
             Polygon closetDoorLeft = new Polygon(new Point(-225 + j * tileWidth, 0, 100), new Point(-225 + j * tileWidth, 0, fixLeft), new Point(-225 + j * tileWidth, tileHeight, fixLeft), new Point(-225 + j * tileWidth, tileHeight, 100));
             closetDoorLeft.setEmission(new Color(100, 100, 100)).setMaterial(new Material().setKs(0).setKd(0.5));

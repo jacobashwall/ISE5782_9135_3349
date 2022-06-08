@@ -78,7 +78,6 @@ public class DiffusiveGlassTest {
         ImageWriter imageWriter = new ImageWriter("SomethingCool", 500, 500);
         camera.setImageWriter(imageWriter) //
                 .setRayTracer(new RayTracerBasic(scene)) //
-                .setBaseOrRegular(true)
                 .renderImage(); //
         camera.writeToImage();
 
@@ -86,7 +85,7 @@ public class DiffusiveGlassTest {
 
     @Test
     public void colorBlend() {
-        Sampling.setTargetAreaResolution(1);
+        Sampling.setTargetAreaResolution(9);
         Scene scene = new Scene("color blending");
         scene.setBackground(new Color(255, 255, 255));
         Camera camera = new Camera(new Point(0, 0, 10000), new Vector(0, 0, -1), new Vector(0, 1, 0)) //

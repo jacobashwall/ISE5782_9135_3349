@@ -37,7 +37,6 @@ public class ShadowTests {
 						.setKl(1E-5).setKq(1.5E-7));
 		scene.setResolution(5);
 		camera.setImageWriter(new ImageWriter(pictName, 400, 400)) //
-				.setBaseOrRegular(true)
 				.renderImage();
 		camera.writeToImage();
 	}

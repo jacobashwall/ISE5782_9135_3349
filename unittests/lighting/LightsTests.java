@@ -86,13 +86,28 @@ public class LightsTests {
 		scene1.geometries.add(sphere);
 		scene1.lights.add(new SpotLight(spCL, spPL, new Vector(1, 1, -0.5)).setKl(0.001).setKq(0.0001));
 
-		ImageWriter imageWriter = new ImageWriter("lightSphereSpot", 500, 500);
+		scene1.setResolution(5);
+		ImageWriter imageWriter = new ImageWriter("RegularlightSphereSpot", 500, 500);
 		camera1.setImageWriter(imageWriter) //
 				.setRayTracer(new RayTracerBasic(scene1)) //
+				.setBaseOrRegular(true)
 				.renderImage(); //
 		camera1.writeToImage(); //
 	}
 
+	@Test
+	public void normalSphereSpot() {
+		scene1.geometries.add(sphere);
+		scene1.lights.add(new SpotLight(spCL, spPL, new Vector(1, 1, -0.5)).setKl(0.001).setKq(0.0001));
+
+		scene1.setResolution(5);
+		ImageWriter imageWriter = new ImageWriter("lightSphereSpot", 50, 50);
+		camera1.setImageWriter(imageWriter) //
+				.setRayTracer(new RayTracerBasic(scene1)) //
+				//.setBaseOrRegular(true)
+				.renderImage(); //
+		camera1.writeToImage(); //
+	}
 	/**
 	 * Produce a picture of two triangles lighted by a directional light
 	 */
@@ -253,6 +268,7 @@ public class LightsTests {
 		scene4.lights.add(new PointLight(trCL,new Point(0,0,75)).setKl(0.01).setKq(0.002));
 	//	scene4.lights.add(new SpotLight(trCL, new Point(0,100,50), new Vector(0,-1,-1)).setKl(0.001).setKq(0.0001));
 
+		scene4.setResolution(1);
 		ImageWriter imageWriter = new ImageWriter("CylinderTest5", 500, 500);
 		camera3.setImageWriter(imageWriter) //
 				.setRayTracer(new RayTracerBasic(scene4)) //

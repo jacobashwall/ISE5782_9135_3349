@@ -261,10 +261,20 @@ public class Camera {
             System.out.println(i+"/"+nX);
             for (int j = 0; j < nY; j++) {
                 //get the ray through the pixel
-                if(i==3 && j==1)
-                    System.out.println(100);
+
+                if(i==12&&j==23){
+                    int u = 5;
+                    //color=new Color(255,0,0);
+                }
+
                 Ray ray = this.constructRay(nX, nY, j, i);
-                imageWriter.writePixel(j, i, rayTracerBase.traceRay(ray));
+                Color color = rayTracerBase.traceRay(ray);
+
+
+
+
+
+                imageWriter.writePixel(j, i, color);
             }
         }
     }
@@ -285,6 +295,7 @@ public class Camera {
         for (int i = 0; i < nX; i++) {
             for (int j = 0; j < nY; j++) {
                 //Coordinates of the net
+
                 if (i % interval == 0 || j % interval == 0 || i == nX - 1 || j == nY - 1) {
                     imageWriter.writePixel(j, i, color);
                 }

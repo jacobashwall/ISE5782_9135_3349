@@ -351,22 +351,22 @@ public class RayTracerRegular extends RayTracerBase {
             tMaxZ = Math.abs((firstIntersection.getZ() - (boundary[2][0] + indexZ * scene.getZEdgeVoxel())) / dirZ);
         }
 
-
-        double tDeltaX = Math.abs(scene.getXEdgeVoxel() / dirX);
-        double tDeltaY = Math.abs(scene.getYEdgeVoxel() / dirY);
-        double tDeltaZ = Math.abs(scene.getZEdgeVoxel() / dirZ);
-
+        //move over all the geometries of the first voxel and find the closest intersection (if there is any)
         Geometries list = scene.voxels.get(new Double3(indexX, indexY, indexZ));
         Intersectable.GeoPoint closestIntersection;
         if (list != null) {
             closestIntersection = findClosestIntersection(ray, list);
+            //check if the intersection point exists, and it's inside the voxel
             if (closestIntersection != null && isInsideVoxel(index, closestIntersection.point, boundary))
                 return closestIntersection;
         }
-
+        //if there is no intersection points in the first voxel search in the rest of the ray's way
         //since the ray starts in the middle of a voxel (since we moved it on the intersection with the  scene CBR,
         //or the head is already inside the scene SCR), we had to calculate the remaining distance to the fist voxel's edge.
-        //But from now on, we can use the constant voxel size, since it would always intersect with the ed
+        //But from now on, we can use the constant voxel size, since it would always intersect with the edge of the voxel.
+        double tDeltaX = Math.abs(scene.getXEdgeVoxel() / dirX);
+        double tDeltaY = Math.abs(scene.getYEdgeVoxel() / dirY);
+        double tDeltaZ = Math.abs(scene.getZEdgeVoxel() / dirZ);
         do {
 
             if (tMaxX < tMaxY) {
@@ -496,6 +496,13 @@ public class RayTracerRegular extends RayTracerBase {
             return 0;
     }
 
+    /**
+     * checks if the intersection point ith the geometry is inside the voxel
+     * @param index the voxel's index
+     * @param intersection the intersection point of teh ray with the geometry
+     * @param boundary the boundary of the scene
+     * @return if the intersection point ith the geometry is inside the voxel
+     */
     private boolean isInsideVoxel(Point index, Point intersection, int[][] boundary) {
         double xMax = boundary[0][0] + (index.getX() + 1) * scene.getXEdgeVoxel();
         double yMax = boundary[1][0] + (index.getY() + 1) * scene.getYEdgeVoxel();
@@ -505,13 +512,9 @@ public class RayTracerRegular extends RayTracerBase {
         double yMin = boundary[1][0] + (index.getY()) * scene.getYEdgeVoxel();
         double zMin = boundary[2][0] + (index.getZ()) * scene.getZEdgeVoxel();
 
-        if (intersection.getX() >= xMin && intersection.getX() <= xMax
+        return intersection.getX() >= xMin && intersection.getX() <= xMax
                 && intersection.getY() >= yMin && intersection.getY() <= yMax
-                && intersection.getZ() >= zMin && intersection.getZ() <= zMax) {
-            return true;
-        }
-
-        return false;
+                && intersection.getZ() >= zMin && intersection.getZ() <= zMax;
     }
 
     /**

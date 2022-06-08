@@ -5,7 +5,10 @@ import lighting.PointLight;
 import lighting.SpotLight;
 import org.junit.jupiter.api.Test;
 import primitives.*;
-import renderer.*;
+import renderer.Camera;
+import renderer.ImageWriter;
+import renderer.RayTracerBasic;
+import renderer.Sampling;
 import scene.Scene;
 
 //ctrl+shift+numpad-/+ in order to collapse or expand
@@ -272,7 +275,7 @@ public class bathroom {
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 20; j++) {
                 Polygon polygon = new Polygon(new Point(-500 + j * tileWidth, -1, i * tileHeight), new Point(-500 + tileWidth + j * tileWidth - gap, -1, i * tileHeight), new Point(-500 + tileWidth + j * tileWidth - gap, -1, tileHeight + i * tileHeight - gap), new Point(-500 + j * tileWidth, -1, tileHeight + i * tileHeight - gap));
-                polygon.setEmission(new Color(143, 188, 143)).setMaterial(new Material().setKr(0.3).setKd(1).setKsG(0.5));
+                polygon.setEmission(new Color(143, 188, 143)).setMaterial(new Material().setKr(0.3).setKd(1).setKsG(0));
                 scene.geometries.add(polygon);
                 //new Color(143,188,143)
             }
@@ -893,8 +896,7 @@ public class bathroom {
         //From back
         //renderBack(scene,camera);
         //Final picture
-        //renderFinal(scene, camera);
-        renderFinalRegular(scene, camera);
+        renderFinal(scene, camera);
         //endregion
     }
 
@@ -947,20 +949,11 @@ public class bathroom {
     private void renderFinal(Scene scene, Camera camera) {
         camera.moveCamera(new Point(-920, 420, 1100), new Point(0, 200, 0))
                 .setVPDistance(4000);
-        ImageWriter imageWriter = new ImageWriter("zFinalNoRegular", 500, 500);
+        ImageWriter imageWriter = new ImageWriter("zFinal", 500, 500);
+        scene.setResolution(5);
         camera.setImageWriter(imageWriter) //
                 .setRayTracer(new RayTracerBasic(scene)) //
-                .renderImage(); //
-        camera.writeToImage();
-        // camera.moveCamera(new Point(-900, 400, 1100), new Point(0, 200, 0))
-        //                .setVPDistance(4000);
-    }
-    private void renderFinalRegular(Scene scene, Camera camera) {
-        camera.moveCamera(new Point(-920, 420, 1100), new Point(0, 200, 0))
-                .setVPDistance(4000);
-        ImageWriter imageWriter = new ImageWriter("zFinalRegular", 500, 500);
-        camera.setImageWriter(imageWriter) //
-                .setRayTracer(new RayTracerRegular(scene))//
+                //.setBaseOrRegular(true)
                 .renderImage(); //
         camera.writeToImage();
         // camera.moveCamera(new Point(-900, 400, 1100), new Point(0, 200, 0))

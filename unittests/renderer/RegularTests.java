@@ -1,10 +1,10 @@
 package renderer;
 
 
-import static java.awt.Color.BLUE;
-import static java.awt.Color.RED;
+import static java.awt.Color.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+import geometries.Polygon;
 import geometries.Sphere;
 import lighting.SpotLight;
 import org.junit.jupiter.api.Test;
@@ -30,8 +30,10 @@ public class RegularTests {
                 new SpotLight(new Color(1000, 600, 0), new Point(-100, -100, 500), new Vector(-1, -1, -2)) //
                         .setKl(0.0004).setKq(0.0000006));
 
+        scene.setResolution(10);
         camera.setImageWriter(new ImageWriter("RegularRefractionTwoSpheres", 500, 500)) //
-                .setRayTracer(new RayTracerRegular(scene)) //
+                .setRayTracer(new RayTracerBasic(scene)) //
+                .setBaseOrRegular(true)
                 .renderImage(); //
         camera.writeToImage();
     }

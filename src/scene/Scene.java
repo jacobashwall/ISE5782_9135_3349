@@ -44,6 +44,7 @@ public class Scene {
     /**
      * the resolution of the voxels that divide the scene
      */
+    public double resolution;
     public double[] resolutions;
 
     //voxel attributes
@@ -72,6 +73,8 @@ public class Scene {
      */
     public Scene(String name) {
         this.name = name;
+
+
     }
 
     /**
@@ -136,6 +139,10 @@ public class Scene {
      */
     public Scene setGeometries(Geometries geometries) {
         this.geometries = geometries;
+
+        this.xEdgeScene = this.geometries.boundary[0][1] - this.geometries.boundary[0][0];
+        this.yEdgeScene = this.geometries.boundary[1][1] - this.geometries.boundary[1][0];
+        this.zEdgeScene = this.geometries.boundary[2][1] - this.geometries.boundary[2][0];
         return this;
     }
 
@@ -147,6 +154,17 @@ public class Scene {
      */
     public Scene setLights(List<LightSource> lights) {
         this.lights = lights;
+        return this;
+    }
+
+   public Scene setResolution(int resolution){
+
+      /* this.xEdgeScene = this.geometries.boundary[0][1] - this.geometries.boundary[0][0];
+       this.yEdgeScene = this.geometries.boundary[1][1] - this.geometries.boundary[1][0];
+       this.zEdgeScene = this.geometries.boundary[2][1] - this.geometries.boundary[2][0];*/
+
+
+       this.resolution = resolution;// = new double[]{resolution,resolution,resolution};
         return this;
     }
 
@@ -174,9 +192,11 @@ public class Scene {
         double geometriesVolume = this.geometries.volume;
         double size = this.geometries.getObjectsSize();
 
-        this.xEdgeScene = this.geometries.boundary[0][1] - this.geometries.boundary[0][0];
+
+       /* this.xEdgeScene = this.geometries.boundary[0][1] - this.geometries.boundary[0][0];
         this.yEdgeScene = this.geometries.boundary[1][1] - this.geometries.boundary[1][0];
         this.zEdgeScene = this.geometries.boundary[2][1] - this.geometries.boundary[2][0];
+
 
         double bigCbrVolume = xEdgeScene * yEdgeScene * zEdgeScene;
         if (bigCbrVolume == 0)
@@ -186,18 +206,26 @@ public class Scene {
 
         int xResolution = (int) Math.ceil(xEdgeScene * factor);
         int yResolution = (int) Math.ceil(yEdgeScene * factor);
-        int zResolution = (int) Math.ceil(zEdgeScene * factor);
+        int zResolution = (int) Math.ceil(zEdgeScene * factor);*/
 
-        this.resolutions = new double[]{xResolution, yResolution, zResolution};
+        this.xEdgeScene = this.geometries.boundary[0][1] - this.geometries.boundary[0][0];
+        this.yEdgeScene = this.geometries.boundary[1][1] - this.geometries.boundary[1][0];
+        this.zEdgeScene = this.geometries.boundary[2][1] - this.geometries.boundary[2][0];
+
+
+        resolutions = new double[]{resolution,resolution,resolution};
+        /*return this;
+
+        this.resolutions = new double[]{xResolution, yResolution, zResolution};*/
     }
 
     /**
      * sets the attributes of the voxels
      */
     private void setVoxelsEdges() {
-        this.xEdgeVoxel = ((double) this.xEdgeScene) / resolutions[0];
-        this.yEdgeVoxel = ((double) this.yEdgeScene) / resolutions[1];
-        this.zEdgeVoxel = ((double) this.zEdgeScene) / resolutions[2];
+        this.xEdgeVoxel = ((double) this.xEdgeScene) / resolution;
+        this.yEdgeVoxel = ((double) this.yEdgeScene) / resolution;
+        this.zEdgeVoxel = ((double) this.zEdgeScene) / resolution;
     }
 
     /**

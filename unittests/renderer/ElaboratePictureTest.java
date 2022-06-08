@@ -26,6 +26,7 @@ public class ElaboratePictureTest {
     public void createElaboratePicture() {
         //settings
         Scene scene = new Scene("Test scene");
+
         Camera camera = new Camera(new Point(0, 100, 10000), new Vector(0, 0, -1), new Vector(0, 1, 0)) //
                 .setVPSize(2500, 2500).setVPDistance(8500);//.setBaseOrRegular(true);
 
@@ -122,8 +123,9 @@ public class ElaboratePictureTest {
 
 
         //taking picture for images without the wall
+        scene.setResolution(5);
         camera.moveCamera(new Point(0, 0, 0), new Point(0, 1000, -6000)).setVPDistance(2500);
-        ImageWriter imageWriter = new ImageWriter("newElaboratePictureWallNewLight", 500, 500);
+        ImageWriter imageWriter = new ImageWriter("newElaboratePictureWallNewLight", 50, 50);
         camera.setImageWriter(imageWriter)//
                 .setRayTracer(new RayTracerBasic(scene)) //
                 .renderImage(); //

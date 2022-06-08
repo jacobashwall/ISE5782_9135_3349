@@ -11,6 +11,7 @@ import scene.Scene;
 import java.util.*;
 
 import static primitives.Util.alignZero;
+import static primitives.Util.isZero;
 
 /**
  * Ray tracer that using the regular grid
@@ -357,62 +358,89 @@ public class RayTracerRegular extends RayTracerBase {
     private Intersectable.GeoPoint findClosestIntersection(Ray ray, Geometries geometries) {
         return ray.findClosestGeoPoint(geometries.findGeoIntersections(ray));
     }
-
+private final double EPSILON = 0.01;
     private Intersectable.GeoPoint findFirstIntersectionInVoxel(Ray ray){
         Point firstIntersection = firstIntersection(ray);
         if(firstIntersection == null) return null;
         Point head = ray.getP0();
         Vector dir = ray.getDir();
         int[][] boundary = scene.geometries.boundary;
-        Point index = VoxelByPoint(firstIntersection,boundary);
+        Point newFirstIntersection = fixPoint(firstIntersection,boundary);
+        Point index = VoxelByPoint(newFirstIntersection,boundary,ray.getDir());
 
         int x = (int)index.getX();
         int y = (int)index.getY();
         int z = (int)index.getZ();
 
-        if(x==y&&y==z&&z==0){
-            int u = 5;
-        }
-
-
         int stepX = determineDirection(dir.getX());
         int stepY = determineDirection(dir.getY());
         int stepZ = determineDirection(dir.getZ());
 
-        double tMaxX  = (boundary[0][0] + firstIntersection.getX()  - head.getX()) / dir.getX();
-        double tMaxY  = (boundary[1][0] + firstIntersection.getY()  - head.getY()) / dir.getY();
-        double tMaxZ  = (boundary[2][0] + firstIntersection.getZ()  - head.getZ()) / dir.getZ();
+        double tMaxX = 0;
+        double tMaxY = 0;
+        double tMaxZ = 0;
+        if(stepX==1) {
+            tMaxX = Math.abs((boundary[0][0] + (index.getX() + 1) * scene.getXEdgeVoxel() - firstIntersection.getX()) / dir.getX());
+        }else if(stepX==-1){
+            tMaxX = Math.abs((firstIntersection.getX()-(boundary[0][0] + (index.getX()) * scene.getXEdgeVoxel())) / dir.getX());
+        }
+        if(stepY==1) {
+            tMaxY = Math.abs((boundary[1][0] + (index.getY() + 1) * scene.getYEdgeVoxel() - firstIntersection.getY()) / dir.getY());
+        }else if(stepY==-1){
+            tMaxY = Math.abs((firstIntersection.getY()-(boundary[1][0] + (index.getY()) * scene.getYEdgeVoxel())) / dir.getY());
+        }
+        if(stepZ==1) {
+            tMaxZ = Math.abs((boundary[2][0] + (index.getZ() + 1) * scene.getZEdgeVoxel() - firstIntersection.getZ()) / dir.getZ());
+        }else if(stepZ==-1){
+            tMaxZ = Math.abs((firstIntersection.getZ()-(boundary[2][0] + (index.getZ()) * scene.getZEdgeVoxel())) / dir.getZ());
+        }
 
-        double tDeltaX = scene.getXEdgeVoxel()/dir.getX();
-        double tDeltaY = scene.getYEdgeVoxel()/dir.getY();
-        double tDeltaZ = scene.getZEdgeVoxel()/dir.getZ();
+        double tDeltaX = Math.abs(scene.getXEdgeVoxel()/dir.getX());
+        double tDeltaY = Math.abs(scene.getYEdgeVoxel()/dir.getY());
+        double tDeltaZ = Math.abs(scene.getZEdgeVoxel()/dir.getZ());
 
-        Geometries list;
+        if(tMaxX==0){
+            tMaxX = tDeltaX;
+        }
+
+        if(tMaxY==0){
+            tMaxY = tDeltaY;
+        }
+
+        if(tMaxZ==0){
+            tMaxZ = tDeltaZ;
+        }
+
+        Geometries list =  scene.voxels.get(new Double3(x,y,z));
         Intersectable.GeoPoint closestIntersection;
+        if(list!=null) {
+            closestIntersection = findClosestIntersection(ray, list);
+            if (closestIntersection != null && isInsideVoxel(index,closestIntersection.point,boundary)) return closestIntersection;
+        }
 
         do {
 
             if(tMaxX < tMaxY) {
                 if(tMaxX < tMaxZ) {
                     x= x + stepX;
-                    if((x>0 && x == scene.resolutions[0]+1) || (x<=0))// && x==-1))
+                    if((x>0 && x == scene.resolution+1) || (x<0))
                         return null; /* outside grid */
                     tMaxX= tMaxX + tDeltaX;
                 } else {
                     z= z + stepZ;
-                    if((z>0 && z == scene.resolutions[2]+1) || (z<=0))//&& z==-1))
+                    if((z>0 && z == scene.resolution+1) || (z<0))
                         return null;
                     tMaxZ= tMaxZ + tDeltaZ;
                 }
             } else {
                 if(tMaxY < tMaxZ) {
                     y= y + stepY;
-                    if((y>0 && y == scene.resolutions[1]+1) || (y<=0))// && y==-1))
+                    if((y>0 && y == scene.resolution+1) || (y<0))
                         return null;
                     tMaxY= tMaxY + tDeltaY;
                 } else {
                     z= z + stepZ;
-                    if((z>0 && z == scene.resolutions[2]+1) || (z<=0))// && z==-1))
+                    if((z>0 && z == scene.resolution+1) || (z<0))
                         return null;
                     tMaxZ= tMaxZ + tDeltaZ;
                 }
@@ -420,11 +448,13 @@ public class RayTracerRegular extends RayTracerBase {
             list = scene.voxels.get(new Double3(x,y,z));
             if(list == null) {
                 closestIntersection = null;
-            }else{
+            }
+            else{
                 closestIntersection = findClosestIntersection(ray,list);
             }
 
-        } while(closestIntersection == null);
+        } while(closestIntersection == null || !isInsideVoxel(new Point(x,y,z),closestIntersection.point,boundary));
+
 
         return closestIntersection;
         //return closestIntersection == null ? scene.background : calcColor(closestIntersection, ray);
@@ -437,10 +467,6 @@ public class RayTracerRegular extends RayTracerBase {
         double z = ray.getP0().getZ();
         Point head = ray.getP0();
 
-        /*int xCoordinate;
-        int yCoordinate;
-        int zCoordinate;*/
-
         int[][] boundary = scene.geometries.boundary;
 
         if(x>=boundary[0][0]&&x<=boundary[0][1]&&
@@ -449,11 +475,6 @@ public class RayTracerRegular extends RayTracerBase {
 
             return head;
 
-            /*xCoordinate = (int)((x-boundary[0][0])/scene.getXEdgeVoxel());
-            yCoordinate = (int)((y-boundary[1][0])/scene.getYEdgeVoxel());
-            zCoordinate = (int)((z-boundary[2][0])/scene.getZEdgeVoxel());*/
-
-            //return new Point(xCoordinate,yCoordinate,zCoordinate);
         }
         Point p1 = new Point (boundary[0][0],boundary[1][0],boundary[2][0]);//(0,0,0)
         Point p2 = new Point (boundary[0][1],boundary[1][0],boundary[2][0]);//(1,0,0)
@@ -472,55 +493,57 @@ public class RayTracerRegular extends RayTracerBase {
         Polygon right = new Polygon(p2,p5,p8,p6);//right
 
         Polygon[]faces = new Polygon[]{bottom,front,left,up,behind,right};
-        List<Point> intersections = null;
+        List<Point> intersections;
+        Point closest = null;
 
         double distance = Double.POSITIVE_INFINITY;
         for (Polygon p:faces) {
             intersections = p.findIntersections(ray);
             if(intersections!=null){
-                if(intersections.get(0).distanceSquared(head)<distance){
+                if(intersections.get(0).distance(head)<distance){
                     distance = intersections.get(0).distance(head);
+                    closest = intersections.get(0);
                 }
             }
         }
 
-       /* PriorityQueue<Point> closestPoints = new PriorityQueue<Point>(Comparator.comparingDouble(p -> p.distanceSquared(head)));
-
-        closestPoints.add(new Point (boundary[0][0],boundary[1][0],boundary[2][0]));
-        closestPoints.add(new Point (boundary[0][1],boundary[1][0],boundary[2][0]));
-        closestPoints.add(new Point (boundary[0][0],boundary[1][1],boundary[2][0]));
-        closestPoints.add(new Point (boundary[0][0],boundary[1][0],boundary[2][1]));
-        closestPoints.add(new Point (boundary[0][1],boundary[1][1],boundary[2][0]));
-        closestPoints.add(new Point (boundary[0][1],boundary[1][0],boundary[2][1]));
-        closestPoints.add(new Point (boundary[0][0],boundary[1][1],boundary[2][1]));
-        closestPoints.add(new Point (boundary[0][1],boundary[1][1],boundary[2][1]));
-
-        List<Point> rectanglePoints = Collections.emptyList();
-        for(int i = 0; i < 4; i++){
-            rectanglePoints.add(closestPoints.poll());
-        }
-        Polygon rectangle;
-        if(rectanglePoints.get(0).subtract(rectanglePoints.get(1)).dotProduct(rectanglePoints.get(0).subtract(rectanglePoints.get(2))) == 0){
-            rectangle = new Polygon(rectanglePoints.get(1),rectanglePoints.get(0),rectanglePoints.get(2),rectanglePoints.get(3));
-        }
-        else if(rectanglePoints.get(0).distanceSquared(rectanglePoints.get(1))>(rectanglePoints.get(0).distanceSquared(rectanglePoints.get(2)))){
-            rectangle = new Polygon(rectanglePoints.get(1),rectanglePoints.get(2),rectanglePoints.get(0),rectanglePoints.get(3));
-        }
-        else{
-            rectangle = new Polygon(rectanglePoints.get(1),rectanglePoints.get(0),rectanglePoints.get(3),rectanglePoints.get(2));
-        }
-
-        */
-
-        //Point intersection = ray.getPoint(distance);
-        return distance<Double.POSITIVE_INFINITY?ray.getPoint(distance):null;
+        return closest;
 
     }
 
-    private Point VoxelByPoint(Point p,int[][] boundary){
-        int xCoordinate = (int)((p.getX()-boundary[0][0])/scene.getXEdgeVoxel());
-        int yCoordinate = (int)((p.getY()-boundary[1][0])/scene.getYEdgeVoxel());
-        int zCoordinate = (int)((p.getZ()-boundary[2][0])/scene.getZEdgeVoxel());
+    private Point VoxelByPoint(Point p,int[][] boundary,Vector dir){
+        double x = p.getX();
+        double y = p.getY();
+        double z = p.getZ();
+
+
+        if(alignZero((x-boundary[0][0])/scene.getXEdgeVoxel())%1 == 0) {
+            if (dir.getX() < 0) {
+                x=x-EPSILON;
+            }else if(dir.getX()>0){
+                x=x+EPSILON;
+            }
+        }
+
+        if(alignZero((y-boundary[0][0])/scene.getYEdgeVoxel())%1 == 0) {
+            if (dir.getY() < 0) {
+                y=y-EPSILON;
+            }else if(dir.getY()>0){
+                y=y+EPSILON;
+            }
+        }
+
+        if(alignZero((z-boundary[0][0])/scene.getZEdgeVoxel())%1 == 0) {
+            if (dir.getZ() < 0) {
+                z=z-EPSILON;
+            }else if(dir.getZ()>0){
+                z=z+EPSILON;
+            }
+        }
+
+        int xCoordinate = (int)((x-boundary[0][0])/scene.getXEdgeVoxel());
+        int yCoordinate = (int)((y-boundary[1][0])/scene.getYEdgeVoxel());
+        int zCoordinate = (int)((z-boundary[2][0])/scene.getZEdgeVoxel());
 
         return new Point(xCoordinate,yCoordinate,zCoordinate);
     }
@@ -532,6 +555,45 @@ public class RayTracerRegular extends RayTracerBase {
             return -1;
         else
             return 0;
+    }
+
+    private boolean isInsideVoxel(Point index, Point intersection, int[][]boundary){
+        double xMax = boundary[0][0]+ (index.getX()+1)* scene.getXEdgeVoxel();
+        double yMax = boundary[1][0]+(index.getY()+1)* scene.getYEdgeVoxel();
+        double zMax = boundary[2][0]+(index.getZ()+1)* scene.getZEdgeVoxel();
+
+        double xMin = boundary[0][0]+ (index.getX())* scene.getXEdgeVoxel();
+        double yMin = boundary[1][0]+(index.getY())* scene.getYEdgeVoxel();
+        double zMin = boundary[2][0]+(index.getZ())* scene.getZEdgeVoxel();
+
+        if(intersection.getX()>=xMin && intersection.getX()<=xMax
+             &&intersection.getY()>=yMin && intersection.getY()<=yMax
+                &&intersection.getZ()>=zMin && intersection.getZ()<=zMax){
+            return true;
+        }
+
+        return false;
+    }
+
+    private Point fixPoint(Point p, int[][]bounary){
+        Vector vecX = new Vector(1,0,0).scale(EPSILON);
+        Vector vecY = new Vector(0,1,0).scale(EPSILON);
+        Vector vecZ = new Vector(0,0,1).scale(EPSILON);
+        if(isZero((p.getX()-bounary[0][0]))){
+            p = p.add(vecX);
+        }
+        if(isZero((p.getX()-bounary[0][1]))){
+            p = p.add(vecX.scale(-1));
+        }if(isZero((p.getY()-bounary[1][0]))){
+            p = p.add(vecY);
+        }if(isZero((p.getY()-bounary[1][1]))){
+            p = p.add(vecY.scale(-1));
+        }if(isZero((p.getZ()-bounary[2][0]))){
+            p = p.add(vecZ);
+        }if(isZero((p.getZ()-bounary[2][1]))){
+            p = p.add(vecZ.scale(-1));
+        }
+        return p;
     }
 
 

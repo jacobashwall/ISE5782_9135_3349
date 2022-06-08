@@ -37,10 +37,13 @@ public class DiffusiveGlassTest {
                 new SpotLight(new Color(1000, 600, 0), new Point(0, 0, -100), new Vector(0, 0, 1)) //
                         .setKl(0.0004).setKq(0.0000006));
 
-        scene.geometries.add(new Polygon(new Point(-1000,-1000,25),new Point(1000,-1000,25),new Point(1000,0,25),new Point(-1000,0,25)).setMaterial(new Material().setKt(0.5).setKdG(0.5)).setEmission(new Color(122,122,122)));
+        scene.setResolution(5);
+        scene.geometries.add(new Polygon(new Point(-1000,-1000,25),new Point(1000,-1000,25),new Point(1000,0,25),new Point(-1000,0,25))
+                .setMaterial(new Material().setKt(0.5).setKdG(0.5)).setEmission(new Color(122,122,122)));
                 ImageWriter imageWriter = new ImageWriter("DiffusiveGlass", 500, 500);
         camera.setImageWriter(imageWriter) //
                 .setRayTracer(new RayTracerBasic(scene)) //
+                //.setBaseOrRegular(true)
                 .renderImage(); //
         camera.writeToImage();
     }
@@ -71,9 +74,11 @@ public class DiffusiveGlassTest {
         scene.lights.add(new DirectionalLight(new Color(1020, 400, 400), new Vector(0, 0, -1))); //
 
 
+        scene.setResolution(5);
         ImageWriter imageWriter = new ImageWriter("SomethingCool", 500, 500);
         camera.setImageWriter(imageWriter) //
                 .setRayTracer(new RayTracerBasic(scene)) //
+                .setBaseOrRegular(true)
                 .renderImage(); //
         camera.writeToImage();
 

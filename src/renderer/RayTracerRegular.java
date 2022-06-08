@@ -365,15 +365,18 @@ public class RayTracerRegular extends RayTracerBase {
         //or the head is already inside the scene SCR), we had to calculate the remaining distance to the fist voxel's edge.
         //But from now on, we can use the constant voxel size, since it would always intersect with the edge of the voxel.
         //now would do the same calculation on the rest of the ray's way in the voxels grid.
+
+
         double tDeltaX = Math.abs(scene.getXEdgeVoxel() / dirX);
         double tDeltaY = Math.abs(scene.getYEdgeVoxel() / dirY);
         double tDeltaZ = Math.abs(scene.getZEdgeVoxel() / dirZ);
         do {
+            //move the point a voxel
             if (tMaxX < tMaxY) {
                 if (tMaxX < tMaxZ) {
                     indexX = indexX + stepX;
                     if ((indexX > 0 && indexX == scene.resolution + 1) || (indexX < 0))
-                        return null; /* outside grid */
+                        return null; //the ray leaves the scene's CBR with no intersection
                     tMaxX = tMaxX + tDeltaX;
                 } else {
                     indexZ = indexZ + stepZ;
@@ -394,6 +397,7 @@ public class RayTracerRegular extends RayTracerBase {
                     tMaxZ = tMaxZ + tDeltaZ;
                 }
             }
+            //find the intersection inside teh current voxel
             list = scene.voxels.get(new Double3(indexX, indexY, indexZ));
             if (list == null) {
                 closestIntersection = null;

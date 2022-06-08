@@ -52,7 +52,7 @@ public class Scene {
      * hash map of all voxels in the scene- their index as the key and the list of geometric entities that intersects
      * with the voxel as the value.
      */
-    public HashMap<Double3, Geometries> voxels = new HashMap<Double3,Geometries>();
+    public HashMap<Double3, Geometries> voxels = new HashMap<Double3, Geometries>();
     /**
      * the size of the edge of the voxel on the X axis
      */
@@ -157,14 +157,14 @@ public class Scene {
         return this;
     }
 
-   public Scene setResolution(int resolution){
+    public Scene setResolution(int resolution) {
 
       /* this.xEdgeScene = this.geometries.boundary[0][1] - this.geometries.boundary[0][0];
        this.yEdgeScene = this.geometries.boundary[1][1] - this.geometries.boundary[1][0];
        this.zEdgeScene = this.geometries.boundary[2][1] - this.geometries.boundary[2][0];*/
 
 
-       this.resolution = resolution;// = new double[]{resolution,resolution,resolution};
+        this.resolution = resolution;// = new double[]{resolution,resolution,resolution};
         return this;
     }
 
@@ -173,6 +173,7 @@ public class Scene {
      */
     public void calcVoxels() {
         this.setBoundary();
+        this.setSceneEdges();
         this.setResolution();
         this.setVoxelsEdges();
         this.setVoxelsGeometries();
@@ -186,37 +187,19 @@ public class Scene {
     }
 
     /**
-     * sets the resolution of the scene to divide to voxels
+     * sets the edges of the scene
      */
-    private void setResolution() {
-        double geometriesVolume = this.geometries.volume;
-        double size = this.geometries.getObjectsSize();
-
-
-       /* this.xEdgeScene = this.geometries.boundary[0][1] - this.geometries.boundary[0][0];
-        this.yEdgeScene = this.geometries.boundary[1][1] - this.geometries.boundary[1][0];
-        this.zEdgeScene = this.geometries.boundary[2][1] - this.geometries.boundary[2][0];
-
-
-        double bigCbrVolume = xEdgeScene * yEdgeScene * zEdgeScene;
-        if (bigCbrVolume == 0)
-            bigCbrVolume = 1;//if the scene is not 3 dimensional
-        double density = ((geometriesVolume / xEdgeScene)/yEdgeScene)/zEdgeScene;
-        double factor = Math.pow(density * size / bigCbrVolume, 1.0 / 3);
-
-        int xResolution = (int) Math.ceil(xEdgeScene * factor);
-        int yResolution = (int) Math.ceil(yEdgeScene * factor);
-        int zResolution = (int) Math.ceil(zEdgeScene * factor);*/
-
+    private void setSceneEdges() {
         this.xEdgeScene = this.geometries.boundary[0][1] - this.geometries.boundary[0][0];
         this.yEdgeScene = this.geometries.boundary[1][1] - this.geometries.boundary[1][0];
         this.zEdgeScene = this.geometries.boundary[2][1] - this.geometries.boundary[2][0];
+    }
 
-
-        resolutions = new double[]{resolution,resolution,resolution};
-        /*return this;
-
-        this.resolutions = new double[]{xResolution, yResolution, zResolution};*/
+    /**
+     * sets the resolution of the scene to divide to voxels
+     */
+    private void setResolution() {
+        resolutions = new double[]{resolution, resolution, resolution};
     }
 
     /**

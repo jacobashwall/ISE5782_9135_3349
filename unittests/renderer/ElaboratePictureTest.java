@@ -125,9 +125,9 @@ public class ElaboratePictureTest {
         //taking picture for images without the wall
         scene.setResolution(5);
         camera.moveCamera(new Point(0, 0, 0), new Point(0, 1000, -6000)).setVPDistance(2500);
-        ImageWriter imageWriter = new ImageWriter("newElaboratePictureWallNewLight", 5000, 5000);
+        ImageWriter imageWriter = new ImageWriter("newElaboratePictureWallNewLight", 500, 500);
         camera.setImageWriter(imageWriter)//
-                .setRayTracer(new RayTracerBasic(scene)) //
+                .setRayTracer(new RayTracerRegular(scene)) //
                 .renderImage(); //
         camera.writeToImage();
 

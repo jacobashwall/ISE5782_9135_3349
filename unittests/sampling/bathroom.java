@@ -949,8 +949,7 @@ public class bathroom {
         ImageWriter imageWriter = new ImageWriter("zFinal", 500, 500);
         scene.setResolution(5);
         camera.setImageWriter(imageWriter) //
-                .setRayTracer(new RayTracerBasic(scene)) //
-                //.setBaseOrRegular(true)
+                .setRayTracer(new RayTracerRegular(scene)) //
                 .renderImage(); //
         camera.writeToImage();
         // camera.moveCamera(new Point(-900, 400, 1100), new Point(0, 200, 0))

@@ -35,6 +35,31 @@ public class Geometries extends Intersectable {
         if (geometries.length > 0) this.objects.addAll(List.of(geometries));
     }
 
+    /**
+     * searches for a specific geometry in the list
+     *
+     * @param givenGeometry the geometry we are looking for
+     * @return true if it's in the list and false if not
+     */
+    public boolean contains(Geometry givenGeometry) {
+        if (givenGeometry != null) {
+            for (var geometry : objects) {
+                if (geometry.equals(givenGeometry))
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    public Geometries remove(Geometry givenGeometry) {
+        Geometries list = new Geometries();
+        for (var geometry : objects) {
+            if (!geometry.equals(givenGeometry))
+                list.add(geometry);
+        }
+        return list;
+    }
+
 
     @Override
     public List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance) {
@@ -80,11 +105,12 @@ public class Geometries extends Intersectable {
 
     /**
      * move over all geometric entities of a scene and return a hashmap of all the none empty voxels
+     *
      * @param scene the scene
      * @return the hash map of voxels
      */
     public HashMap<Double3, Geometries> attachVoxel(Scene scene) {
-        HashMap<Double3,Geometries> voxels=new HashMap<>();
+        HashMap<Double3, Geometries> voxels = new HashMap<>();
         List<Double3> voxelIndexes;
         for (var geometry : objects) {
             voxelIndexes = geometry.findVoxels(scene);
@@ -98,6 +124,5 @@ public class Geometries extends Intersectable {
         }
         return voxels;
     }
-
 }
 

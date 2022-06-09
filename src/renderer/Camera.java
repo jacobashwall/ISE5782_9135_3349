@@ -28,6 +28,10 @@ public class Camera {
     private RayTracerBase rayTracerBase;
 
     private double printInterval;
+    /**
+     * boolean that determine if the camera is using threading
+     */
+    private boolean threading = true;
 
 
     /**
@@ -170,6 +174,16 @@ public class Camera {
     }
 
     /**
+     * set the threading
+     * @param threading if the camera is using threading when rendering picture
+     * @return the object itself
+     */
+    public Camera setThreading(boolean threading) {
+        this.threading = threading;
+        return this;
+    }
+
+    /**
      * A method that generates a ray, starting at the point and going through
      * specific pixel in the view plane. Gets the resolution of the view plane and
      * the coordinates of the requested pixel as parameters.
@@ -248,9 +262,20 @@ public class Camera {
     }
 
     /**
-     * Checks if there are any empty camera fields
+     * flips the picture to left right axis
+     * @return the object itself
      */
-    public void renderImage() {
+    public Camera flipCamera()
+    {
+        this.vRight=this.vRight.scale(-1);
+        return this;
+    }
+
+    /**
+     * Checks if there are any empty camera fields
+     * @return the object itself
+     */
+    public Camera renderImage() {
         if (width == 0)
             throw new MissingResourceException("One of the camera's attributes are missing", "width", "4");
         if (height == 0)
@@ -261,19 +286,30 @@ public class Camera {
             throw new MissingResourceException("One of the camera's attributes are missing", "imageWriter", "7");
         if (rayTracerBase == null)
             throw new MissingResourceException("One of the camera's attributes are missing", "rayTracerBase", "8");
-        //move over the coordinates of the grid
         int nX = imageWriter.getNx();
         int nY = imageWriter.getNy();
-        Pixel.initialize(nY, nX, printInterval);
-        IntStream.range(0,nY).parallel().forEach(i-> {
-                    IntStream.range(0, nX).parallel().forEach(j -> {
-                        Ray ray = this.constructRay(nX, nY, j, i);
-                        Color pixelColor = rayTracerBase.traceRay(ray);
-                        imageWriter.writePixel(j, i, pixelColor);
-                        Pixel.pixelDone();
-                        Pixel.printPixel();
-                    });
+        if (threading) {//using threads
+            Pixel.initialize(nY, nX, printInterval);
+            IntStream.range(0, nY).parallel().forEach(i -> {
+                IntStream.range(0, nX).parallel().forEach(j -> {
+                    Ray ray = this.constructRay(nX, nY, j, i);
+                    Color pixelColor = rayTracerBase.traceRay(ray);
+                    imageWriter.writePixel(j, i, pixelColor);
+                    Pixel.pixelDone();
+                    Pixel.printPixel();
                 });
+            });
+        } else {//without threads
+            for (int i = 0; i < nX; i++) {
+                System.out.println(i + "/" + nX);
+                for (int j = 0; j < nY; j++) {
+                    //get the ray through the pixel
+                    Ray ray = this.constructRay(nX, nY, j, i);
+                    imageWriter.writePixel(j, i, rayTracerBase.traceRay(ray));
+                }
+            }
+        }
+        return this;
     }
 
 
@@ -282,8 +318,9 @@ public class Camera {
      *
      * @param interval the interval of the distance between ech grid line
      * @param color    the color of the grid
+     * @return the object itself
      */
-    public void printGrid(int interval, Color color) {
+    public Camera printGrid(int interval, Color color) {
         if (imageWriter == null)
             throw new MissingResourceException("One of the camera's attributes are missing", "imageWriter", "7");
         int nX = imageWriter.getNx();
@@ -298,6 +335,7 @@ public class Camera {
                 }
             }
         }
+        return this;
     }
 
     /**

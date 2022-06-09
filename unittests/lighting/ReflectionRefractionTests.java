@@ -40,7 +40,8 @@ public class ReflectionRefractionTests {
                 new SpotLight(new Color(1000, 600, 0), new Point(-100, -100, 500), new Vector(-1, -1, -2)) //
                         .setKl(0.0004).setKq(0.0000006));
 
-        camera.setImageWriter(new ImageWriter("refractionTwoSpheres", 500, 500)) //
+        scene.setResolution(10);
+        camera.setImageWriter(new ImageWriter("refractionTwoSpheresTest", 500, 500)) //
                 .setRayTracer(new RayTracerBasic(scene)) //
                 .renderImage(); //
                 camera.writeToImage();

@@ -230,6 +230,7 @@ public class LightsTests {
 	/**
 	 * Produce a picture of a sphere lighted by all three light sources
 	 */
+	/*
 	@Test
 	public void TubeTest() {
 
@@ -246,6 +247,7 @@ public class LightsTests {
 				.renderImage(); //
 		camera3.writeToImage(); //
 	}
+	*/
 
 	/**
 	 * Produce a picture of a sphere lighted by all three light sources

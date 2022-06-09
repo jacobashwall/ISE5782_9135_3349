@@ -44,6 +44,7 @@ public class DiffusiveGlassTest {
                 .renderImage(); //
         camera.writeToImage();
     }
+    /*
     @Test
     public void SimpleTest() {
         Sampling.setTargetAreaResolution(9);
@@ -78,7 +79,7 @@ public class DiffusiveGlassTest {
                 .renderImage(); //
         camera.writeToImage();
 
-    }
+    }*/
 
     @Test
     public void colorBlend() {

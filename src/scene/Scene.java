@@ -44,7 +44,10 @@ public class Scene {
     /**
      * the resolution of the voxels that divide the scene
      */
-    public double resolution;
+    public double resolution = 10;
+    /**
+     * array of resolution to each axis
+     */
     public double[] resolutions;
 
     //voxel attributes
@@ -157,14 +160,14 @@ public class Scene {
         return this;
     }
 
+    /**
+     * sets the resolution of the voxel grid from the tests
+     *
+     * @param resolution teh resolution of the grid
+     * @return the object itself
+     */
     public Scene setResolution(int resolution) {
-
-      /* this.xEdgeScene = this.geometries.boundary[0][1] - this.geometries.boundary[0][0];
-       this.yEdgeScene = this.geometries.boundary[1][1] - this.geometries.boundary[1][0];
-       this.zEdgeScene = this.geometries.boundary[2][1] - this.geometries.boundary[2][0];*/
-
-
-        this.resolution = resolution;// = new double[]{resolution,resolution,resolution};
+        this.resolution = resolution;
         return this;
     }
 

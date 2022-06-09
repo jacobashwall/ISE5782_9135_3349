@@ -1,7 +1,6 @@
 package sampling;
 
 import geometries.*;
-import lighting.PointLight;
 import lighting.SpotLight;
 import org.junit.jupiter.api.Test;
 import primitives.*;
@@ -893,7 +892,7 @@ public class bathroom {
         //From back
         //renderBack(scene,camera);
         //Final picture
-        renderFinal(scene, camera);
+        renderFinalThreading(scene, camera);
         //endregion
     }
 
@@ -943,17 +942,15 @@ public class bathroom {
         camera.writeToImage();
     }
 
-    private void renderFinal(Scene scene, Camera camera) {
+    private void renderFinalThreading(Scene scene, Camera camera) {
         camera.moveCamera(new Point(-920, 420, 1100), new Point(0, 200, 0))
-                .setVPDistance(4000);
-        ImageWriter imageWriter = new ImageWriter("zFinal", 500, 500);
-        scene.setResolution(5);
+                .setVPDistance(4000).setThreading(true);
+        ImageWriter imageWriter = new ImageWriter("zFinal", 1000, 1000);
+        scene.setResolution(35);
         camera.setImageWriter(imageWriter) //
                 .setRayTracer(new RayTracerRegular(scene)) //
                 .renderImage(); //
         camera.writeToImage();
-        // camera.moveCamera(new Point(-900, 400, 1100), new Point(0, 200, 0))
-        //                .setVPDistance(4000);
     }
     //endregion
 

@@ -256,7 +256,12 @@ public class RayTracerRegular extends RayTracerBase {
 
         Double3 ktr = Double3.ONE;
         //Find if any geometric object blocks the light
-        List<Intersectable.GeoPoint> intersections = scene.geometries.findGeoIntersections(lightRay, lightSource.getDistance(lightRay.getP0()));
+        //List<Intersectable.GeoPoint> intersections = scene.geometries.findGeoIntersections(lightRay, lightSource.getDistance(lightRay.getP0()));
+        Geometries geometries = voxelsPathGeometries(lightRay);
+        if(geometries==null){
+            return ktr;
+        }
+        List<Intersectable.GeoPoint> intersections = geometries.findGeoIntersections(lightRay, lightSource.getDistance(lightRay.getP0()));
         if (intersections == null)
             return ktr;
         //For every geometric object in the list, scale by its transparency coefficient
@@ -316,99 +321,134 @@ public class RayTracerRegular extends RayTracerBase {
         Vector dir = ray.getDir();
         int[][] boundary = scene.geometries.boundary;
         Point newFirstIntersection = fixPoint(firstIntersection, boundary);
-        Point index = VoxelByPoint(newFirstIntersection, boundary);
 
-        int indexX = (int) index.getX();
-        int indexY = (int) index.getY();
-        int indexZ = (int) index.getZ();
+        int[] indexes = VoxelByPoint(newFirstIntersection, boundary);
+        double[] directions = new double[]{dir.getX(),dir.getY(),dir.getZ()};
+        int[] steps = new int[3];
+        double[] voxelEdges = new double[]{scene.getXEdgeVoxel(), scene.getYEdgeVoxel(), scene.getZEdgeVoxel()};
+        double[] tMax = new double[3];
+        double[] firstIntersectionCoordinates= new double[]{firstIntersection.getX(),firstIntersection.getY(),firstIntersection.getZ()};
+        double[] tDelta = new double[3];
 
-        double dirX = dir.getX();
-        double dirY = dir.getY();
-        double dirZ = dir.getZ();
-
-        //the direction of the ray on each axis
-        int stepX = determineDirection(dirX);
-        int stepY = determineDirection(dirY);
-        int stepZ = determineDirection(dirZ);
-
-        //find the closet exit from the voxel in order to find the next voxel in teh ray's way
-        double tMaxX = 0;
-        double tMaxY = 0;
-        double tMaxZ = 0;
-        if (stepX == 1) {
-            tMaxX = Math.abs((boundary[0][0] + (indexX + 1) * scene.getXEdgeVoxel() - firstIntersection.getX()) / dirX);
-        } else if (stepX == -1) {
-            tMaxX = Math.abs((firstIntersection.getX() - (boundary[0][0] + indexX * scene.getXEdgeVoxel())) / dirX);
+        for(int i = 0; i<=2;i++){
+            steps[i] = determineDirection(directions[i]);
         }
-        if (stepY == 1) {
-            tMaxY = Math.abs((boundary[1][0] + (indexY + 1) * scene.getYEdgeVoxel() - firstIntersection.getY()) / dirY);
-        } else if (stepY == -1) {
-            tMaxY = Math.abs((firstIntersection.getY() - (boundary[1][0] + indexY * scene.getYEdgeVoxel())) / dirY);
+
+        for(int i = 0; i <=2; i++){
+            tMax[i] = determineTmax(boundary[i][0],steps[i],indexes[i],voxelEdges[i],directions[i],firstIntersectionCoordinates[i]);
         }
-        if (stepZ == 1) {
-            tMaxZ = Math.abs((boundary[2][0] + (indexZ + 1) * scene.getZEdgeVoxel() - firstIntersection.getZ()) / dirZ);
-        } else if (stepZ == -1) {
-            tMaxZ = Math.abs((firstIntersection.getZ() - (boundary[2][0] + indexZ * scene.getZEdgeVoxel())) / dirZ);
+
+        for(int i = 0; i<=2 ;i++){
+            tDelta[i] = Math.abs(voxelEdges[i] / directions[i]);
         }
+
 
         //move over all the geometries of the first voxel and find the closest intersection (if there is any)
-        Geometries list = scene.voxels.get(new Double3(indexX, indexY, indexZ));
+        Geometries list = scene.voxels.get(new Double3(indexes[0], indexes[1], indexes[2]));
         Intersectable.GeoPoint closestIntersection;
         if (list != null) {
             closestIntersection = findClosestIntersection(ray, list);
             //check if the intersection point exists, and it's inside the voxel
-            if (closestIntersection != null && isInsideVoxel(index, closestIntersection.point, boundary))
+            if (closestIntersection != null && isInsideVoxel(indexes, closestIntersection.point, boundary))
                 return closestIntersection;
         }
-        //if there is no intersection points in the first voxel search in the rest of the ray's way
-        //since the ray starts in the middle of a voxel (since we moved it on the intersection with the  scene CBR,
-        //or the head is already inside the scene SCR), we had to calculate the remaining distance to the fist voxel's edge.
-        //But from now on, we can use the constant voxel size, since it would always intersect with the edge of the voxel.
-        //now would do the same calculation on the rest of the ray's way in the voxels grid.
 
-
-        double tDeltaX = Math.abs(scene.getXEdgeVoxel() / dirX);
-        double tDeltaY = Math.abs(scene.getYEdgeVoxel() / dirY);
-        double tDeltaZ = Math.abs(scene.getZEdgeVoxel() / dirZ);
         do {
-            //move the point a voxel
-            if (tMaxX < tMaxY) {
-                if (tMaxX < tMaxZ) {
-                    indexX = indexX + stepX;
-                    if ((indexX > 0 && indexX == scene.resolution + 1) || (indexX < 0))
-                        return null; //the ray leaves the scene's CBR with no intersection
-                    tMaxX = tMaxX + tDeltaX;
-                } else {
-                    indexZ = indexZ + stepZ;
-                    if ((indexZ > 0 && indexZ == scene.resolution + 1) || (indexZ < 0))
-                        return null;
-                    tMaxZ = tMaxZ + tDeltaZ;
-                }
-            } else {
-                if (tMaxY < tMaxZ) {
-                    indexY = indexY + stepY;
-                    if ((indexY > 0 && indexY == scene.resolution + 1) || (indexY < 0))
-                        return null;
-                    tMaxY = tMaxY + tDeltaY;
-                } else {
-                    indexZ = indexZ + stepZ;
-                    if ((indexZ > 0 && indexZ == scene.resolution + 1) || (indexZ < 0))
-                        return null;
-                    tMaxZ = tMaxZ + tDeltaZ;
-                }
+            if(!nextVoxel(tMax,indexes,tDelta,steps)){
+                return null;
             }
+            //move the point a voxel
             //find the intersection inside teh current voxel
-            list = scene.voxels.get(new Double3(indexX, indexY, indexZ));
+            list = scene.voxels.get(new Double3(indexes[0], indexes[1], indexes[2]));
             if (list == null) {
                 closestIntersection = null;
             } else {
                 closestIntersection = findClosestIntersection(ray, list);
             }
 
-        } while (closestIntersection == null || !isInsideVoxel(new Point(indexX, indexY, indexZ), closestIntersection.point, boundary));
+        } while (closestIntersection == null || !isInsideVoxel(indexes, closestIntersection.point, boundary));
 
         return closestIntersection;
     }
+
+    private Geometries voxelsPathGeometries(Ray ray){
+        Point firstIntersection = firstIntersection(ray);
+        if (firstIntersection == null) return null;
+        Vector dir = ray.getDir();
+        int[][] boundary = scene.geometries.boundary;
+        Point newFirstIntersection = fixPoint(firstIntersection, boundary);
+
+        int[] indexes = VoxelByPoint(newFirstIntersection, boundary);
+        double[] directions = new double[]{dir.getX(),dir.getY(),dir.getZ()};
+        int[] steps = new int[3];
+        double[] voxelEdges = new double[]{scene.getXEdgeVoxel(), scene.getYEdgeVoxel(), scene.getZEdgeVoxel()};
+        double[] tMax = new double[3];
+        double[] firstIntersectionCoordinates= new double[]{firstIntersection.getX(),firstIntersection.getY(),firstIntersection.getZ()};
+        double[] tDelta = new double[3];
+
+        for(int i = 0; i<=2;i++){
+            steps[i] = determineDirection(directions[i]);
+        }
+
+        for(int i = 0; i <=2; i++){
+            tMax[i] = determineTmax(boundary[i][0],steps[i],indexes[i],voxelEdges[i],directions[i],firstIntersectionCoordinates[i]);
+        }
+
+        for(int i = 0; i<=2 ;i++){
+            tDelta[i] = Math.abs(voxelEdges[i] / directions[i]);
+        }
+
+        Geometries list = new Geometries();
+        Geometries temp = scene.voxels.get(new Double3(indexes[0], indexes[1], indexes[2]));
+        if(temp!=null){
+            list.add(temp);
+        }
+        while(nextVoxel(tMax,indexes,tDelta,steps)){
+            temp = scene.voxels.get(new Double3(indexes[0], indexes[1], indexes[2]));
+            if(temp!=null){
+                list.add(temp);
+            }
+        }
+        return list;
+    }
+
+
+    private boolean nextVoxel(double[] tMax, int[] indexes, double[] tDelta, int[] steps) {
+        //if there is no intersection points in the first voxel search in the rest of the ray's way
+        //since the ray starts in the middle of a voxel (since we moved it on the intersection with the  scene CBR,
+        //or the head is already inside the scene SCR), we had to calculate the remaining distance to the fist voxel's edge.
+        //But from now on, we can use the constant voxel size, since it would always intersect with the edge of the voxel.
+        //now would do the same calculation on the rest of the ray's way in the voxels grid.
+
+        if (tMax[0] < tMax[1]) {
+            if (tMax[0] < tMax[2]) {
+                indexes[0] = indexes[0] + steps[0];
+                if ((indexes[0] > 0 && indexes[0] == scene.resolution + 1) || (indexes[0] < 0))
+                    return false; //the ray leaves the scene's CBR with no intersection
+                tMax[0] = tMax[0] + tDelta[0];
+            } else {
+                indexes[2] = indexes[2] + steps[2];
+                if ((indexes[2] > 0 && indexes[2] == scene.resolution + 1) || (indexes[2] < 0))
+                    return false;
+                tMax[2] = tMax[2] + tDelta[2];
+            }
+        } else {
+            if (tMax[1] < tMax[2]) {
+                indexes[1] = indexes[1] + steps[1];
+                if ((indexes[1] > 0 && indexes[1] == scene.resolution + 1) || (indexes[1] < 0))
+                    return false;
+                tMax[1] = tMax[1] + tDelta[1];
+            } else {
+                indexes[2] = indexes[2] + steps[2];
+                if ((indexes[2] > 0 && indexes[2] == scene.resolution + 1) || (indexes[2] < 0))
+                    return false;
+                tMax[2] = tMax[2] + tDelta[2];
+            }
+        }
+        return true;
+    }
+
+
 
     /**
      * the intersection of the ray with CBR of the scene
@@ -467,6 +507,7 @@ public class RayTracerRegular extends RayTracerBase {
 
     }
 
+
     /**
      * this function matches a voxel to a point.
      *
@@ -474,13 +515,13 @@ public class RayTracerRegular extends RayTracerBase {
      * @param boundary the scene CBR
      * @return the voxel of the specified point
      */
-    private Point VoxelByPoint(Point p, int[][] boundary) {
+    private int[] VoxelByPoint(Point p, int[][] boundary) {
 
         int xCoordinate = (int) ((p.getX() - boundary[0][0]) / scene.getXEdgeVoxel());
         int yCoordinate = (int) ((p.getY() - boundary[1][0]) / scene.getYEdgeVoxel());
         int zCoordinate = (int) ((p.getZ() - boundary[2][0]) / scene.getZEdgeVoxel());
 
-        return new Point(xCoordinate, yCoordinate, zCoordinate);
+        return new int[]{xCoordinate, yCoordinate, zCoordinate};
     }
 
     /**
@@ -498,6 +539,15 @@ public class RayTracerRegular extends RayTracerBase {
             return 0;
     }
 
+    private double determineTmax(double minBoundary, double step, int index, double voxelEdge, double direction, double intersectionCoordinate){
+        if (step == 1) {
+            return Math.abs((minBoundary + (index + 1) * voxelEdge - intersectionCoordinate) / direction);
+        } else if (step == -1) {
+            return Math.abs((intersectionCoordinate - (minBoundary + index * voxelEdge)) / direction);
+        }
+        return 0;
+    }
+
     /**
      * checks if the intersection point ith the geometry is inside the voxel
      *
@@ -506,14 +556,14 @@ public class RayTracerRegular extends RayTracerBase {
      * @param boundary     the boundary of the scene
      * @return if the intersection point ith the geometry is inside the voxel
      */
-    private boolean isInsideVoxel(Point index, Point intersection, int[][] boundary) {
-        double xMax = boundary[0][0] + (index.getX() + 1) * scene.getXEdgeVoxel();
-        double yMax = boundary[1][0] + (index.getY() + 1) * scene.getYEdgeVoxel();
-        double zMax = boundary[2][0] + (index.getZ() + 1) * scene.getZEdgeVoxel();
+    private boolean isInsideVoxel(int[] index, Point intersection, int[][] boundary) {
+        double xMax = boundary[0][0] + (index[0] + 1) * scene.getXEdgeVoxel();
+        double yMax = boundary[1][0] + (index[1] + 1) * scene.getYEdgeVoxel();
+        double zMax = boundary[2][0] + (index[2] + 1) * scene.getZEdgeVoxel();
 
-        double xMin = boundary[0][0] + (index.getX()) * scene.getXEdgeVoxel();
-        double yMin = boundary[1][0] + (index.getY()) * scene.getYEdgeVoxel();
-        double zMin = boundary[2][0] + (index.getZ()) * scene.getZEdgeVoxel();
+        double xMin = boundary[0][0] + (index[0]) * scene.getXEdgeVoxel();
+        double yMin = boundary[1][0] + (index[1]) * scene.getYEdgeVoxel();
+        double zMin = boundary[2][0] + (index[2]) * scene.getZEdgeVoxel();
 
         return intersection.getX() >= xMin && intersection.getX() <= xMax
                 && intersection.getY() >= yMin && intersection.getY() <= yMax

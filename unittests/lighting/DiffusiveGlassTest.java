@@ -6,10 +6,7 @@ import geometries.Sphere;
 import geometries.Triangle;
 import org.junit.jupiter.api.Test;
 import primitives.*;
-import renderer.Camera;
-import renderer.ImageWriter;
-import renderer.RayTracerBasic;
-import renderer.Sampling;
+import renderer.*;
 import scene.Scene;
 
 import static java.awt.Color.BLUE;
@@ -77,7 +74,7 @@ public class DiffusiveGlassTest {
         scene.setResolution(5);
         ImageWriter imageWriter = new ImageWriter("SomethingCool", 500, 500);
         camera.setImageWriter(imageWriter) //
-                .setRayTracer(new RayTracerBasic(scene)) //
+                .setRayTracer(new RayTracerRegular(scene)) //
                 .renderImage(); //
         camera.writeToImage();
 

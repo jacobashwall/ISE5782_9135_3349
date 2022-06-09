@@ -24,7 +24,6 @@ public class Geometries extends Intersectable {
      */
     public Geometries(Intersectable... geometries) {
         this.add(geometries);
-        this.calcVolume();
     }
 
     /**
@@ -34,9 +33,6 @@ public class Geometries extends Intersectable {
      */
     public void add(Intersectable... geometries) {
         if (geometries.length > 0) this.objects.addAll(List.of(geometries));
-        for (var geometry:geometries) {
-            this.volume+=geometry.getVolume();
-        }
     }
 
 
@@ -80,17 +76,6 @@ public class Geometries extends Intersectable {
         return new int[][]{{(int) minX, (int) Math.ceil(maxX)},
                 {(int) minY, (int) Math.ceil(maxY)},
                 {(int) minZ, (int) Math.ceil(maxZ)}};
-    }
-
-    public int getObjectsSize() {
-        return this.objects.size();
-    }
-
-    @Override
-    protected void calcVolume() {
-        for (var geometry : objects) {
-            this.volume += geometry.getVolume();
-        }
     }
 
     /**

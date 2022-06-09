@@ -26,7 +26,6 @@ public class Cylinder extends Tube {
         super(axisRay, radius);
         this.height = height;
         this.boundary=calcBoundary();
-        calcVolume();
     }
 
     /**

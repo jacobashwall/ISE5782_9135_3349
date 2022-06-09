@@ -138,8 +138,8 @@ public class Cylinder extends Tube {
     }
 
     private int[] minMax(double first,double second){
-        return first < second? new int[]{(int)(first-radius),(int)Math.ceil(second+radius)}:
-                                new int[]{(int)(second-radius),(int)Math.ceil(first+radius)};
+        return first < second? new int[]{(int)Math.floor(first-radius),(int)Math.ceil(second+radius)}:
+                                new int[]{(int)Math.floor(second-radius),(int)Math.ceil(first+radius)};
     }
 
 

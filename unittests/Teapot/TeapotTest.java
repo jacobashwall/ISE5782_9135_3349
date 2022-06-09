@@ -22,9 +22,9 @@ import scene.Scene;
  * @author Dan
  */
 public class TeapotTest {
-    private final ImageWriter imageWriter = new ImageWriter("teapotRegular", 800, 800);
+    private final ImageWriter imageWriter = new ImageWriter("teapotRegular", 100, 100);
 
-    private final Camera camera = new Camera(new Point(0, 0, 1000), new Vector(0, 0, -1), new Vector(0, 1, 0)).flipCamera() //
+    private final Camera camera = new Camera(new Point(0, 0, -1000), new Vector(0, 0, 1), new Vector(0, 1, 0))//flipCamera() //
             .setVPDistance(1000).setVPSize(200, 200) //
             .setImageWriter(imageWriter) //
             .setThreading(true).setPrintInterval(0.1);
@@ -1566,7 +1566,7 @@ public class TeapotTest {
                 new Triangle(pnts[470], pnts[469], pnts[529]).setEmission(color).setMaterial(mat), //
                 new Triangle(pnts[529], pnts[530], pnts[470]).setEmission(color).setMaterial(mat) //
         );
-        scene.lights.add(new PointLight(new Color(500, 500, 500), new Point(100, 0, 100)).setKq(0.000001));
+        scene.lights.add(new PointLight(new Color(500, 500, 500), new Point(-100, 0, -100)).setKq(0.000001));
 
         scene.setResolution(10);
         camera.setRayTracer(new RayTracerRegular(scene)).renderImage().printGrid(50, new Color(YELLOW)).writeToImage();

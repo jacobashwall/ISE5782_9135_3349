@@ -33,7 +33,7 @@ public class RayTracerRegular extends RayTracerBase {
     /**
      * small number in order to move the ray
      */
-    private final double EPSILON = 0.01;
+    private final double EPSILON = 0.001;
 
     /**
      * construction the class with the given scene.
@@ -320,9 +320,9 @@ public class RayTracerRegular extends RayTracerBase {
         if (firstIntersection == null) return null;
         Vector dir = ray.getDir();
         int[][] boundary = scene.geometries.boundary;
-        Point newFirstIntersection = fixPoint(firstIntersection, boundary);
+        Point fixedFirstIntersection = fixPoint(firstIntersection, boundary);
 
-        int[] indexes = VoxelByPoint(newFirstIntersection, boundary);
+        int[] indexes = VoxelByPoint(fixedFirstIntersection, boundary);
         double[] directions = new double[]{dir.getX(),dir.getY(),dir.getZ()};
         int[] steps = new int[3];
         double[] voxelEdges = new double[]{scene.getXEdgeVoxel(), scene.getYEdgeVoxel(), scene.getZEdgeVoxel()};
@@ -344,13 +344,16 @@ public class RayTracerRegular extends RayTracerBase {
 
 
         //move over all the geometries of the first voxel and find the closest intersection (if there is any)
+        Intersectable.GeoPoint farIntersection = null;
         Geometries list = scene.voxels.get(new Double3(indexes[0], indexes[1], indexes[2]));
         Intersectable.GeoPoint closestIntersection;
         if (list != null) {
             closestIntersection = findClosestIntersection(ray, list);
             //check if the intersection point exists, and it's inside the voxel
-            if (closestIntersection != null && isInsideVoxel(indexes, closestIntersection.point, boundary))
-                return closestIntersection;
+            if (closestIntersection != null)
+                if (!isInsideVoxel(indexes, closestIntersection.point, boundary))
+                    farIntersection = closestIntersection;
+                else return closestIntersection;
         }
 
         do {
@@ -363,7 +366,40 @@ public class RayTracerRegular extends RayTracerBase {
             if (list == null) {
                 closestIntersection = null;
             } else {
-                closestIntersection = findClosestIntersection(ray, list);
+                if (farIntersection != null && isInsideVoxel(indexes, farIntersection.point, boundary)) {//if it's the voxel with the saved point
+                    list = list.remove(farIntersection.geometry);
+                    closestIntersection = findClosestIntersection(ray, list);
+                    if (closestIntersection != null) {
+                        if (isInsideVoxel(indexes, closestIntersection.point, boundary)) {
+                            //checks the closest of both
+                            if (closestIntersection.point.distanceSquared(fixedFirstIntersection) <= farIntersection.point.distanceSquared(fixedFirstIntersection)) {
+                                //even though we reached the voxel that contains the precalculated point, we found closer one
+                                return closestIntersection;
+                            } else {
+                                //the saved point is still the closest
+                                return farIntersection;
+                            }
+                        } else {//the closest intersection is outside the voxel meaning the saved one is closer
+                            return farIntersection;
+                        }
+                    } else {//no other intersection in this voxel, therefore the saved intersection is the closest
+                        return farIntersection;
+                    }
+                } else {//if it's not the voxel with the saved point
+                    closestIntersection = findClosestIntersection(ray, list);
+                    if (closestIntersection != null) {
+                        if (!isInsideVoxel(indexes, closestIntersection.point, boundary)) {
+                            //if not in the voxel
+                            if (farIntersection == null || closestIntersection.point.distanceSquared(fixedFirstIntersection) <= farIntersection.point.distanceSquared(fixedFirstIntersection)) {
+                                //if it's closer than the already saved farIntersection, save this, since tha saved one would not intersect before this
+                                farIntersection = closestIntersection;
+                                closestIntersection = null;
+                            }
+                        } else {//if it's in the voxel and closest
+                            return closestIntersection;
+                        }
+                    }
+                }
             }
 
         } while (closestIntersection == null || !isInsideVoxel(indexes, closestIntersection.point, boundary));

@@ -293,6 +293,9 @@ public class Camera {
             IntStream.range(0, nY).parallel().forEach(i -> {
                 IntStream.range(0, nX).parallel().forEach(j -> {
                     Ray ray = this.constructRay(nX, nY, j, i);
+                    if(i==55 && j==49) {
+                        int u = 5;
+                    }
                     Color pixelColor = rayTracerBase.traceRay(ray);
                     imageWriter.writePixel(j, i, pixelColor);
                     Pixel.pixelDone();

@@ -101,8 +101,8 @@ public class Sphere extends Geometry {
         double y = center.getY();
         double z = center.getZ();
 
-        return new int[][]{{(int) (x - radius), (int) Math.ceil(x + radius)},
-                {(int) (y - radius), (int) Math.ceil(y + radius)},
-                {(int) (z - radius), (int) Math.ceil(z + radius)}};
+        return new int[][]{{(int) Math.floor(x - radius), (int) Math.ceil(x + radius)},
+                {(int) Math.floor(y - radius), (int) Math.ceil(y + radius)},
+                {(int) Math.floor(z - radius), (int) Math.ceil(z + radius)}};
     }
 }

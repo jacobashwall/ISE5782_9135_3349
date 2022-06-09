@@ -176,9 +176,9 @@ public class Polygon extends Geometry {
                 maxZ = z;
         }
 
-        return new int[][]{{(int) minX, (int) Math.ceil(maxX)},
-                {(int) minY, (int) Math.ceil(maxY)},
-                {(int) minZ, (int) Math.ceil(maxZ)}};
+        return new int[][]{{(int) Math.floor(minX), (int) Math.ceil(maxX)},
+                {(int) Math.floor(minY), (int) Math.ceil(maxY)},
+                {(int) Math.floor(minZ), (int) Math.ceil(maxZ)}};
     }
 
 }

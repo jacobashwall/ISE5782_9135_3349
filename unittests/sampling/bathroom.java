@@ -1,6 +1,7 @@
 package sampling;
 
 import geometries.*;
+import lighting.PointLight;
 import lighting.SpotLight;
 import org.junit.jupiter.api.Test;
 import primitives.*;
@@ -70,18 +71,19 @@ public class bathroom {
 
         //region lighting
         //front wall light
-        scene.lights.add(new SpotLight(new Color(100, 100, 100), new Point(125, 450, 10), new Vector(0, -1, 1)).setNarrowBeam(3));
+        scene.lights.add(new SpotLight(new Color(255, 255, 153), new Point(125, 450, 10), new Vector(0, -1, 1)).setKq(0.0001));
         Cylinder frontLight = new Cylinder(new Ray(new Point(75, 450, 0), new Vector(1, 0, 0)), 20, 100);
         frontLight.setMaterial(new Material().setKt(0.9));
         frontLight.setEmission(new Color(255, 255, 255));
         scene.geometries.add(frontLight);
 
         //extension light
-        scene.lights.add(new SpotLight(new Color(100, 100, 100), new Point(-250, 490, 450), new Vector(0, -1, 0)).setNarrowBeam(3));
+        scene.lights.add(new SpotLight(new Color(255, 255, 153), new Point(-300, 490, 450),new Vector(0,-1,0)).setKq(0.0001));
         Cylinder backLight = new Cylinder(new Ray(new Point(-250, 500, 450), new Vector(0, -1, 0)), 20, 15);
         backLight.setMaterial(new Material().setKt(0.9));
         backLight.setEmission(new Color(255, 255, 255));
         scene.geometries.add(backLight);
+
 
         //endregion
 
@@ -99,60 +101,62 @@ public class bathroom {
         //endregion
 
         //region marble
+
+        Material marbelMaterial = new Material().setKs(0.5).setKr(0.05).setnShininess(500).setKd(0.5);//.setKsG(0.1);
         Polygon marbleTopLeft = new Polygon(new Point(-225, 200, 3), new Point(50, 200, 3), new Point(50, 200, 100), new Point(-225, 200, 100));
-        marbleTopLeft.setEmission(new Color(122, 122, 122)).setMaterial(new Material().setKs(0).setKd(0.5));
+        marbleTopLeft.setEmission(new Color(122, 122, 122)).setMaterial(marbelMaterial);
         scene.geometries.add(marbleTopLeft);
 
         Polygon marbleTopRight = new Polygon(new Point(225, 200, 3), new Point(500, 200, 3), new Point(500, 200, 100), new Point(225, 200, 100));
-        marbleTopRight.setEmission(new Color(122, 122, 122)).setMaterial(new Material().setKs(0).setKd(0.5));
+        marbleTopRight.setEmission(new Color(122, 122, 122)).setMaterial(marbelMaterial);
         scene.geometries.add(marbleTopRight);
 
         Polygon marbleFront = new Polygon(new Point(500, 200, 100), new Point(-225, 200, 100), new Point(-225, 175, 100), new Point(500, 175, 100));
-        marbleFront.setEmission(new Color(122, 122, 122)).setMaterial(new Material().setKs(0).setKd(0.5));
+        marbleFront.setEmission(new Color(122, 122, 122)).setMaterial(marbelMaterial);
         scene.geometries.add(marbleFront);
 
         Polygon marbleBottomLeft = new Polygon(new Point(-225, 175, 3), new Point(50, 175, 3), new Point(50, 175, 100), new Point(-225, 175, 100));
-        marbleBottomLeft.setEmission(new Color(122, 122, 122)).setMaterial(new Material().setKs(0).setKd(0.5));
+        marbleBottomLeft.setEmission(new Color(122, 122, 122)).setMaterial(marbelMaterial);
         scene.geometries.add(marbleBottomLeft);
 
         Polygon marbleBottomRight = new Polygon(new Point(225, 175, 3), new Point(500, 175, 3), new Point(500, 175, 100), new Point(225, 175, 100));
-        marbleBottomRight.setEmission(new Color(122, 122, 122)).setMaterial(new Material().setKs(0).setKd(0.5));
+        marbleBottomRight.setEmission(new Color(122, 122, 122)).setMaterial(marbelMaterial);
         scene.geometries.add(marbleBottomRight);
 
         Polygon marbleTopClose = new Polygon(new Point(50, 200, 100), new Point(225, 200, 100), new Point(225, 200, 80), new Point(50, 200, 80));
-        marbleTopClose.setEmission(new Color(122, 122, 122)).setMaterial(new Material().setKs(0).setKd(0.5));
+        marbleTopClose.setEmission(new Color(122, 122, 122)).setMaterial(marbelMaterial);
         scene.geometries.add(marbleTopClose);
 
         Polygon marbleTopDistant = new Polygon(new Point(50, 200, 20), new Point(225, 200, 20), new Point(225, 200, 0), new Point(50, 200, 0));
-        marbleTopDistant.setEmission(new Color(122, 122, 122)).setMaterial(new Material().setKs(0).setKd(0.5));
+        marbleTopDistant.setEmission(new Color(122, 122, 122)).setMaterial(marbelMaterial);
         scene.geometries.add(marbleTopDistant);
 
         Polygon marbleBottomClose = new Polygon(new Point(50, 175, 100), new Point(225, 175, 100), new Point(225, 175, 80), new Point(50, 175, 80));
-        marbleBottomClose.setEmission(new Color(122, 122, 122)).setMaterial(new Material().setKs(0).setKd(0.5));
+        marbleBottomClose.setEmission(new Color(122, 122, 122)).setMaterial(marbelMaterial);
         scene.geometries.add(marbleBottomClose);
 
         Polygon marbleBottomDistant = new Polygon(new Point(50, 175, 20), new Point(225, 175, 20), new Point(225, 175, 0), new Point(50, 175, 0));
-        marbleBottomDistant.setEmission(new Color(122, 122, 122)).setMaterial(new Material().setKs(0).setKd(0.5));
+        marbleBottomDistant.setEmission(new Color(122, 122, 122)).setMaterial(marbelMaterial);
         scene.geometries.add(marbleBottomDistant);
 
         Polygon marbleLeft = new Polygon(new Point(-225, 200, 0), new Point(-225, 175, 0), new Point(-225, 175, 100), new Point(-225, 200, 100));
-        marbleLeft.setEmission(new Color(122, 122, 122)).setMaterial(new Material().setKs(0).setKd(0.5));
+        marbleLeft.setEmission(new Color(122, 122, 122)).setMaterial(marbelMaterial);
         scene.geometries.add(marbleLeft);
 
         Polygon marbleHeightDistant = new Polygon(new Point(50, 175, 20), new Point(50, 200, 20), new Point(225, 200, 20), new Point(225, 175, 20));
-        marbleHeightDistant.setEmission(new Color(122, 122, 122)).setMaterial(new Material().setKs(0).setKd(0.5));
+        marbleHeightDistant.setEmission(new Color(122, 122, 122)).setMaterial(marbelMaterial);
         scene.geometries.add(marbleHeightDistant);
 
         Polygon marbleHeightRight = new Polygon(new Point(225, 175, 20), new Point(225, 200, 20), new Point(225, 200, 80), new Point(225, 175, 80));
-        marbleHeightRight.setEmission(new Color(122, 122, 122)).setMaterial(new Material().setKs(0).setKd(0.5));
+        marbleHeightRight.setEmission(new Color(122, 122, 122)).setMaterial(marbelMaterial);
         scene.geometries.add(marbleHeightRight);
 
         Polygon marbleHeightLeft = new Polygon(new Point(50, 175, 20), new Point(50, 200, 20), new Point(50, 200, 80), new Point(50, 175, 80));
-        marbleHeightLeft.setEmission(new Color(122, 122, 122)).setMaterial(new Material().setKs(0).setKd(0.5));
+        marbleHeightLeft.setEmission(new Color(122, 122, 122)).setMaterial(marbelMaterial);
         scene.geometries.add(marbleHeightLeft);
 
         Polygon marbleHeightClose = new Polygon(new Point(50, 175, 80), new Point(50, 200, 80), new Point(225, 200, 80), new Point(225, 175, 80));
-        marbleHeightClose.setEmission(new Color(122, 122, 122)).setMaterial(new Material().setKs(0).setKd(0.5));
+        marbleHeightClose.setEmission(new Color(122, 122, 122)).setMaterial(marbelMaterial);
         scene.geometries.add(marbleHeightClose);
 
         Cylinder marbleFrontEdge = new Cylinder(new Ray(new Point(500, 187.5, 100), new Vector(-1, 0, 0)), 12.5, 725);
@@ -178,7 +182,7 @@ public class bathroom {
         scene.geometries.add(sinkLeft);
 
         Polygon sinkClose = new Polygon(new Point(50, 190, 80), new Point(120, 190 - depth, 60), new Point(155, 190 - depth, 60), new Point(225, 190, 80));
-        sinkClose.setEmission(new Color(225, 225, 225)).setMaterial(new Material().setKs(0).setKd(0.5));
+        sinkClose.setEmission(new Color(255, 225, 255)).setMaterial(new Material().setKs(0).setKd(0.5));
         scene.geometries.add(sinkClose);
 
         Polygon sinkBottom = new Polygon(new Point(120, 190 - depth, 60), new Point(155, 190 - depth, 60), new Point(155, 190 - depth, 40), new Point(120, 190 - depth, 40));
@@ -196,29 +200,31 @@ public class bathroom {
         scene.geometries.add(sinkHole);
 
         //sink tap
+        Material silverTap =new Material().setKd(0).setKs(1).setnShininess(300).setKr(0.05);//.setKsG(0.5);
+        Color silverTapColor = new Color(108, 122, 134);
         Cylinder sinkTapBase = new Cylinder(new Ray(new Point(235, 200, 40), new Vector(0, 1, 0)), 5, 20);
-        sinkTapBase.setMaterial(new Material());
-        sinkTapBase.setEmission(new Color(122, 122, 122));
+        sinkTapBase.setMaterial(silverTap);
+        sinkTapBase.setEmission(silverTapColor);
         scene.geometries.add(sinkTapBase);
 
         Cylinder sinkTapSpine = new Cylinder(new Ray(new Point(235, 220, 40), new Vector(-1, 1, 0.5)), 3, 60);
-        sinkTapSpine.setMaterial(new Material());
-        sinkTapSpine.setEmission(new Color(122, 122, 122));
+        sinkTapSpine.setMaterial(silverTap);
+        sinkTapSpine.setEmission(silverTapColor);
         scene.geometries.add(sinkTapSpine);
 
         Cylinder sinkTapHead = new Cylinder(new Ray((new Point(235, 220, 40).add(new Vector(-1, 1, 0.5).scale(40))), new Vector(-1, 0, 0.5)), 3, 40);
-        sinkTapHead.setMaterial(new Material());
-        sinkTapHead.setEmission(new Color(122, 122, 122));
+        sinkTapHead.setMaterial(silverTap);
+        sinkTapHead.setEmission(silverTapColor);
         scene.geometries.add(sinkTapHead);
 
         Cylinder sinkTapOpening = new Cylinder(new Ray(((new Point(235, 223, 40).add(new Vector(-1, 1, 0.5).scale(40))).add(new Vector(-1, 0, 0.5).scale(30))), new Vector(0, -1, 0)), 3, 8);
-        sinkTapOpening.setMaterial(new Material());
-        sinkTapOpening.setEmission(new Color(122, 122, 122));
+        sinkTapOpening.setMaterial(silverTap);
+        sinkTapOpening.setEmission(silverTapColor);
         scene.geometries.add(sinkTapOpening);
 
         Cylinder sinkTapHandle = new Cylinder(new Ray(new Point(230, 215, 40), new Vector(-1, -0.5, 0)), 2, 15);
-        sinkTapHandle.setMaterial(new Material());
-        sinkTapHandle.setEmission(new Color(122, 122, 122));
+        sinkTapHandle.setMaterial(silverTap);
+        sinkTapHandle.setEmission(silverTapColor);
         scene.geometries.add(sinkTapHandle);
         //endregion
 
@@ -246,7 +252,7 @@ public class bathroom {
             closetDoorFront.setEmission(new Color(173,255,47)).setMaterial(new Material().setKs(0.5).setKd(0.5).setnShininess(300).setKr(0.01).setKsG(0));
             scene.geometries.add(closetDoorFront);
             Polygon closetDoorLeft = new Polygon(new Point(-225 + j * tileWidth, 0, 100), new Point(-225 + j * tileWidth, 0, fixLeft), new Point(-225 + j * tileWidth, tileHeight, fixLeft), new Point(-225 + j * tileWidth, tileHeight, 100));
-            closetDoorLeft.setEmission(new Color(100, 100, 100)).setMaterial(new Material().setKs(0).setKd(0.5));
+            closetDoorLeft.setEmission(new Color(100, 100, 100)).setMaterial(new Material().setKs(0.5).setKd(0.5));
             scene.geometries.add(closetDoorLeft);
 
             Polygon closetDoorRight = new Polygon(new Point(-225 + tileWidth + j * tileWidth - gap, 0, 100), new Point(-225 + tileWidth + j * tileWidth - gap, 0, fixRight), new Point(-225 + tileWidth + j * tileWidth - gap, tileHeight, fixRight), new Point(-225 + tileWidth + j * tileWidth - gap, tileHeight, 100));
@@ -271,7 +277,7 @@ public class bathroom {
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 20; j++) {
                 Polygon polygon = new Polygon(new Point(-500 + j * tileWidth, -1, i * tileHeight), new Point(-500 + tileWidth + j * tileWidth - gap, -1, i * tileHeight), new Point(-500 + tileWidth + j * tileWidth - gap, -1, tileHeight + i * tileHeight - gap), new Point(-500 + j * tileWidth, -1, tileHeight + i * tileHeight - gap));
-                polygon.setEmission(new Color(143, 188, 143)).setMaterial(new Material().setKr(0.3).setKd(1).setKsG(0));
+                polygon.setEmission(new Color(143, 188, 143)).setMaterial(new Material().setKr(0.05).setKd(0.5).setKs(0.5).setnShininess(300));//.setKsG(0.3));
                 scene.geometries.add(polygon);
                 //new Color(143,188,143)
             }
@@ -503,112 +509,115 @@ public class bathroom {
         showerSurface.setEmission(new Color(143, 188, 143)).setMaterial(new Material().setKs(0).setKd(0.5).setKt(0));
         scene.geometries.add(showerSurface);
 
+        Material metalic = new Material().setKd(0.5).setKr(0.05).setnShininess(100).setKs(0.5);//.setnShininess(300).setKs(0.5).setKsG(0.5).setKr(0.1);
+        Color metalicColor = new Color(94,98,107);
+
         //edges
         Cylinder leftBottomShowerEdge = new Cylinder(new Ray(new Point(-250, 0, 100), new Vector(0, 0, -1)), 10, 100);
-        leftBottomShowerEdge.setMaterial(new Material());
-        leftBottomShowerEdge.setEmission(new Color(122, 122, 122));
+        leftBottomShowerEdge.setMaterial(metalic);
+        leftBottomShowerEdge.setEmission(metalicColor);
         scene.geometries.add(leftBottomShowerEdge);
 
         Cylinder leftTopShowerEdge = new Cylinder(new Ray(new Point(-250, 450, 100), new Vector(0, 0, -1)), 10, 100);
-        leftTopShowerEdge.setMaterial(new Material());
-        leftTopShowerEdge.setEmission(new Color(122, 122, 122));
+        leftTopShowerEdge.setMaterial(metalic);
+        leftTopShowerEdge.setEmission(metalicColor);
         scene.geometries.add(leftTopShowerEdge);
 
         Cylinder frontTopShowerEdge = new Cylinder(new Ray(new Point(-350, 450, 200), new Vector(-1, 0, 0)), 10, 150);
-        frontTopShowerEdge.setMaterial(new Material());
-        frontTopShowerEdge.setEmission(new Color(122, 122, 122));
+        frontTopShowerEdge.setMaterial(metalic);
+        frontTopShowerEdge.setEmission(metalicColor);
         scene.geometries.add(frontTopShowerEdge);
 
         Cylinder frontBottomShowerEdge = new Cylinder(new Ray(new Point(-350, 0, 200), new Vector(-1, 0, 0)), 10, 150);
-        frontBottomShowerEdge.setMaterial(new Material());
-        frontBottomShowerEdge.setEmission(new Color(122, 122, 122));
+        frontBottomShowerEdge.setMaterial(metalic);
+        frontBottomShowerEdge.setEmission(metalicColor);
         scene.geometries.add(frontBottomShowerEdge);
 
         Cylinder frontLeftShowerDoor = new Cylinder(new Ray(new Point(-250, 0, 97.5), new Vector(0, 1, 0)), 5, 450);
-        frontLeftShowerDoor.setMaterial(new Material());
-        frontLeftShowerDoor.setEmission(new Color(122, 122, 122));
+        frontLeftShowerDoor.setMaterial(metalic);
+        frontLeftShowerDoor.setEmission(metalicColor);
         scene.geometries.add(frontLeftShowerDoor);
 
         Cylinder backLeftShowerDoor = new Cylinder(new Ray(new Point(-250, 0, 0), new Vector(0, 1, 0)), 5, 450);
-        backLeftShowerDoor.setMaterial(new Material());
-        backLeftShowerDoor.setEmission(new Color(122, 122, 122));
+        backLeftShowerDoor.setMaterial(metalic);
+        backLeftShowerDoor.setEmission(metalicColor);
         scene.geometries.add(backLeftShowerDoor);
 
         Cylinder leftShowerDoorFront = new Cylinder(new Ray(new Point(-352.5, 0, 200), new Vector(0, 1, 0)), 5, 450);
-        leftShowerDoorFront.setMaterial(new Material());
-        leftShowerDoorFront.setEmission(new Color(122, 122, 122));
+        leftShowerDoorFront.setMaterial(metalic);
+        leftShowerDoorFront.setEmission(metalicColor);
         scene.geometries.add(leftShowerDoorFront);
 
         Cylinder rightShowerDoorFront = new Cylinder(new Ray(new Point(-500, 0, 200), new Vector(0, 1, 0)), 5, 450);
-        rightShowerDoorFront.setMaterial(new Material());
-        rightShowerDoorFront.setEmission(new Color(122, 122, 122));
+        rightShowerDoorFront.setMaterial(metalic);
+        rightShowerDoorFront.setEmission(metalicColor);
         scene.geometries.add(rightShowerDoorFront);
 
         Cylinder creek = new Cylinder(new Ray(new Point(-250, 0, 200), new Vector(0, 1, 0)), 2, 450);
         creek.setMaterial(new Material());
-        creek.setEmission(new Color(122, 122, 122));
+        creek.setEmission(metalicColor);
         scene.geometries.add(creek);
 
         //spheres
         Sphere frontTopShowerSphere = new Sphere(new Point(-350, 450, 200), 10);
-        frontTopShowerSphere.setMaterial(new Material());
-        frontTopShowerSphere.setEmission(new Color(122, 122, 122));
+        frontTopShowerSphere.setMaterial(metalic);
+        frontTopShowerSphere.setEmission(metalicColor);
         scene.geometries.add(frontTopShowerSphere);
 
         Sphere frontBottomShowerSphere = new Sphere(new Point(-350, 0, 200), 10);
-        frontBottomShowerSphere.setMaterial(new Material());
-        frontBottomShowerSphere.setEmission(new Color(122, 122, 122));
+        frontBottomShowerSphere.setMaterial(metalic);
+        frontBottomShowerSphere.setEmission(metalicColor);
         scene.geometries.add(frontBottomShowerSphere);
 
         Sphere leftBottomShowerSphere = new Sphere(new Point(-250, 0, 100), 10);
-        leftBottomShowerSphere.setMaterial(new Material());
-        leftBottomShowerSphere.setEmission(new Color(122, 122, 122));
+        leftBottomShowerSphere.setMaterial(metalic);
+        leftBottomShowerSphere.setEmission(metalicColor);
         scene.geometries.add(leftBottomShowerSphere);
 
         Sphere leftTopShowerSphere = new Sphere(new Point(-250, 450, 100), 10);
-        leftTopShowerSphere.setMaterial(new Material());
-        leftTopShowerSphere.setEmission(new Color(122, 122, 122));
+        leftTopShowerSphere.setMaterial(metalic);
+        leftTopShowerSphere.setEmission(metalicColor);
         scene.geometries.add(leftTopShowerSphere);
 
         //shower tap
         Cylinder showerTapBase = new Cylinder(new Ray(new Point(-400, 500, 100), new Vector(0, -1, 0)), 10, 20);
-        showerTapBase.setMaterial(new Material());
-        showerTapBase.setEmission(new Color(122, 122, 122));
+        showerTapBase.setMaterial(metalic);
+        showerTapBase.setEmission(metalicColor);
         scene.geometries.add(showerTapBase);
 
         Sphere showerTapSpineSphere = new Sphere(new Point(-400, 480, 100), 10);
-        showerTapSpineSphere.setMaterial(new Material());
-        showerTapSpineSphere.setEmission(new Color(122, 122, 122));
+        showerTapSpineSphere.setMaterial(metalic);
+        showerTapSpineSphere.setEmission(metalicColor);
         scene.geometries.add(showerTapSpineSphere);
 
         Cylinder showerTapSpine = new Cylinder(new Ray(new Point(-400, 480, 100), new Vector(0, -1, 0)), 5, 50);
-        showerTapSpine.setMaterial(new Material());
-        showerTapSpine.setEmission(new Color(122, 122, 122));
+        showerTapSpine.setMaterial(metalic);
+        showerTapSpine.setEmission(metalicColor);
         scene.geometries.add(showerTapSpine);
 
         Sphere showerTapVerticalSphere = new Sphere(new Point(-400, 430, 100), 5);
-        showerTapVerticalSphere.setMaterial(new Material());
-        showerTapVerticalSphere.setEmission(new Color(122, 122, 122));
+        showerTapVerticalSphere.setMaterial(metalic);
+        showerTapVerticalSphere.setEmission(metalicColor);
         scene.geometries.add(showerTapVerticalSphere);
 
         Cylinder showerTapVertical = new Cylinder(new Ray(new Point(-400, 430, 100), new Vector(0, -1, 0)), 3, 20);
-        showerTapVertical.setMaterial(new Material());
-        showerTapVertical.setEmission(new Color(122, 122, 122));
+        showerTapVertical.setMaterial(metalic);
+        showerTapVertical.setEmission(metalicColor);
         scene.geometries.add(showerTapVertical);
 
         Cylinder showerTapHead = new Cylinder(new Ray(new Point(-400, 410, 100), new Vector(0, -1, 0)), 30, 4);
-        showerTapHead.setMaterial(new Material());
-        showerTapHead.setEmission(new Color(122, 122, 122));
+        showerTapHead.setMaterial(metalic);
+        showerTapHead.setEmission(metalicColor);
         scene.geometries.add(showerTapHead);
 
         Cylinder showerTapHandleBase = new Cylinder(new Ray(new Point(-325, 250, 1.2), new Vector(0, 0, 1)), 15, 10);
-        showerTapHandleBase.setMaterial(new Material());
-        showerTapHandleBase.setEmission(new Color(122, 122, 122));
+        showerTapHandleBase.setMaterial(metalic);
+        showerTapHandleBase.setEmission(metalicColor);
         scene.geometries.add(showerTapHandleBase);
 
         Cylinder showerTapHandle = new Cylinder(new Ray(new Point(-325, 240, 6.2), new Vector(0, -1, 0)), 2.5, 20);
-        showerTapHandle.setMaterial(new Material());
-        showerTapHandle.setEmission(new Color(122, 122, 122));
+        showerTapHandle.setMaterial(metalic);
+        showerTapHandle.setEmission(metalicColor);
         scene.geometries.add(showerTapHandle);
 
 
@@ -946,7 +955,7 @@ public class bathroom {
         camera.moveCamera(new Point(-920, 420, 1100), new Point(0, 200, 0))
                 .setVPDistance(4000).setThreading(true);
         ImageWriter imageWriter = new ImageWriter("zFinal", 1000, 1000);
-        scene.setResolution(35);
+        scene.setResolution(10);
         camera.setImageWriter(imageWriter) //
                 .setRayTracer(new RayTracerRegular(scene)) //
                 .renderImage(); //

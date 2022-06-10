@@ -84,6 +84,13 @@ public class bathroom {
         backLight.setEmission(new Color(255, 255, 255));
         scene.geometries.add(backLight);
 
+        //behind camera light
+        scene.lights.add(new SpotLight(new Color(255, 255, 153), new Point(-250, 490, 600),new Vector(0,-1,-1)).setKq(0.0001));
+
+        //behind window light
+        scene.lights.add(new SpotLight(new Color(255, 255, 153), new Point(350, 325, 299.7),new Vector(0,-1,-1)).setKq(0.0001));
+
+
 
         //endregion
 

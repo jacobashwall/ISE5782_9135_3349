@@ -90,6 +90,8 @@ public class bathroom {
         //behind window light
         scene.lights.add(new SpotLight(new Color(255, 255, 153), new Point(350, 325, 299.7),new Vector(0,-1,-1)).setKq(0.0001));
 
+        //shower light
+        scene.lights.add(new PointLight(new Color(0,50,0),new Point(-375,100,1)));
 
 
         //endregion
@@ -103,13 +105,13 @@ public class bathroom {
         //mirror
         gap = 10;
         Polygon mirror = new Polygon(new Point(-200 + gap, 275 + gap, 1.2), new Point(450 - gap, 275 + gap, 1.2), new Point(450 - gap, 425 - gap, 1.2), new Point(-200 + gap, 425 - gap, 1.2));
-        mirror.setEmission(new Color(0, 0, 0)).setMaterial(new Material().setKs(0).setKd(0.5).setKr(1));
+        mirror.setEmission(new Color(0, 0, 0)).setMaterial(new Material().setKs(0).setKd(0.5).setKr(1).setKsG(0.8));
         scene.geometries.add(mirror);
         //endregion
 
         //region marble
 
-        Material marbelMaterial = new Material().setKs(0.5).setKr(0.05).setnShininess(500).setKd(0.5).setKsG(1);//.setKsG(0.1);
+        Material marbelMaterial = new Material().setKs(0.5).setKr(0.05).setnShininess(500).setKd(0.5).setKsG(0);//.setKsG(0.1);
         Polygon marbleTopLeft = new Polygon(new Point(-225, 200, 3), new Point(50, 200, 3), new Point(50, 200, 100), new Point(-225, 200, 100));
         marbleTopLeft.setEmission(new Color(122, 122, 122)).setMaterial(marbelMaterial);
         scene.geometries.add(marbleTopLeft);
@@ -207,7 +209,7 @@ public class bathroom {
         scene.geometries.add(sinkHole);
 
         //sink tap
-        Material silverTap =new Material().setKd(0).setKs(1).setnShininess(300).setKr(0.05);//.setKsG(0.5);
+        Material silverTap =new Material().setKd(0).setKs(1).setnShininess(300).setKr(0.05).setKsG(0.5);
         Color silverTapColor = new Color(108, 122, 134);
         Cylinder sinkTapBase = new Cylinder(new Ray(new Point(235, 200, 40), new Vector(0, 1, 0)), 5, 20);
         sinkTapBase.setMaterial(silverTap);
@@ -516,7 +518,7 @@ public class bathroom {
         showerSurface.setEmission(new Color(143, 188, 143)).setMaterial(new Material().setKs(0).setKd(0.5).setKt(0));
         scene.geometries.add(showerSurface);
 
-        Material metalic = new Material().setKd(0.5).setKr(0.05).setnShininess(100).setKs(0.5);//.setnShininess(300).setKs(0.5).setKsG(0.5).setKr(0.1);
+        Material metalic = new Material().setKd(0.5).setKsG(0).setnShininess(500).setKs(0.5).setKr(0.5);//.setnShininess(300).setKs(0.5).setKsG(0.5).setKr(0.1);
         Color metalicColor = new Color(94,98,107);
 
         //edges

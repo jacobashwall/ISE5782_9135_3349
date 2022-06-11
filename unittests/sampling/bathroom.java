@@ -102,7 +102,7 @@ public class bathroom {
 
         //region marble
 
-        Material marbelMaterial = new Material().setKs(0.5).setKr(0.05).setnShininess(500).setKd(0.5);//.setKsG(0.1);
+        Material marbelMaterial = new Material().setKs(0.5).setKr(0.05).setnShininess(500).setKd(0.5).setKsG(1);//.setKsG(0.1);
         Polygon marbleTopLeft = new Polygon(new Point(-225, 200, 3), new Point(50, 200, 3), new Point(50, 200, 100), new Point(-225, 200, 100));
         marbleTopLeft.setEmission(new Color(122, 122, 122)).setMaterial(marbelMaterial);
         scene.geometries.add(marbleTopLeft);
@@ -277,7 +277,7 @@ public class bathroom {
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 20; j++) {
                 Polygon polygon = new Polygon(new Point(-500 + j * tileWidth, -1, i * tileHeight), new Point(-500 + tileWidth + j * tileWidth - gap, -1, i * tileHeight), new Point(-500 + tileWidth + j * tileWidth - gap, -1, tileHeight + i * tileHeight - gap), new Point(-500 + j * tileWidth, -1, tileHeight + i * tileHeight - gap));
-                polygon.setEmission(new Color(143, 188, 143)).setMaterial(new Material().setKr(0.05).setKd(0.5).setKs(0.5).setnShininess(300));//.setKsG(0.3));
+                polygon.setEmission(new Color(143, 188, 143)).setMaterial(new Material().setKr(0).setKd(0).setKs(0).setnShininess(300));//.setKsG(0.3));
                 scene.geometries.add(polygon);
                 //new Color(143,188,143)
             }
@@ -496,12 +496,12 @@ public class bathroom {
         //region shower
         //right glass
         Polygon showerRight = new Polygon(new Point(-250, 0, 200), new Point(-250, 0, 0), new Point(-250, 450, 0), new Point(-250, 450, 200));
-        showerRight.setEmission(new Color(87, 164, 133)).setMaterial(new Material().setKs(0).setKd(0.5).setKt(0.5));
+        showerRight.setEmission(new Color(87, 164, 133)).setMaterial(new Material().setKs(0).setKd(0.5).setKt(0.5).setKdG(0));
         scene.geometries.add(showerRight);
 
         //front glass
         Polygon showerFront = new Polygon(new Point(-250, 0, 200), new Point(-250, 450, 200), new Point(-500, 450, 200), new Point(-500, 0, 200));
-        showerFront.setEmission(new Color(87, 164, 133)).setMaterial(new Material().setKs(0).setKd(0.5).setKt(0.5));
+        showerFront.setEmission(new Color(87, 164, 133)).setMaterial(new Material().setKs(0).setKd(0.5).setKt(0.5).setKdG(0.5));
         scene.geometries.add(showerFront);
 
         //surface
@@ -954,7 +954,7 @@ public class bathroom {
     private void renderFinalThreading(Scene scene, Camera camera) {
         camera.moveCamera(new Point(-920, 420, 1100), new Point(0, 200, 0))
                 .setVPDistance(4000).setThreading(true);
-        ImageWriter imageWriter = new ImageWriter("zFinal", 1000, 1000);
+        ImageWriter imageWriter = new ImageWriter("zFinal", 500, 500);
         scene.setResolution(10);
         camera.setImageWriter(imageWriter) //
                 .setRayTracer(new RayTracerRegular(scene)) //

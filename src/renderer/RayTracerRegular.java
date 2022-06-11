@@ -256,7 +256,6 @@ public class RayTracerRegular extends RayTracerBase {
 
         Double3 ktr = Double3.ONE;
         //Find if any geometric object blocks the light
-        //List<Intersectable.GeoPoint> intersections = scene.geometries.findGeoIntersections(lightRay, lightSource.getDistance(lightRay.getP0()));
         Geometries geometries = voxelsPathGeometries(lightRay);
         if(geometries==null){
             return ktr;
@@ -316,12 +315,15 @@ public class RayTracerRegular extends RayTracerBase {
      * @return the first intersection GeoPoint
      */
     private Intersectable.GeoPoint traversalAlgorithm(Ray ray) {
+        //finds the first intersection with the grid
         Point firstIntersection = firstIntersection(ray);
         if (firstIntersection == null) return null;
         Vector dir = ray.getDir();
         int[][] boundary = scene.geometries.boundary;
+        //move the point a little, so it would be inside the grid
         Point fixedFirstIntersection = fixPoint(firstIntersection, boundary);
 
+        //arrays for calculations
         int[] indexes = VoxelByPoint(fixedFirstIntersection, boundary);
         double[] directions = new double[]{dir.getX(),dir.getY(),dir.getZ()};
         int[] steps = new int[3];
@@ -407,14 +409,22 @@ public class RayTracerRegular extends RayTracerBase {
         return closestIntersection;
     }
 
+    /**
+     * function that finds the geometric objects in all the voxels the ray travels through
+     * @param ray the ray through the scene voxels grid
+     * @return geometries in all the voxels the ray travels through
+     */
     private Geometries voxelsPathGeometries(Ray ray){
+        //finds the first intersection with the grid
         Point firstIntersection = firstIntersection(ray);
         if (firstIntersection == null) return null;
         Vector dir = ray.getDir();
         int[][] boundary = scene.geometries.boundary;
-        Point newFirstIntersection = fixPoint(firstIntersection, boundary);
+        //move the point a little, so it would be inside the grid
+        Point fixedFirstIntersection = fixPoint(firstIntersection, boundary);
 
-        int[] indexes = VoxelByPoint(newFirstIntersection, boundary);
+        //arrays for calculations
+        int[] indexes = VoxelByPoint(fixedFirstIntersection, boundary);
         double[] directions = new double[]{dir.getX(),dir.getY(),dir.getZ()};
         int[] steps = new int[3];
         double[] voxelEdges = new double[]{scene.getXEdgeVoxel(), scene.getYEdgeVoxel(), scene.getZEdgeVoxel()};
@@ -434,11 +444,15 @@ public class RayTracerRegular extends RayTracerBase {
             tDelta[i] = Math.abs(voxelEdges[i] / directions[i]);
         }
 
+        //find the geometries in the first voxel
         Geometries list = new Geometries();
         Geometries temp = scene.voxels.get(new Double3(indexes[0], indexes[1], indexes[2]));
+
+
         if(temp!=null){
             list.add(temp);
         }
+        //travel through all the voxels in a loop and their geometries
         while(nextVoxel(tMax,indexes,tDelta,steps)){
             temp = scene.voxels.get(new Double3(indexes[0], indexes[1], indexes[2]));
             if(temp!=null){
@@ -449,6 +463,14 @@ public class RayTracerRegular extends RayTracerBase {
     }
 
 
+    /**
+     * moves to the next voxel
+     * @param tMax maximum in units of t to get to the next voxel
+     * @param indexes index of the current voxel
+     * @param tDelta width, height and depth of voxel in units of t
+     * @param steps the direction of the steps
+     * @return if moved successfully to the next voxel or got out of the grid
+     */
     private boolean nextVoxel(double[] tMax, int[] indexes, double[] tDelta, int[] steps) {
         //if there is no intersection points in the first voxel search in the rest of the ray's way
         //since the ray starts in the middle of a voxel (since we moved it on the intersection with the  scene CBR,

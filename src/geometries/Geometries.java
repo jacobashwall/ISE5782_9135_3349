@@ -15,6 +15,7 @@ public class Geometries extends Intersectable {
     //we will use linked list since adding a new object to the list is a lot faster than array list.
     //Also, we will never try to access an object in a specific index, but we will always scan all the array.
     //Meaning there are no drawbacks using linked list, but we would have the best running time.
+
     private final List<Intersectable> objects = new LinkedList<>();
 
     /**

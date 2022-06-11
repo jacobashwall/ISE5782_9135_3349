@@ -21,7 +21,7 @@ public class Sampling {
     /**
      * length of the target area edge
      */
-    private static double TARGET_AREA_EDGE = 2;
+    private static double TARGET_AREA_EDGE = 1;
 
     /**
      * TARGET_AREA_RESOLUTION setter

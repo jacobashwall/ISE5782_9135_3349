@@ -130,5 +130,13 @@ public class Geometries extends Intersectable {
         }
         return voxels;
     }
+
+    /**
+     * boundary getter
+     * @return the matrix of the boundary
+     */
+    public int[][] getBoundary(){
+        return boundary;
+    }
 }
 

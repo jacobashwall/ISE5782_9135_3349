@@ -1,5 +1,6 @@
 package scene;
 
+import geometries.Polygon;
 import lighting.*;
 import geometries.Geometries;
 import primitives.*;
@@ -27,6 +28,8 @@ public class Scene {
     public Geometries geometries = new Geometries();
     //List of light sources
     public List<LightSource> lights = new LinkedList<>();
+    //faces of the regular grid
+    public Polygon[] faces;
 
     //scene geometric attributes
     /**
@@ -88,6 +91,8 @@ public class Scene {
     public double getXEdgeVoxel() {
         return xEdgeVoxel;
     }
+
+
 
     /**
      * yEdgeVoxel getter
@@ -180,6 +185,7 @@ public class Scene {
         this.setResolution();
         this.setVoxelsEdges();
         this.setVoxelsGeometries();
+        this.setFaces();
     }
 
     /**
@@ -219,5 +225,32 @@ public class Scene {
      */
     private void setVoxelsGeometries() {
         this.voxels = this.geometries.attachVoxel(this);
+    }
+
+    /**
+     * sets the regular grid faces field
+     */
+    private void setFaces(){
+        //points of the scene regular grid
+        int[][] gridBoundary = geometries.getBoundary();
+        Point p1 = new Point(gridBoundary[0][0],gridBoundary[1][0], gridBoundary[2][0]);//(0,0,0)
+        Point p2 = new Point(gridBoundary[0][1], gridBoundary[1][0], gridBoundary[2][0]);//(1,0,0)
+        Point p3 = new Point(gridBoundary[0][0], gridBoundary[1][1], gridBoundary[2][0]);//(0,1,0)
+        Point p4 = new Point(gridBoundary[0][0], gridBoundary[1][0], gridBoundary[2][1]);//(0,0,1)
+        Point p5 = new Point(gridBoundary[0][1], gridBoundary[1][1], gridBoundary[2][0]);//(1,1,0)
+        Point p6 = new Point(gridBoundary[0][1], gridBoundary[1][0], gridBoundary[2][1]);//(1,0,1)
+        Point p7 = new Point(gridBoundary[0][0], gridBoundary[1][1], gridBoundary[2][1]);//(0,1,1)
+        Point p8 = new Point(gridBoundary[0][1], gridBoundary[1][1], gridBoundary[2][1]);//(1,1,1)
+
+        //faces of the regular grid
+        Polygon bottom = new Polygon(p1, p2, p5, p3);//bottom
+        Polygon front = new Polygon(p1, p2, p6, p4);//front
+        Polygon left = new Polygon(p1, p3, p7, p4);//left
+        Polygon up = new Polygon(p4, p6, p8, p7);//up
+        Polygon behind = new Polygon(p3, p5, p8, p7);//behind
+        Polygon right = new Polygon(p2, p5, p8, p6);//right
+
+        //Memory wise, we won't use the ray function of findClosestPoint, since we will be in need to create a list of points
+        this.faces = new Polygon[]{bottom, front, left, up, behind, right};
     }
 }

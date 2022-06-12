@@ -257,7 +257,7 @@ public class RayTracerRegular extends RayTracerBase {
         Double3 ktr = Double3.ONE;
         //Find if any geometric object blocks the light
         Geometries geometries = voxelsPathGeometries(lightRay);
-        if(geometries==null){
+        if (geometries == null) {
             return ktr;
         }
         List<Intersectable.GeoPoint> intersections = geometries.findGeoIntersections(lightRay, lightSource.getDistance(lightRay.getP0()));
@@ -325,22 +325,22 @@ public class RayTracerRegular extends RayTracerBase {
 
         //arrays for calculations
         int[] indexes = VoxelByPoint(fixedFirstIntersection, boundary);
-        double[] directions = new double[]{dir.getX(),dir.getY(),dir.getZ()};
+        double[] directions = new double[]{dir.getX(), dir.getY(), dir.getZ()};
         int[] steps = new int[3];
         double[] voxelEdges = new double[]{scene.getXEdgeVoxel(), scene.getYEdgeVoxel(), scene.getZEdgeVoxel()};
         double[] tMax = new double[3];
-        double[] firstIntersectionCoordinates= new double[]{firstIntersection.getX(),firstIntersection.getY(),firstIntersection.getZ()};
+        double[] firstIntersectionCoordinates = new double[]{firstIntersection.getX(), firstIntersection.getY(), firstIntersection.getZ()};
         double[] tDelta = new double[3];
 
-        for(int i = 0; i<=2;i++){
+        for (int i = 0; i <= 2; i++) {
             steps[i] = determineDirection(directions[i]);
         }
 
-        for(int i = 0; i <=2; i++){
-            tMax[i] = determineTmax(boundary[i][0],steps[i],indexes[i],voxelEdges[i],directions[i],firstIntersectionCoordinates[i]);
+        for (int i = 0; i <= 2; i++) {
+            tMax[i] = determineTmax(boundary[i][0], steps[i], indexes[i], voxelEdges[i], directions[i], firstIntersectionCoordinates[i]);
         }
 
-        for(int i = 0; i<=2 ;i++){
+        for (int i = 0; i <= 2; i++) {
             tDelta[i] = Math.abs(voxelEdges[i] / directions[i]);
         }
 
@@ -359,7 +359,7 @@ public class RayTracerRegular extends RayTracerBase {
         }
 
         do {
-            if(!nextVoxel(tMax,indexes,tDelta,steps)){
+            if (!nextVoxel(tMax, indexes, tDelta, steps)) {
                 return null;
             }
             //move the point a voxel
@@ -411,10 +411,11 @@ public class RayTracerRegular extends RayTracerBase {
 
     /**
      * function that finds the geometric objects in all the voxels the ray travels through
+     *
      * @param ray the ray through the scene voxels grid
      * @return geometries in all the voxels the ray travels through
      */
-    private Geometries voxelsPathGeometries(Ray ray){
+    private Geometries voxelsPathGeometries(Ray ray) {
         //finds the first intersection with the grid
         Point firstIntersection = firstIntersection(ray);
         if (firstIntersection == null) return null;
@@ -425,22 +426,22 @@ public class RayTracerRegular extends RayTracerBase {
 
         //arrays for calculations
         int[] indexes = VoxelByPoint(fixedFirstIntersection, boundary);
-        double[] directions = new double[]{dir.getX(),dir.getY(),dir.getZ()};
+        double[] directions = new double[]{dir.getX(), dir.getY(), dir.getZ()};
         int[] steps = new int[3];
         double[] voxelEdges = new double[]{scene.getXEdgeVoxel(), scene.getYEdgeVoxel(), scene.getZEdgeVoxel()};
         double[] tMax = new double[3];
-        double[] firstIntersectionCoordinates= new double[]{firstIntersection.getX(),firstIntersection.getY(),firstIntersection.getZ()};
+        double[] firstIntersectionCoordinates = new double[]{firstIntersection.getX(), firstIntersection.getY(), firstIntersection.getZ()};
         double[] tDelta = new double[3];
 
-        for(int i = 0; i<=2;i++){
+        for (int i = 0; i <= 2; i++) {
             steps[i] = determineDirection(directions[i]);
         }
 
-        for(int i = 0; i <=2; i++){
-            tMax[i] = determineTmax(boundary[i][0],steps[i],indexes[i],voxelEdges[i],directions[i],firstIntersectionCoordinates[i]);
+        for (int i = 0; i <= 2; i++) {
+            tMax[i] = determineTmax(boundary[i][0], steps[i], indexes[i], voxelEdges[i], directions[i], firstIntersectionCoordinates[i]);
         }
 
-        for(int i = 0; i<=2 ;i++){
+        for (int i = 0; i <= 2; i++) {
             tDelta[i] = Math.abs(voxelEdges[i] / directions[i]);
         }
 
@@ -449,13 +450,13 @@ public class RayTracerRegular extends RayTracerBase {
         Geometries temp = scene.voxels.get(new Double3(indexes[0], indexes[1], indexes[2]));
 
 
-        if(temp!=null){
+        if (temp != null) {
             list.add(temp);
         }
         //travel through all the voxels in a loop and their geometries
-        while(nextVoxel(tMax,indexes,tDelta,steps)){
+        while (nextVoxel(tMax, indexes, tDelta, steps)) {
             temp = scene.voxels.get(new Double3(indexes[0], indexes[1], indexes[2]));
-            if(temp!=null){
+            if (temp != null) {
                 list.add(temp);
             }
         }
@@ -465,10 +466,11 @@ public class RayTracerRegular extends RayTracerBase {
 
     /**
      * moves to the next voxel
-     * @param tMax maximum in units of t to get to the next voxel
+     *
+     * @param tMax    maximum in units of t to get to the next voxel
      * @param indexes index of the current voxel
-     * @param tDelta width, height and depth of voxel in units of t
-     * @param steps the direction of the steps
+     * @param tDelta  width, height and depth of voxel in units of t
+     * @param steps   the direction of the steps
      * @return if moved successfully to the next voxel or got out of the grid
      */
     private boolean nextVoxel(double[] tMax, int[] indexes, double[] tDelta, int[] steps) {
@@ -507,7 +509,6 @@ public class RayTracerRegular extends RayTracerBase {
     }
 
 
-
     /**
      * the intersection of the ray with CBR of the scene
      *
@@ -522,36 +523,19 @@ public class RayTracerRegular extends RayTracerBase {
 
         int[][] boundary = scene.geometries.boundary;
 
+        //if the head of the ray is inside the regular grid return the head of the ray
         if (x >= boundary[0][0] && x <= boundary[0][1] &&
                 y >= boundary[1][0] && y <= boundary[1][1] &&
                 z >= boundary[2][0] && z <= boundary[2][1]) {
             return head;
         }
-        //creates an actual object of the scene edges
 
-        Point p1 = new Point(boundary[0][0], boundary[1][0], boundary[2][0]);//(0,0,0)
-        Point p2 = new Point(boundary[0][1], boundary[1][0], boundary[2][0]);//(1,0,0)
-        Point p3 = new Point(boundary[0][0], boundary[1][1], boundary[2][0]);//(0,1,0)
-        Point p4 = new Point(boundary[0][0], boundary[1][0], boundary[2][1]);//(0,0,1)
-        Point p5 = new Point(boundary[0][1], boundary[1][1], boundary[2][0]);//(1,1,0)
-        Point p6 = new Point(boundary[0][1], boundary[1][0], boundary[2][1]);//(1,0,1)
-        Point p7 = new Point(boundary[0][0], boundary[1][1], boundary[2][1]);//(0,1,1)
-        Point p8 = new Point(boundary[0][1], boundary[1][1], boundary[2][1]);//(1,1,1)
-
-        Polygon bottom = new Polygon(p1, p2, p5, p3);//bottom
-        Polygon front = new Polygon(p1, p2, p6, p4);//front
-        Polygon left = new Polygon(p1, p3, p7, p4);//left
-        Polygon up = new Polygon(p4, p6, p8, p7);//up
-        Polygon behind = new Polygon(p3, p5, p8, p7);//behind
-        Polygon right = new Polygon(p2, p5, p8, p6);//right
-
-        //Memory wise, we won't use the ray function of findClosestPoint, since we will be in need to create a list of points
-        Polygon[] faces = new Polygon[]{bottom, front, left, up, behind, right};
         List<Point> intersections;
         Point closest = null;
 
+        //find the closest intersection
         double distance = Double.POSITIVE_INFINITY;
-        for (Polygon p : faces) {
+        for (Polygon p : scene.faces) {
             intersections = p.findIntersections(ray);
             if (intersections != null) {
                 if (intersections.get(0).distance(head) < distance) {
@@ -597,7 +581,18 @@ public class RayTracerRegular extends RayTracerBase {
             return 0;
     }
 
-    private double determineTmax(double minBoundary, double step, int index, double voxelEdge, double direction, double intersectionCoordinate){
+    /**
+     * determines the maximum step in units of t to the next voxel
+     *
+     * @param minBoundary            minimum boundary coordinate
+     * @param step                   the direction of the next voxel
+     * @param index                  index of the current voxel
+     * @param voxelEdge              length of voxel edge
+     * @param direction              the direction of the vector of the ray
+     * @param intersectionCoordinate the first intersection of the ray with the regular grid
+     * @return the maximum step in units of t to the next voxel
+     */
+    private double determineTmax(double minBoundary, double step, int index, double voxelEdge, double direction, double intersectionCoordinate) {
         if (step == 1) {
             return Math.abs((minBoundary + (index + 1) * voxelEdge - intersectionCoordinate) / direction);
         } else if (step == -1) {
@@ -615,10 +610,12 @@ public class RayTracerRegular extends RayTracerBase {
      * @return if the intersection point ith the geometry is inside the voxel
      */
     private boolean isInsideVoxel(int[] index, Point intersection, int[][] boundary) {
+        //minimum coordinates
         double xMax = boundary[0][0] + (index[0] + 1) * scene.getXEdgeVoxel();
         double yMax = boundary[1][0] + (index[1] + 1) * scene.getYEdgeVoxel();
         double zMax = boundary[2][0] + (index[2] + 1) * scene.getZEdgeVoxel();
 
+        //maximum coordinates
         double xMin = boundary[0][0] + (index[0]) * scene.getXEdgeVoxel();
         double yMin = boundary[1][0] + (index[1]) * scene.getYEdgeVoxel();
         double zMin = boundary[2][0] + (index[2]) * scene.getZEdgeVoxel();

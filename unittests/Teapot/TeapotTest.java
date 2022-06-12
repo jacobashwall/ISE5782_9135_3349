@@ -22,9 +22,9 @@ import scene.Scene;
  * @author Dan
  */
 public class TeapotTest {
-    private final ImageWriter imageWriter = new ImageWriter("teapotRegular", 100, 100);
+    private final ImageWriter imageWriter = new ImageWriter("teapotRegular", 800, 800);
 
-    private final Camera camera = new Camera(new Point(0, 0, -1000), new Vector(0, 0, 1), new Vector(0, 1, 0))//flipCamera() //
+    private final Camera camera = new Camera(new Point(0, 0, -1000), new Vector(0, 0, 1), new Vector(0, 1, 0))
             .setVPDistance(1000).setVPSize(200, 200) //
             .setImageWriter(imageWriter) //
             .setThreading(true).setPrintInterval(0.1);
